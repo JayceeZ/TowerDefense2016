@@ -1,0 +1,33 @@
+# -----------------------------------------
+# File: .gitignore
+# 
+# Salah Bennour 
+# Alexandre Tisier
+# Jean Christophe Isoard
+# Kevin Justal
+#
+# Polytech Nice Sophia - Computer Sciences
+# -----------------------------------------
+
+
+# NODE MODULES
+./*/node_modules/
+
+# TEMP
+./*/temp/
+
+# DUNNO
+./*/*.swp
+
+# LOG
+./*/*.log
+
+# BIN
+./*/bin/
+
+
+# Mac OS
+./*/.DS_Store
+
+# PLATFORMS
+./*/platforms/
