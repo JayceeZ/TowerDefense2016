@@ -19,15 +19,9 @@
 # DUNNO
 ./*/*.swp
 
-# LOG
+# UNWANTED
 ./*/*.log
-
-# BIN
 ./*/bin/
-
-
-# Mac OS
-./*/.DS_Store
 
 # PLATFORMS
 ./*/platforms/
