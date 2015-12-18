@@ -22,6 +22,10 @@
 # UNWANTED
 ./*/*.log
 ./*/bin/
+./*/.idea
+
+# MAC OS
+./*/*.DS_Store
 
 # PLATFORMS
 ./*/platforms/
