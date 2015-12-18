@@ -11,21 +11,21 @@
 
 
 # NODE MODULES
-./*/node_modules/
+**/node_modules/
 
 # TEMP
-./*/temp/
+**/temp/
 
 # DUNNO
-./*/*.swp
+**/*.swp
 
 # UNWANTED
-./*/*.log
-./*/bin/
-./*/.idea
+**/*.log
+**/bin/
+**/.idea
 
 # MAC OS
-./*/*.DS_Store
+**/*.DS_Store
 
 # PLATFORMS
-./*/platforms/
+**/platforms/
