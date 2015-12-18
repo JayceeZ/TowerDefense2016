@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>IDEV Messaging Debug Platform</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<h1 id="displayName"></h1>
+<label for="event">Evenement : </label><input id="event" type="text" onkeydown="enter(event);"/><br/>
+<label for="param1">Parametre : </label><input id="param1" type="text" onkeydown="enter(event);"/><br/>
+<input type="button" value="Envoyer" onclick="send();"/><br/><br/>
+
+<h2>Messages</h2>
+
+<div id="messages" style="border: 1px solid black; overflow: scroll"></div>
+<script type="text/javascript">
+
+    var socket = io.connect();
+
+    var name;
+    var devices;
+
+    socket.on('connect', function () {
+        socket.emit('addIdev');
+        document.getElementById("displayName").innerHTML = "IDev";
+    });
+
+    socket.on('idevAddDevice', function (device) {
+        document.getElementById("devices").innerHTML += JSON.stringify(device);
+    });
+
+    function send(who) {
+        socket.emit(document.getElementById("event").value,
+                document.getElementById("param1").value);
+    }
+
+    function listDevices() {
+        socket.emit(document.getElementById("event").value,
+                document.getElementById("param1").value);
+    }
+
+    function enter(event) {
+        if (event.keyCode == 13) {
+            send();
+        }
+    }
+
+    socket.on('idevLog', function (message) {
+        document.getElementById("messages").innerHTML += JSON.stringify(message) + "<hr />";
+    });
+
+</script>
+</body>
+</html>
