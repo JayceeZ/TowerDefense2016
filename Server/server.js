@@ -50,7 +50,7 @@ ioServer.on('connection', function(socket) {
 
   socket.on('table', function(message) {
     socket.to('players').emit(message);
-    socket.to('caca').emit(message);
+    socket.to('core').emit(message);
   });
 
   socket.on('addTable', function() {
@@ -61,8 +61,8 @@ ioServer.on('connection', function(socket) {
     socket.join('players');
   });
 
-  socket.on('addCaca', function() {
-    socket.join('caca');
+  socket.on('addCore', function() {
+    socket.join('core');
   });
 
   socket.on('addIdev', function() {
