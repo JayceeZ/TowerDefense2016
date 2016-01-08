@@ -1,29 +1,21 @@
 var express = require('express');
 var app = express();
-var httpserver = require('http').createServer(app);
-var io = require('socket.io').listen(httpserver);
-
-io.enable('browser client minification');  // send minified client
-io.enable('browser client etag');          // apply etag caching logic based on version number
-
-io.set('transports', [
-    'websocket',
-    'flashsocket',
-    'htmlfile',
-    'xhr-polling',
-    'jsonp-polling'
-]);
+var socketio = require('socket.io');
 
 app.use(express.static(__dirname + '/'));
+
+app.use( function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+  next();
+});
 
 app.get('/', function (req, res, next) {
     res.render('index.html');
 });
 
 var port = 8080;
-
-// launch the http server on given port
-httpserver.listen(port);
 
 var players;
 var tableSocket;
@@ -40,8 +32,14 @@ function init() {
     tableSocket = null;
 }
 
-io.sockets.on('connection', function (socket) {
+/**
+ * Sockets API
+ */
+var ioServer = socketio(8081);
+
+ioServer.on('connection', function (socket) {
     socket.on('log', function(content) {
+        console.log(content);
         if(idevSocket)
             idevSocket.emit('idevLog', content);
     });
@@ -66,3 +64,6 @@ io.sockets.on('connection', function (socket) {
         console.log("PERTE DE CONNEXION");
     });
 });
+
+// launch the http server on given port
+app.listen(port);

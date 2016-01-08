@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>IDEV Messaging Debug Platform</title>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.1.min.js"></script>
 </head>
 <body>
 <h1 id="displayName"></h1>
@@ -14,15 +14,13 @@
 <div id="messages" style="border: 1px solid black; overflow: scroll"></div>
 <script type="text/javascript">
 
-    var socket = io.connect();
+    var socket = io.connect("http://10.212.97.167:8081");
 
     var name;
     var devices;
 
-    socket.on('connect', function () {
-        socket.emit('addIdev');
-        document.getElementById("displayName").innerHTML = "IDev";
-    });
+    socket.emit('addIdev');
+    document.getElementById("displayName").innerHTML = "IDev";
 
     socket.on('idevAddDevice', function (device) {
         document.getElementById("devices").innerHTML += JSON.stringify(device);
