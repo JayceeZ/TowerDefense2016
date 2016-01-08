@@ -32,23 +32,27 @@ function init() {
     tableSocket = null;
 }
 
+// launch the http server on given port
+app.listen(port);
+
 /**
  * Sockets API
  */
 var ioServer = socketio(8081);
 
+
 ioServer.on('connection', function (socket) {
     socket.on('log', function(content) {
-        console.log(content);
-        if(idevSocket)
-            idevSocket.emit('idevLog', content);
+      console.log(content + " received from " + socket.id);
+      idevSocket.join('idev');
+      idevSocket.emit('idevLog', content);
     });
 
     socket.on('addTable', function () {
         tableSocket = socket;
     });
 
-    socket.on('addIdev', function (playerName) {
+    socket.on('addIdev', function () {
         idevSocket = socket;
     });
 
@@ -64,6 +68,3 @@ ioServer.on('connection', function (socket) {
         console.log("PERTE DE CONNEXION");
     });
 });
-
-// launch the http server on given port
-app.listen(port);
