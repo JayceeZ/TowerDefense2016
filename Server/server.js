@@ -1,7 +1,7 @@
 var express = require('express');
-var app = express();
 var socketio = require('socket.io');
 
+var app = express();
 app.use(express.static(__dirname + '/'));
 
 app.use(function(req, res, next) {
@@ -49,19 +49,28 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('table', function(message) {
-    socket.to('players').emit(message);
-    socket.to('core').emit(message);
+    console.log('Table sending message to Players and Core');
+    socket.to('players').emit('table', message);
+    socket.to('core').emit('table', message);
+  });
+
+  socket.on('toTable', function(message) {
+    socket.to('table').emit('idevMessage', message);
   });
 
   socket.on('addTable', function() {
+    console.log('Table authentified');
     tableSocket = socket;
   });
 
   socket.on('addHandDevice', function() {
+    console.log('Hand Device authentified');
+    socket.emit('addedHandDevice', {message: 'Device added'});
     socket.join('players');
   });
 
   socket.on('addCore', function() {
+    console.log('Core authentified');
     socket.join('core');
   });
 

@@ -26,7 +26,7 @@ var handleTUIO = function(msg) {
 
 socket.emit('addTable');
 
-socket.on('idevMessage', function (device) {
-  document.getElementById("devices").innerHTML += JSON.stringify(device);
+socket.on('message', function (message) {
+  console.log(message);
 });
 
