@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "node-osc": "^1.1.0",
-    "osc": "^2.0.2"
+    "osc": "^2.0.2",
+    "socket.io": "^1.4.2",
+    "socket.io-client": "^1.4.2"
   }
 }
