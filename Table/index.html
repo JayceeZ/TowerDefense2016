@@ -1,10 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Table</title>
-  </head>
-  <script src="https://cdn.socket.io/socket.io-1.4.1.min.js"></script>
-  <body>
-    <h1>Table</h1>
-  </body>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <script src="https://cdn.socket.io/socket.io-1.4.1.min.js"></script>
+    <script src="app/js/angular.min.js"></script>
+    <script src="app/modules/map/controllers.js"></script>
+</head>
+    <body ng-app="mapModule">
+        <div ng-controller="mapCtrl">
+            {{ helloworld }}
+        </div>
+    </body>
 </html>
