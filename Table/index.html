@@ -1,10 +1,14 @@
 <!doctype html>
-<html>
+<html ng-app="appTable">
   <head>
     <title>Table</title>
   </head>
   <script src="https://cdn.socket.io/socket.io-1.4.1.min.js"></script>
   <body>
-    <h1>Table</h1>
+    <div ng-controller="MapCtrl">
+      {{ test }}
+    </div>
+    <script src="js/angular.min.js"></script>
+    <script src="src/controllers/map.js"></script>
   </body>
 </html>
