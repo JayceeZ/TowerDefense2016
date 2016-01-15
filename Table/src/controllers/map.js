@@ -40,7 +40,7 @@ var mapCtrl = appTable.controller("MapCtrl", function($scope, socket) {
       marker = new Marker(message.id);
       $scope.markers.push(marker);
     }
-    var x = (message.x-1)*1920;
+    var x = message.x*1920;
     var y = message.y*1080;
     marker.setX(x);
     marker.setY(y);
