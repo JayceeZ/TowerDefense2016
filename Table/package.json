@@ -12,6 +12,7 @@
   "dependencies": {
     "angular": "^1.4.8",
     "angular-route": "^1.4.8",
+    "bootstrap": "^3.3.6",
     "jquery": "^2.2.0",
     "lodash": "^4.0.0",
     "node-osc": "^1.1.0",

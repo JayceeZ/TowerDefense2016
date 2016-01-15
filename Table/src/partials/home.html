@@ -1,3 +1,6 @@
-<div class="container">
-  {{ hello }}
+<div class="home">
+  <div class="slots">
+    <div class="slot" ng-repeat="s in slots">{{ s.id }}</div>
+  </div>
+  <div class="launch" ng-click="validate()"></div>
 </div>

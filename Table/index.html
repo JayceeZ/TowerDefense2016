@@ -2,6 +2,7 @@
 <html ng-app="appTable">
   <head>
     <title>Table</title>
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/app-global.css">
   </head>
   <script src="node_modules/socket.io-client/socket.io.js"></script>
@@ -9,10 +10,12 @@
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/angular-route/angular-route.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <body>
     <div ng-view></div>
     <script src="src/app.js"></script>
     <script src="src/services.js"></script>
+    <script src="src/model/Slot.js"></script>
     <script src="src/model/Marker.js"></script>
     <script src="src/controllers/home.js"></script>
     <script src="src/controllers/map.js"></script>

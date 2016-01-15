@@ -1,6 +1,5 @@
-html, body, div, .ng-scope {
+html, body, .ng-scope {
     height: 100%;
-    margin: 0;
 }
 
 .fill-width {
@@ -11,7 +10,7 @@ html, body, div, .ng-scope {
     height: 100%;
 }
 
-.container {
+.map {
     position: relative;
     overflow: hidden;
 }
@@ -20,4 +19,20 @@ html, body, div, .ng-scope {
     position: absolute;
     width: 100px;
     height: 100px;
+}
+
+.slots {
+    position: absolute;
+    height: 100px;
+    width: 100%;
+    top: 80%;
+    text-align: center;
+}
+
+.slot {
+    display: inline-block;
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
 }
