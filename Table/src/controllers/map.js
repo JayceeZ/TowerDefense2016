@@ -4,11 +4,33 @@
 
 var appTable = angular.module('appTable',[]);
 
-var mapCtrl = appTable.controller("MapCtrl", function($scope) {
+appTable.factory('socket', function ($rootScope) {
+  var socket = io.connect("http://192.168.1.21:8081");
+  return {
+    on: function (eventName, callback) {
+      socket.on(eventName, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      });
+    },
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          if (callback) {
+            callback.apply(socket, args);
+          }
+        });
+      })
+    }
+  };
+});
+
+var mapCtrl = appTable.controller("MapCtrl", function($scope, socket) {
   // Template model
   $scope.markers = [];
-
-  var socket = io.connect("http://192.168.1.21:8081");
 
   socket.emit('addTable');
 
@@ -18,8 +40,10 @@ var mapCtrl = appTable.controller("MapCtrl", function($scope) {
       marker = new Marker(message.id);
       $scope.markers.push(marker);
     }
-    marker.setX(message.x);
-    marker.setY(message.y);
+    var x = (message.x-1)*1920;
+    var y = message.y*1080;
+    marker.setX(x);
+    marker.setY(y);
   });
 });
 
