@@ -29,13 +29,14 @@ var handleTUIO = function(msg) {
 
 var tuioObjectDetected = function(tag,x,y,angle){
   console.log("TUIO Object : tag = "+tag+" , x = "+x+" , y = "+y+" , angle = "+angle);
+  socket.emit("marker",{"id" : 0, "x" : x, "y" : y, "angle" : angle});
 }
 
 /************************
  * Server communication *
  ************************/
 
-socket.emit('addTable');
+socket.emit('addCore');
 
 socket.on('toTable', function(message) {
   console.log(message);
@@ -61,7 +62,7 @@ var playerConnect = function(message){
     status.status = false;
     if(!game.creating)
       status.message = "Cette partie n'est pas en cours de création";
-    else if(ame.players.length >= game.maxPlayers)
+    else if(game.players.length >= game.maxPlayers)
       status.message = "Le nombre de joueurs max est atteint";
   }
   socket.emit("toPlayer",status);
@@ -77,9 +78,17 @@ socket.on('launchGame', function (message) {
   }
 });
 
+
+
+
 /*
   Launch core
  */
 
 var game = new Game(4);
-game.launch();
+
+
+/**
+ Core
+ **/
+
