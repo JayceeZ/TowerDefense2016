@@ -1,30 +1,23 @@
 /**
- * @author Jean-Christophe Isoard
+ * Jean-Christophe Isoard
  */
 
-appTable.controller('MapCtrl', function($scope, socket) {
-  // Template model
-  $scope.markers = [];
+appTable.controller('HomeCtrl', function($scope, socket) {
+  $scope.hello = "hello";
 
-  socket.emit('addTable');
+  $scope.slots = [];
 
-  socket.on('marker', function(message) {
-    if(message.x <= 1 && message.y <= 1) {
-      var marker = _.find($scope.markers, {id: message.id});
-      if(!marker) {
-        marker = new Marker(message.id);
-        $scope.markers.push(marker);
-      }
-      var map = angular.element('#map');
-      var x = message.x * map[0].clientWidth;
-      var y = message.y * map[0].clientHeight;
-      marker.setX(x);
-      marker.setY(y);
-    }
-  });
+  $scope.slots.push(new Slot(0));
+  $scope.slots.push(new Slot(1));
+  $scope.slots.push(new Slot(2));
+  $scope.slots.push(new Slot(3));
+
+  $scope.validate = function() {
+    // Validate players and go to map
+  }
 });
 
-appTable.directive("marker", function(){
+appTable.directive("slot", function(){
   return {
     restrict: "A",
     link: function(scope, element) {
