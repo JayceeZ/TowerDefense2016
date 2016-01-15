@@ -2,11 +2,12 @@
 <html ng-app="appTable">
   <head>
     <title>Table</title>
+    <link rel="stylesheet" type="text/css" href="css/app-global.css">
   </head>
   <script src="https://cdn.socket.io/socket.io-1.4.1.min.js"></script>
   <body>
     <div ng-controller="MapCtrl">
-      {{ test }}
+      <canvas class="fill-width fill-height" drawing></canvas>
     </div>
     <script src="node_modules/angular/angular.min.js"></script>
     <script src="src/controllers/map.js"></script>
