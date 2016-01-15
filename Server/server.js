@@ -39,7 +39,11 @@ app.listen(port);
  * Sockets API
  */
 var ioServer = socketio(8081);
+var PLAYER_ID = 0;
 
+/**
+ * Add
+ */
 
 ioServer.on('connection', function(socket) {
   socket.on('log', function(content) {
@@ -48,31 +52,19 @@ ioServer.on('connection', function(socket) {
     idevSocket.emit('idevLog', content);
   });
 
-  socket.on('table', function(message) {
-    console.log('Table sending message to Players and Core');
-    socket.to('players').emit('table', message);
-    socket.to('core').emit('table', message);
-  });
-
-  socket.on('toTable', function(message) {
-    console.log("toTable : "+message);
-    socket.to('table').emit("toTable",message);
-  });
-
   socket.on('addTable', function() {
     console.log('Table authentified');
     socket.join('table');
   });
 
-  socket.on('addHandDevice', function() {
-    console.log('Hand Device authentified');
-    socket.emit('addedHandDevice', {message: 'Device added'});
-    socket.join('players');
-  });
-
   socket.on('addCore', function() {
     console.log('Core authentified');
     socket.join('core');
+  });
+
+  socket.on('addStats', function() {
+    console.log('Stats authentified');
+    socket.join('stats');
   });
 
   socket.on('addIdev', function() {
@@ -88,6 +80,7 @@ ioServer.on('connection', function(socket) {
       var player = {socket: socket, id: players.length, name: message.pseudo};
       players.push(player);
       socket.to('core').emit("addPlayer", {"pseudo": player.name, "id": player.id});
+      socket.to('table').emit("pseudo", {"pseudo" : player.name});
     }
   });
 
@@ -100,21 +93,22 @@ ioServer.on('connection', function(socket) {
     console.log("PERTE DE CONNEXION");
   });
 
-  socket.on('playerStatus', function(message){
-
-  });
-
   /**
-   * Nouvelle gestion serveur
+   * Updates from core
    */
-
 
   /*
-    marker --> idplayer, x, y, angle
+    marker --> idplayer, x, y, angle, playerId
    */
-  socket.on('marker', function(marker){
-    socket.to("table").emit("marker",marker);
+  socket.on('updateMarker', function(marker){
+    socket.to("table").emit("updateMarker",marker);
   });
+
+
+  socket.on('removeMarker', function(markerId){
+    socket.to("table").emit("removeMarker",markerId);
+  });
+
 
 });
 
