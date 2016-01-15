@@ -14,8 +14,10 @@ var mapCtrl = appTable.controller("MapCtrl", function($scope) {
 
   socket.on('marker', function(message) {
     var marker = _.find($scope.markers, {id: message.id});
-    if(!marker)
-      $scope.markers.push(new Marker(message.id));
+    if(!marker) {
+      marker = new Marker(message.id);
+      $scope.markers.push(marker);
+    }
     marker.setX(message.x);
     marker.setY(message.y);
   });
