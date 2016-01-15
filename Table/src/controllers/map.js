@@ -8,7 +8,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
 
   socket.emit('addTable');
 
-  socket.on('marker', function(message) {
+  socket.on('updateMarker', function(message) {
     if(message.x <= 1 && message.y <= 1) {
       var marker = _.find($scope.markers, {id: message.id});
       if(!marker) {
@@ -21,6 +21,10 @@ appTable.controller('MapCtrl', function($scope, socket) {
       marker.setX(x);
       marker.setY(y);
     }
+  });
+
+  socket.on('removeMarker', function(message) {
+    _.remove($scope.markers, {id: message.id});
   });
 });
 
