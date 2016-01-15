@@ -27,10 +27,17 @@ var handleTUIO = function(msg) {
   }
 };
 
+var identifiedTUIO = [];
+
 var tuioObjectDetected = function(tag,x,y,angle){
   console.log("TUIO Object : tag = "+tag+" , x = "+x+" , y = "+y+" , angle = "+angle);
-  socket.emit("marker",{"id" : 0, "x" : x, "y" : y, "angle" : angle});
+
+
+
+  socket.emit("marker",{"id" : tag, "x" : (x-1), "y" : y, "angle" : angle});
 }
+
+
 
 /************************
  * Server communication *
@@ -46,14 +53,8 @@ socket.on('toTable', function(message) {
   }
 });
 
-socket.on('playerConnect', function (message) {
-  console.log(message);
-  playerConnect(message);
-});
-
-
-var playerConnect = function(message){
-  status = {"playerid" : message.id, "status" : true, "message" : "Ok"}
+socket.on('addPlayer', function (message) {
+  status = {"id" : message.id, "status" : true, "message" : "Ok"}
   if(game.creating && game.players.length < game.maxPlayers){
     player = new User(message.id,message.pseudo);
     game.addPlayer(player);
@@ -66,8 +67,7 @@ var playerConnect = function(message){
       status.message = "Le nombre de joueurs max est atteint";
   }
   socket.emit("toPlayer",status);
-}
-
+});
 
 socket.on('launchGame', function (message) {
   if(game.creating) {
