@@ -15,26 +15,64 @@ oscServer.on("message", function (msg) {
   handleTUIO(msg);
 });
 
+var markersTUIO = [];
+
 var handleTUIO = function(msg) {
+  for(i = 0; i < markersTUIO.length; i++)
+    markersTUIO[i].status = "unknown";
   for(i = 0; i < msg.length; i++){
     if(msg[i].length >= 7 && msg[i][0] == "/tuio/2Dobj"){
       tag = msg[i][3];
       x = msg[i][4];
       y = msg[i][5];
       angle = msg[i][6];
-      tuioObjectDetected(tag,x,y,angle);
+      tuioObjectDetected({"id":tag,"x":x,"y":y,"angle":angle,"playerId":null});
+    }
+  }
+  for(i = 0; i < markersTUIO.length; i++){
+    if(!game.creating && markersTUIO[i].marker.playerId === null)
+      continue;
+    if(markersTUIO[i].status == "unknown"){
+      socket.emit("removedMarker", markersTUIO[i].marker);
+      markersTUIO.splice(1,i);
+      i--;
+    }else if(markersTUIO[i].status == "update"){
+      socket.emit("updateMarker", markersTUIO[i].marker);
     }
   }
 };
 
-var identifiedTUIO = [];
-
-var tuioObjectDetected = function(tag,x,y,angle){
-  console.log("TUIO Object : tag = "+tag+" , x = "+x+" , y = "+y+" , angle = "+angle);
 
 
+var tuioObjectDetected = function(marker){
+  console.log("TUIO Object : tag = "+marker.id+" , x = "+marker.x+" , y = "+marker.y+" , angle = "+marker.angle);
+  index = -1;
+  for(i = 0; i < markersTUIO.length; i++)
+    if(markersTUIO[i].marker.id == marker.id)
+      index = i;
+  if(index == -1){
+    markersTUIO.push({"marker": marker, "status": "update"});
+    for(i = 0; i < game.players.length; i++)
+      if(game.players[i].marker.id == marker.id)
+        marker.playerId = game.players[i].id;
+  }else{
+    if(markersTUIO[index].marker.x != marker.x || markersTUIO[index].marker.y != marker.y || markersTUIO[index].marker.angle != marker.angle){
+      marker.playerId = markersTUIO[index].marker.playerId;
+      markersTUIO[index].marker = marker;
+      markersTUIO[index].status = "update";
+    }else
+      markersTUIO[index].status = "noChange";
+  }
 
-  socket.emit("marker",{"id" : tag, "x" : (x-1), "y" : y, "angle" : angle});
+}
+
+var nonAssociatedTUIO = function(marker){
+  socket.emit("marker",marker);
+}
+
+var associatedTUIO = function(player,marker){
+  player.updateMarker(marker);
+  if(player.markerStatus == "updated");
 }
 
 

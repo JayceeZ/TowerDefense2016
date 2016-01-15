@@ -8,7 +8,8 @@ module.exports = function(id,pseudo){
     this.pseudo = pseudo;
     this.score;
     this.ready;
-    this.tag;
+    this.marker = {"id" : 0, "x": -1, "y": -1, "angle": -1};
+    this.markerStatus = "unknown";
 
     this.setPseudo = function(p){
         this.pseudo = p;
@@ -18,11 +19,11 @@ module.exports = function(id,pseudo){
         this.score = s;
     }
 
-    this.setTag = function(tag){
-        this.tag = tag;
-    }
-
     this.setReady = function(r){
         this.ready = r;
+    }
+
+    this.updateMarker = function(marker){
+
     }
 };
