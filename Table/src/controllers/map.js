@@ -2,33 +2,7 @@
  * @author Jean-Christophe Isoard
  */
 
-var appTable = angular.module('appTable',[]);
-
-appTable.factory('socket', function ($rootScope) {
-  var socket = io.connect("http://192.168.1.21:8081");
-  return {
-    on: function (eventName, callback) {
-      socket.on(eventName, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          callback.apply(socket, args);
-        });
-      });
-    },
-    emit: function (eventName, data, callback) {
-      socket.emit(eventName, data, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        });
-      })
-    }
-  };
-});
-
-var mapCtrl = appTable.controller("MapCtrl", function($scope, $element, socket) {
+appTable.controller('MapCtrl', function($scope, socket) {
   // Template model
   $scope.markers = [];
 
@@ -41,15 +15,16 @@ var mapCtrl = appTable.controller("MapCtrl", function($scope, $element, socket) 
         marker = new Marker(message.id);
         $scope.markers.push(marker);
       }
-      var x = message.x * $element[0].clientWidth;
-      var y = message.y * $element[0].clientHeight;
+      var map = angular.element('#map');
+      var x = message.x * map[0].clientWidth;
+      var y = message.y * map[0].clientHeight;
       marker.setX(x);
       marker.setY(y);
     }
   });
 });
 
-mapCtrl.directive("marker", function(){
+appTable.directive("marker", function(){
   return {
     restrict: "A",
     link: function(scope, element) {

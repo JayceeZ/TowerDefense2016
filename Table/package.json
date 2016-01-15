@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.4.8",
+    "angular-route": "^1.4.8",
+    "jquery": "^2.2.0",
     "lodash": "^4.0.0",
     "node-osc": "^1.1.0",
     "osc": "^2.0.2",
