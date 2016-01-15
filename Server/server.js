@@ -105,8 +105,8 @@ ioServer.on('connection', function(socket) {
   });
 
 
-  socket.on('removedMarker', function(markerId){
-    socket.to("table").emit("removedMarker",markerId);
+  socket.on('removeMarker', function(markerId){
+    socket.to("table").emit("removeMarker",markerId);
   });
 
 
