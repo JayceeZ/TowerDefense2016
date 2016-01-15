@@ -28,22 +28,24 @@ appTable.factory('socket', function ($rootScope) {
   };
 });
 
-var mapCtrl = appTable.controller("MapCtrl", function($scope, socket) {
+var mapCtrl = appTable.controller("MapCtrl", function($scope, $element, socket) {
   // Template model
   $scope.markers = [];
 
   socket.emit('addTable');
 
   socket.on('marker', function(message) {
-    var marker = _.find($scope.markers, {id: message.id});
-    if(!marker) {
-      marker = new Marker(message.id);
-      $scope.markers.push(marker);
+    if(message.x <= 1 && message.y <= 1) {
+      var marker = _.find($scope.markers, {id: message.id});
+      if(!marker) {
+        marker = new Marker(message.id);
+        $scope.markers.push(marker);
+      }
+      var x = message.x * $element[0].clientWidth;
+      var y = message.y * $element[0].clientHeight;
+      marker.setX(x);
+      marker.setY(y);
     }
-    var x = message.x*1920;
-    var y = message.y*1080;
-    marker.setX(x);
-    marker.setY(y);
   });
 });
 
@@ -52,12 +54,10 @@ mapCtrl.directive("marker", function(){
     restrict: "A",
     link: function(scope, element) {
       scope.$watch("m.x", function(newValue, oldValue) {
-        //This gets called when data changes.
         setLeft(newValue);
       });
 
       scope.$watch("m.y", function(newValue, oldValue) {
-        //This gets called when data changes.
         setTop(newValue);
       });
 
