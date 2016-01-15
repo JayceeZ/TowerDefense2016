@@ -80,15 +80,20 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('addPlayer', function(message) {
-    var player = {socket: socket, id: players.length, name: message.pseudo};
-    console.log("Player connected : "+message.pseudo);
-    players.push(player);
-    socket.to('core').emit("addPlayer", {"pseudo" : player.name, "id" : player.id});
+    already = false;
+    for(i = 0; i < players.length; i ++)
+      if(players[i].pseudo == message.pseudo)
+        already = true;
+    if(!already) {
+      var player = {socket: socket, id: players.length, name: message.pseudo};
+      players.push(player);
+      socket.to('core').emit("addPlayer", {"pseudo": player.name, "id": player.id});
+    }
   });
 
-  socket.on('toPlayer', function(message){
-    playerSocket = getPlayerSocket(message.playerid);
-    playerSocket.emit("salut",message);
+  socket.on('connectionStatus', function(message){
+    playerSocket = getPlayerSocket(message.id);
+    playerSocket.emit("connectionStatus",message);
   });
 
   socket.on('disconnect', function() {
@@ -116,7 +121,7 @@ ioServer.on('connection', function(socket) {
 var getPlayerSocket = function(id){
   for(i = 0; i < players.length; i++){
     console.log("test playerid : "+players[i].id+" , id = "+id);
-    if(players[i].id === id)
+    if(players[i].id == id)
       return players[i].socket;
   }
   return null;

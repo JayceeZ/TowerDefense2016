@@ -66,7 +66,7 @@ socket.on('addPlayer', function (message) {
     else if(game.players.length >= game.maxPlayers)
       status.message = "Le nombre de joueurs max est atteint";
   }
-  socket.emit("toPlayer",status);
+  socket.emit("connectionStatus",status);
 });
 
 socket.on('launchGame', function (message) {
