@@ -66,14 +66,15 @@ mapCtrl.directive("marker", function(){
       element[0].width = parseInt(element[0].clientWidth);
       element[0].height = parseInt(element[0].clientHeight);
 
-      draw(parseInt(element[0].clientWidth));
+      var size = parseInt(element[0].clientWidth);
+      draw(size);
 
       function setLeft(left) {
-        element[0].style.left = left+"px";
+        element[0].style.left = (left-size/2)+"px";
       }
 
       function setTop(top) {
-        element[0].style.top = top+"px";
+        element[0].style.top = (top-size/2)+"px";
       }
 
       function draw(size){
