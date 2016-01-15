@@ -55,7 +55,7 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('toTable', function(message) {
-    socket.to('table').emit('idevMessage', message);
+    socket.to('table').emit(message);
   });
 
   socket.on('addTable', function() {
