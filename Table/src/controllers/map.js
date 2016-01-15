@@ -12,12 +12,10 @@ var mapCtrl = appTable.controller("MapCtrl", function($scope) {
 
   socket.emit('addTable');
 
-  socket.on('addMarker', function(message) {
-    $scope.markers.push(new Marker(message.id));
-  });
-
-  socket.on('updateMarker', function(message) {
+  socket.on('marker', function(message) {
     var marker = _.find($scope.markers, {id: message.id});
+    if(!marker)
+      $scope.markers.push(new Marker(message.id));
     marker.setX(message.x);
     marker.setY(message.y);
   });
