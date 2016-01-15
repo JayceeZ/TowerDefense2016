@@ -83,7 +83,7 @@ ioServer.on('connection', function(socket) {
     var player = {socket: socket, id: players.length, name: message.pseudo};
     console.log("Player connected : "+message.pseudo);
     players.push(player);
-    socket.to('table').emit("toTable", {"protocol" : "playerConnect", "pseudo" : player.name, "id" : player.id});
+    socket.to('core').emit("addPlayer", {"pseudo" : player.name, "id" : player.id});
   });
 
   socket.on('toPlayer', function(message){
@@ -97,6 +97,18 @@ ioServer.on('connection', function(socket) {
 
   socket.on('playerStatus', function(message){
 
+  });
+
+  /**
+   * Nouvelle gestion serveur
+   */
+
+
+  /*
+    marker --> idplayer, x, y, angle
+   */
+  socket.on('marker', function(marker){
+    socket.to("table").emit("marker",marker);
   });
 
 });
