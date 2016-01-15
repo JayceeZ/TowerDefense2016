@@ -4,78 +4,60 @@
 
 var appTable = angular.module('appTable',[]);
 
-var mapCtrl = appTable.controller("MapCtrl", ['$scope', function($scope) {
+var mapCtrl = appTable.controller("MapCtrl", function($scope) {
+  // Template model
+  $scope.markers = [];
 
+  var socket = io.connect("http://192.168.1.21:8081");
 
+  socket.emit('addTable');
 
-  $scope.test = "test";
-}]);
+  socket.on('addMarker', function(message) {
+    $scope.markers.push(new Marker(message.id));
+  });
 
-mapCtrl.directive("drawing", function(){
+  socket.on('updateMarker', function(message) {
+    var marker = _.find($scope.markers, {id: message.id});
+    marker.setX(message.x);
+    marker.setY(message.y);
+  });
+});
+
+mapCtrl.directive("marker", function(){
   return {
     restrict: "A",
-    link: function(scope, element){
-      var ctx = element[0].getContext('2d');
-
-      // variable that decides if something should be drawn on mousemove
-      var drawing = false;
-
-      // the last coordinates before the current move
-      var lastX;
-      var lastY;
-
-      element.bind('mousedown', function(event){
-        if(event.offsetX!==undefined){
-          lastX = event.offsetX;
-          lastY = event.offsetY;
-        } else { // Firefox compatibility
-          lastX = event.layerX - event.currentTarget.offsetLeft;
-          lastY = event.layerY - event.currentTarget.offsetTop;
-        }
-
-        // begins new line
-        ctx.beginPath();
-
-        drawing = true;
-      });
-      element.bind('mousemove', function(event){
-        if(drawing){
-          // get current mouse position
-          if(event.offsetX!==undefined){
-            currentX = event.offsetX;
-            currentY = event.offsetY;
-          } else {
-            currentX = event.layerX - event.currentTarget.offsetLeft;
-            currentY = event.layerY - event.currentTarget.offsetTop;
-          }
-
-          draw(lastX, lastY, currentX, currentY);
-
-          // set current coordinates to last one
-          lastX = currentX;
-          lastY = currentY;
-        }
-
-      });
-      element.bind('mouseup', function(event){
-        // stop drawing
-        drawing = false;
+    link: function(scope, element) {
+      scope.$watch("m.x", function(newValue, oldValue) {
+        //This gets called when data changes.
+        setLeft(newValue);
       });
 
-      // canvas reset
-      function reset(){
-        element[0].width = element[0].width;
+      scope.$watch("m.y", function(newValue, oldValue) {
+        //This gets called when data changes.
+        setTop(newValue);
+      });
+
+      var context = element[0].getContext('2d');
+
+      element[0].width = parseInt(element[0].clientWidth);
+      element[0].height = parseInt(element[0].clientHeight);
+
+      draw(parseInt(element[0].clientWidth));
+
+      function setLeft(left) {
+        element[0].style.left = left+"px";
       }
 
-      function draw(lX, lY, cX, cY){
-        // line from
-        ctx.moveTo(lX,lY);
-        // to
-        ctx.lineTo(cX,cY);
-        // color
-        ctx.strokeStyle = "#4bf";
-        // draw it
-        ctx.stroke();
+      function setTop(top) {
+        element[0].style.top = top+"px";
+      }
+
+      function draw(size){
+        context.beginPath();
+        context.lineWidth = 5;
+        context.arc(size/2, size/2, size/2 - context.lineWidth, 0, 2 * Math.PI, false);
+        context.strokeStyle = '#003300';
+        context.stroke();
       }
     }
   };

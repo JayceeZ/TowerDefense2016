@@ -2,19 +2,21 @@
  * Represents a marker on the table for placement
  */
 
-function Marker() {
-  this.position = {x: 0, y: 0}; // Coordinates on the table
+var Marker = function Marker(id) {
+  this.id = id;
+  this.x = 0;
+  this.y = 0;
   this.orientation = 0; // Angle of rotation from original
 
   this.setOrientation = function(orientation) {
     this.orientation = orientation;
-  }
+  };
 
   this.setX = function(x) {
-    this.position.x = x;
-  }
+    this.x = x;
+  };
 
   this.setY = function(y) {
-    this.position.y = y;
-  }
-}
+    this.y = y;
+  };
+};
