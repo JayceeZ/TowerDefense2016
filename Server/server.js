@@ -17,7 +17,7 @@ app.get('/', function(req, res, next) {
 
 var port = 8080;
 
-var players;
+var players = [];
 var tableSocket;
 var idevSocket;
 
@@ -55,12 +55,13 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('toTable', function(message) {
-    socket.to('table').emit(message);
+    console.log("toTable : "+message);
+    socket.to('table').emit("toTable",message);
   });
 
   socket.on('addTable', function() {
     console.log('Table authentified');
-    tableSocket = socket;
+    socket.join('table');
   });
 
   socket.on('addHandDevice', function() {
@@ -78,15 +79,33 @@ ioServer.on('connection', function(socket) {
     idevSocket = socket;
   });
 
-  socket.on('addPlayer', function(playerName) {
-    var player = {socket: socket, id: players.length, name: playerName};
-
+  socket.on('addPlayer', function(message) {
+    var player = {socket: socket, id: players.length, name: message.pseudo};
+    console.log("Player connected : "+message.pseudo);
     players.push(player);
+    socket.to('table').emit("toTable", {"protocol" : "playerConnect", "pseudo" : player.name, "id" : player.id});
+  });
 
-    socket.emit('idevLog', "Player " + player.id + " on " + players.length);
+  socket.on('toPlayer', function(message){
+    playerSocket = getPlayerSocket(message.playerid);
+    playerSocket.emit("salut",message);
   });
 
   socket.on('disconnect', function() {
     console.log("PERTE DE CONNEXION");
   });
+
+  socket.on('playerStatus', function(message){
+
+  });
+
 });
+
+var getPlayerSocket = function(id){
+  for(i = 0; i < players.length; i++){
+    console.log("test playerid : "+players[i].id+" , id = "+id);
+    if(players[i].id === id)
+      return players[i].socket;
+  }
+  return null;
+}

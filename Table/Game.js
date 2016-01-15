@@ -10,7 +10,7 @@ module.exports = function(pmax){
     this.map;
 
     this.addPlayer = function(player){
-        players.push(player);
+        this.players.push(player);
     }
 
     this.setMap = function(map){
