@@ -3,6 +3,7 @@
  */
 
 var Slot = function Slot(id) {
+  var tagColors = ["red", "blue", "green", "purple"];
   var availableColors = {
     grey: [0, 0, 0, 0.2],
     orange: [255,120,50,1],
@@ -18,14 +19,14 @@ var Slot = function Slot(id) {
   this.id = id;
   this.player = null;
   this.tag = null;
-  this.color = availableColors.grey;
+  this.color = "grey";
 
   this.boundaries = {left: 0, top: 0, right: 0, bottom: 0};
 
   this.setColor = function(color) {
     var newColor = availableColors[color];
     if(newColor) {
-      this.color = newColor;
+      this.color = color;
     }
   };
 
@@ -34,7 +35,10 @@ var Slot = function Slot(id) {
   };
 
   this.setTag = function(tag) {
-    this.tag = tag;
+    if(this.player) {
+      this.tag = tag;
+      this.setColor(tagColors[this.id]);
+    }
   };
 
   this.setBoundaries = function(left, top, right, bottom) {
@@ -47,6 +51,7 @@ var Slot = function Slot(id) {
   };
 
   this.getColorCSS = function() {
-    return "rgba("+this.color[0]+","+this.color[1]+","+this.color[2]+","+this.color[3]+")";
+    var color = availableColors[this.color];
+    return "rgba("+color[0]+","+color[1]+","+color[2]+","+color[3]+")";
   };
 };

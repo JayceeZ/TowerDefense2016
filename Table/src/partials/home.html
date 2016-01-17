@@ -1,11 +1,13 @@
-<div class="home">
+<div id="home" class="home">
   <div class="col-md-12">
     <h1 class="app-title">PolyDefense</h1>
     <h2 class="screen-title">Création d'une partie</h2>
   </div>
   <div id="slots" class="slots col-md-offset-{{ (12-slots.length)/2 }} col-md-{{ slots.length }}">
     <div class="row">
-      <div class="slot player-hand-device" ng-repeat="s in slots"></div>
+      <div class="slot player-hand-device" ng-repeat="s in slots">
+        {{ s.player }}
+      </div>
     </div>
     <div class="row">
       <div id="slot-{{ s.id }}" class="slot marker-space" style="background-color: {{ s.getColorCSS() }}" ng-repeat="s in slots" slot>
@@ -13,7 +15,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="pull-right btn btn-default" ng-click="validate()">
+      <div class="pull-right btn btn-default {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame()">
         Lancer la partie
       </div>
     </div>

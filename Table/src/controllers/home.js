@@ -6,17 +6,27 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   // Template model
   $scope.slots = [];
 
+  socket.emit('addTable');
+
   for(var n = 0; n < 4; n++) {
     $scope.slots.push(new Slot(n));
   }
 
-  $scope.validate = function() {
-    startGame();
+  $scope.createGame = function() {
+    socket.emit('players', computeAssociations());
+    socket.on('gameReady', function() {
+      startGame();
+    });
   };
 
   /**
    * Socket updates
    */
+  socket.on('player', function(message) {
+    var freeSlot = getFirstFreeSlot();
+    freeSlot.setPlayer(message.id);
+  });
+
   socket.on('updateMarker', function(message) {
     // x,y inside spot
     var home = angular.element('#home');
@@ -37,9 +47,26 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
     });
   }
 
+  function getFirstFreeSlot() {
+    return _.find($scope.slots, function(slot) {
+      return slot.player === null;
+    });
+  }
+
+  function computeAssociations() {
+    var associations = [];
+    _.forEach($scope.slots, function(slot) {
+      if(slot.player && slot.color)
+        associations.push({id: slot.player, color: slot.color});
+    });
+    return associations;
+  }
+
   function startGame() {
     $location.path( "/map" );
   }
+
+  socket.emit('performTestsHome');
 });
 
 appTable.directive("slot", function(){
