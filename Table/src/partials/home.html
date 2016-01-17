@@ -1,6 +1,17 @@
 <div class="home">
-  <div class="slots">
-    <div class="slot" ng-repeat="s in slots">{{ s.id }}</div>
+  <div class="col-md-12">
+    <h1 class="app-title">PolyDefense</h1>
+    <h2 class="screen-title">Création d'une partie</h2>
   </div>
-  <div class="launch" ng-click="validate()"></div>
+  <div class="col-md-{{ (12-slots.length)/2 }}"></div>
+  <div class="slots col-md-{{ slots.length }}">
+    <div class="row">
+      <div class="slot player-hand-device" ng-repeat="s in slots">
+      </div>
+    </div>
+    <div class="row">
+      <div class="slot marker-space" style="background-color: {{ s.getColorCSS() }}" ng-repeat="s in slots"></div>
+    </div>
+  </div>
+  <div class="col-md-{{ (12-slots.length)/2 }}"></div>
 </div>
