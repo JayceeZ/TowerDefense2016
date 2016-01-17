@@ -101,15 +101,12 @@ ioServer.on('connection', function(socket) {
     marker --> idplayer, x, y, angle, playerId
    */
   socket.on('updateMarker', function(marker){
-    socket.to("table").emit("updateMarker",marker);
+    socket.to("table").emit("updateMarker", marker);
   });
-
 
   socket.on('removeMarker', function(markerId){
-    socket.to("table").emit("removeMarker",markerId);
+    socket.to("table").emit("removeMarker", markerId);
   });
-
-
 });
 
 var getPlayerSocket = function(id){

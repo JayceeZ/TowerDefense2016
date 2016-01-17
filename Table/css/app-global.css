@@ -11,13 +11,12 @@ html, body, .ng-scope {
 }
 
 .app-title {
-    margin-bottom: 4em;
+    font-size: 5em;
     text-align: center;
 }
 
 .screen-title {
     margin-top: 10%;
-    margin-bottom: 3em;
     text-align: center;
 }
 
