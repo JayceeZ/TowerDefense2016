@@ -9,7 +9,7 @@ var Marker = function Marker(id) {
   this.orientation = 0; // Angle of rotation from original
 
   this.setOrientation = function(orientation) {
-    this.orientation = orientation;
+    this.orientation = orientation % (Math.PI*2);
   };
 
   this.setX = function(x) {
@@ -33,6 +33,10 @@ appTable.directive("marker", function(){
         setTop(newValue);
       });
 
+      scope.$watch("m.orientation", function(newValue, oldValue) {
+        draw(parseInt(element[0].clientWidth));
+      });
+
       var context = element[0].getContext('2d');
 
       element[0].width = parseInt(element[0].clientWidth);
@@ -50,9 +54,12 @@ appTable.directive("marker", function(){
       }
 
       function draw(size){
+        context.clearRect(0,0,size,size);
         context.beginPath();
         context.lineWidth = 5;
-        context.arc(size/2, size/2, size/2 - context.lineWidth, 0, 2 * Math.PI, false);
+        context.arc(size/2, size/2, size/2 - context.lineWidth, 0, scope.m.orientation, false);
+        context.lineTo(size/2, size/2);
+        context.arc(size/2, size/2, size/2 - context.lineWidth, scope.m.orientation, Math.PI*2, false);
         context.strokeStyle = '#003300';
         context.stroke();
       }

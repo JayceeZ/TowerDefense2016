@@ -20,6 +20,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
       var y = message.y * map[0].clientHeight;
       marker.setX(x);
       marker.setY(y);
+      marker.setOrientation(message.orientation);
     }
   });
 
