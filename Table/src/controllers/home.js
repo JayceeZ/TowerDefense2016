@@ -1,57 +1,81 @@
 /**
- * Jean-Christophe Isoard
+ * @author Jean-Christophe Isoard
  */
 
-appTable.controller('HomeCtrl', function($scope, socket) {
-  $scope.hello = "hello";
-
+appTable.controller('HomeCtrl', function($scope, $location, socket) {
+  // Template model
   $scope.slots = [];
 
-  $scope.slots.push(new Slot(0));
-  $scope.slots.push(new Slot(1));
-  $scope.slots.push(new Slot(2));
-  $scope.slots.push(new Slot(3));
+  socket.emit('addTable');
 
-  $scope.validate = function() {
-    // Validate players and go to map
+  for(var n = 0; n < 4; n++) {
+    $scope.slots.push(new Slot(n));
   }
+
+  $scope.createGame = function() {
+    socket.emit('players', computeAssociations());
+    socket.on('gameReady', function() {
+      startGame();
+    });
+  };
+
+  /**
+   * Socket updates
+   */
+  socket.on('player', function(message) {
+    var freeSlot = getFirstFreeSlot();
+    freeSlot.setPlayer(message.id);
+  });
+
+  socket.on('updateMarker', function(message) {
+    // x,y inside spot
+    var home = angular.element('#home');
+    var x = message.x * home[0].clientWidth;
+    var y = message.y * home[0].clientHeight;
+    var slot = getSlot(x, y);
+    if(slot) {
+      slot.setTag(message.id);
+    }
+  });
+
+  /**
+   * Controller needs
+   */
+  function getSlot(x, y) {
+    return _.find($scope.slots, function(slot) {
+      return slot.isIn(x, y);
+    });
+  }
+
+  function getFirstFreeSlot() {
+    return _.find($scope.slots, function(slot) {
+      return slot.player === null;
+    });
+  }
+
+  function computeAssociations() {
+    var associations = [];
+    _.forEach($scope.slots, function(slot) {
+      if(slot.player && slot.color)
+        associations.push({id: slot.player, color: slot.color});
+    });
+    return associations;
+  }
+
+  function startGame() {
+    $location.path( "/map" );
+  }
+
+  socket.emit('performTestsHome');
 });
 
 appTable.directive("slot", function(){
   return {
     restrict: "A",
     link: function(scope, element) {
-      scope.$watch("m.x", function(newValue, oldValue) {
-        setLeft(newValue);
-      });
-
-      scope.$watch("m.y", function(newValue, oldValue) {
-        setTop(newValue);
-      });
-
-      var context = element[0].getContext('2d');
-
-      element[0].width = parseInt(element[0].clientWidth);
-      element[0].height = parseInt(element[0].clientHeight);
-
-      var size = parseInt(element[0].clientWidth);
-      draw(size);
-
-      function setLeft(left) {
-        element[0].style.left = (left-size/2)+"px";
-      }
-
-      function setTop(top) {
-        element[0].style.top = (top-size/2)+"px";
-      }
-
-      function draw(size){
-        context.beginPath();
-        context.lineWidth = 5;
-        context.arc(size/2, size/2, size/2 - context.lineWidth, 0, 2 * Math.PI, false);
-        context.strokeStyle = '#003300';
-        context.stroke();
-      }
+      var parent = angular.element(".slot")[scope.s.id].getBoundingClientRect();
+      var boundaries = element[0].getBoundingClientRect();
+      scope.s.setBoundaries(parent.left, boundaries.top, parent.right, boundaries.bottom);
     }
   };
 });

@@ -4,11 +4,11 @@
 
 appTable.controller('MapCtrl', function($scope, socket) {
   // Template model
+  $scope.message = "Phase de placement";
+  $scope.map = new Map();
   $scope.markers = [];
 
-  socket.emit('addTable');
-
-  socket.on('marker', function(message) {
+  socket.on('updateMarker', function(message) {
     if(message.x <= 1 && message.y <= 1) {
       var marker = _.find($scope.markers, {id: message.id});
       if(!marker) {
@@ -20,45 +20,24 @@ appTable.controller('MapCtrl', function($scope, socket) {
       var y = message.y * map[0].clientHeight;
       marker.setX(x);
       marker.setY(y);
+      marker.setOrientation(message.orientation);
     }
   });
+
+  socket.on('removeMarker', function(message) {
+    _.remove($scope.markers, {id: message.id});
+  });
+
+  socket.emit('performTestsMap');
 });
 
-appTable.directive("marker", function(){
+appTable.directive("message", function(){
   return {
     restrict: "A",
     link: function(scope, element) {
-      scope.$watch("m.x", function(newValue, oldValue) {
-        setLeft(newValue);
+      scope.$watch("message", function(newValue, oldValue) {
+        element[0].content = newValue;
       });
-
-      scope.$watch("m.y", function(newValue, oldValue) {
-        setTop(newValue);
-      });
-
-      var context = element[0].getContext('2d');
-
-      element[0].width = parseInt(element[0].clientWidth);
-      element[0].height = parseInt(element[0].clientHeight);
-
-      var size = parseInt(element[0].clientWidth);
-      draw(size);
-
-      function setLeft(left) {
-        element[0].style.left = (left-size/2)+"px";
-      }
-
-      function setTop(top) {
-        element[0].style.top = (top-size/2)+"px";
-      }
-
-      function draw(size){
-        context.beginPath();
-        context.lineWidth = 5;
-        context.arc(size/2, size/2, size/2 - context.lineWidth, 0, 2 * Math.PI, false);
-        context.strokeStyle = '#003300';
-        context.stroke();
-      }
     }
   };
 });
