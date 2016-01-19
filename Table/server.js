@@ -33,7 +33,7 @@ var handleTUIO = function(msg) {
     if(!game.creating && markersTUIO[i].marker.playerId === null)
       continue;
     if(markersTUIO[i].status == "unknown"){
-      socket.emit("removedMarker", markersTUIO[i].marker);
+      socket.emit("removedMarker", markersTUIO[i].marker.id);
       markersTUIO.splice(1,i);
       i--;
     }else if(markersTUIO[i].status == "update"){
@@ -45,7 +45,6 @@ var handleTUIO = function(msg) {
 
 
 var tuioObjectDetected = function(marker){
-  console.log("TUIO Object : tag = "+marker.id+" , x = "+marker.x+" , y = "+marker.y+" , angle = "+marker.angle);
   index = -1;
   for(i = 0; i < markersTUIO.length; i++)
     if(markersTUIO[i].marker.id == marker.id)
@@ -65,16 +64,6 @@ var tuioObjectDetected = function(marker){
   }
 
 }
-
-var nonAssociatedTUIO = function(marker){
-  socket.emit("marker",marker);
-}
-
-var associatedTUIO = function(player,marker){
-  player.updateMarker(marker);
-  if(player.markerStatus == "updated");
-}
-
 
 
 /************************

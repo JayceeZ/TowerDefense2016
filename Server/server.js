@@ -98,7 +98,7 @@ ioServer.on('connection', function(socket) {
    */
 
   /*
-    marker --> idplayer, x, y, angle, playerId
+    marker --> idmarker, x, y, angle, playerId, placementok
    */
   socket.on('updateMarker', function(marker){
     socket.to("table").emit("updateMarker",marker);
