@@ -35,7 +35,7 @@ var handleTUIO = function(msg) {
       x = msg[a][4];
       y = msg[a][5];
       angle = msg[a][6];
-      tuioObjectDetected({"id":tag,"x":x,"y":y,"angle":angle,"playerId":null,"positionOk":false});
+      tuioObjectDetected({"id":tag,"x":x-1,"y":y,"angle":angle,"playerId":null,"positionOk":false});
     }
   }
   l = markersTUIO.length;
@@ -57,9 +57,6 @@ var handleTUIO = function(msg) {
       }
     }else if(markersTUIO[i].status == "update"){
       markersTUIO[i].marker.positionOk = game.checkPlacement(markersTUIO[i].marker);
-      console.log("test : "+markersTUIO.length+" "+i);
-      console.log(markersTUIO[i].status);
-      console.log(markersTUIO[i].marker.id);
       socket.emit("updateMarker", markersTUIO[i].marker);
       if(game.status == "placement"){
         socket.emit("checkPlacement",{"idplayer":markersTUIO[i].marker.playerId,"check":markersTUIO[i].marker.positionOk});
