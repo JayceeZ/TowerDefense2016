@@ -31,11 +31,13 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
 
   socket.on('updateMarker', function(message) {
     // x,y inside spot
+    console.log("marker : "+message.id+" "+message.x+" "+message.y);
     var home = angular.element('#home');
     var x = message.x * home[0].clientWidth;
     var y = message.y * home[0].clientHeight;
     var slot = getSlot(x, y);
     if(slot) {
+      console.log("slot found");
       slot.setTag(message.id);
     }
   });
