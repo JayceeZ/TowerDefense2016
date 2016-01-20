@@ -16,10 +16,15 @@ oscServer.on("message", function (msg) {
   handleTUIO(msg);
 });
 
+var lockTUIO = false;
+
 var markersTUIO = [];
 
 var handleTUIO = function(msg) {
   console.log("handle TUIO");
+  while(lockTUIO == true)
+    console.log("waiting TUIO");
+  lockTUIO = true;
   for(i = 0; i < markersTUIO.length; i++)
     markersTUIO[i].status = "unknown";
   for(a = 0; a < msg.length; a++){
@@ -39,7 +44,7 @@ var handleTUIO = function(msg) {
       l--;
       continue;
     }
-    if(markersTUIO[i].status == "unknown" && !game.creating == true){
+    if(markersTUIO[i].status == "unknown" && game.creating == false){
       socket.emit("removeMarker", markersTUIO[i].marker.id);
       markersTUIO.splice(1,i);
       i--;
@@ -56,6 +61,7 @@ var handleTUIO = function(msg) {
     }
 
   }
+  lockTUIO = false;
 };
 
 
