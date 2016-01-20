@@ -14,3 +14,4 @@ var Enemy = function Enemy(id) {
     return life === 0;
   }
 };
+

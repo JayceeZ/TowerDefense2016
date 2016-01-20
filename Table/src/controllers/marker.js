@@ -1,7 +1,5 @@
 
-
-
-appTable.controller('markersCtrl',  function($scope) {
+appTable.controller('markersCtrl',  function($scope, socket) {
   $scope.markers = [];
 
   socket.on('updateMarker', function(message) {
@@ -11,9 +9,9 @@ appTable.controller('markersCtrl',  function($scope) {
         marker = new Marker(message.id);
         $scope.markers.push(marker);
       }
-      var map = angular.element('#map');
-      var x = message.x * map[0].clientWidth;
-      var y = message.y * map[0].clientHeight;
+      var viewport = angular.element('#viewport');
+      var x = message.x * viewport[0].clientWidth;
+      var y = message.y * viewport[0].clientHeight;
       marker.setX(x);
       marker.setY(y);
       marker.setOrientation(message.orientation);
