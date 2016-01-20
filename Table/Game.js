@@ -68,9 +68,11 @@ module.exports = function(pmax,socket){
     }
 
     this.checkPlacement = function(marker){
-        player = getPlayerFromId(marker.playerId);
-        if(player.loopTurretCount < 2 && map.checkPlacement(marker.x*map.width,marker.y*map.height,towerRadius))
-            return true;
+        player = this.getPlayerFromId(marker.playerId);
+        if(player != null) {
+            if (player.loopTurretCount < 2 && map.checkPlacement(marker.x * map.width, marker.y * map.height, towerRadius))
+                return true;
+        }
         return false;
     }
 

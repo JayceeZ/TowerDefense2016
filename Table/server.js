@@ -1,7 +1,8 @@
 var osc = require('node-osc'),
     io = require('socket.io-client'),
     Game = require('./Game.js'),
-    User = require('./User.js');
+    User = require('./User.js'),
+    Map = require('./Map.js');
 
 // Socket to common server
 var socket = io.connect("http://192.168.1.21:8081");
@@ -147,11 +148,6 @@ map.setHeight(100);
 map.setWidth(200);
 game.setMap(map);
 
-tuio = [["/tuio/2Dobj","0","0","A1",5, 13,0],["/tuio/2Dobj","0","0","E1",42, 67,0]];
-tuio2 = [["/tuio/Dobj","0","0","A1",5, 13,0]];
-
-handleTUIO(tuio);
-handleTUIO(tuio2);
 
 /**
  Core

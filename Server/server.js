@@ -86,7 +86,7 @@ ioServer.on('connection', function(socket) {
   socket.on('connectionStatus', function(status){
     playerSocket = getPlayerSocket(status.id);
     playerSocket.emit("connectionStatus",{"status":status.status,"message":status.message});
-    if(message.status == true)
+    if(status.status == true)
       socket.to('table').emit("addPlayer", {"id":status.id, "pseudo" : status.pseudo});
   });
 
