@@ -11,7 +11,7 @@ var socket = io.connect("http://192.168.1.21:8081");
  * TUIO Events *
  ***************/
 
-var oscServer = new osc.Server(3333, '192.168.1.8');
+var oscServer = new osc.Server(3333, '192.168.1.7');
 oscServer.on("message", function (msg) {
   handleTUIO(msg);
 });
