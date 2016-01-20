@@ -32,10 +32,10 @@ module.exports = function(){
     this.initEnemy = function(n,socket){
         for(i = 0; i < n; i++){
             this.ID_ENEMY++;
-            start = getRandomStartPoint();
-            path = getPathFromStartPoint(start);
+            var start = getRandomStartPoint();
+            var path = getPathFromStartPoint(start);
             this.enemy.push(new Enemy(this.ID_ENEMY,start.x,start.y,path.points,path.directions));
-            socket.emit("initEnemy",{"id":this.ID_ENEMY,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
+            this.socket.emit("initEnemy",{"id":this.ID_ENEMY,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
         }
     }
 
