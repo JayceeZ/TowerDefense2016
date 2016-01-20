@@ -128,6 +128,7 @@ socket.on('addPlayer', function (message) {
 });
 
 socket.on('launchGame', function (message) {
+  var i;
   for(i = 0; i < message.length; i++)
     game.setPlayerTag(message[i].idplayer,message[i].idtag);
   socket.emit('gameReady');
@@ -135,7 +136,7 @@ socket.on('launchGame', function (message) {
 });
 
 socket.on('putTower', function(idplayer){
-  marker = null;
+  var marker = null;
   for(i = 0; i < markersTUIO.length; i++)
     if(markersTUIO[i].marker.playerId == idplayer)
       marker = markersTUIO[i].marker;
