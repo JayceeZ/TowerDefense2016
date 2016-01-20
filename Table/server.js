@@ -38,7 +38,7 @@ var handleTUIO = function(msg) {
       tuioObjectDetected({"id":tag,"x":x-1,"y":y,"angle":angle,"playerId":null,"positionOk":false});
     }
   }
-  l = markersTUIO.length;
+  var l = markersTUIO.length;
 
   for(i = 0; i < l; i++){
     if(!game.creating && markersTUIO[i].marker.playerId === null) {
@@ -70,25 +70,30 @@ var handleTUIO = function(msg) {
 
 
 var tuioObjectDetected = function(marker){
-  console.log("tuio detected : "+marker.id+" "+marker.x+" "+marker.y);
-  index = -1;
+  var index = -1;
+  var i = 0;
+  merker.playerId = getPlayerIdFromMarker(marker.id);
   for(i = 0; i < markersTUIO.length; i++)
     if(markersTUIO[i].marker.id == marker.id)
       index = i;
   if(index == -1){
     markersTUIO.push({"marker": marker, "status": "update"});
-    for(i = 0; i < game.players.length; i++)
-      if(game.players[i].markerid == marker.id)
-        marker.playerId = game.players[i].id;
   }else{
     if(markersTUIO[index].marker.x != marker.x || markersTUIO[index].marker.y != marker.y || markersTUIO[index].marker.angle != marker.angle){
-      marker.playerId = markersTUIO[index].marker.playerId;
       markersTUIO[index].marker = marker;
       markersTUIO[index].status = "update";
     }else
       markersTUIO[index].status = "noChange";
   }
 
+}
+
+var getPlayerIdFromMarker = function(id){
+  var i;
+  for(i = 0; i < game.players.length; i++)
+    if(game.players[i].markerid == id)
+      return game.players[i].id;
+  return null;
 }
 
 
