@@ -23,6 +23,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
    * Socket updates
    */
   socket.on('addPlayer', function(message) {
+    console.log("addPlayer : "+message.id+" "+message.pseudo);
     var freeSlot = getFirstFreeSlot();
     freeSlot.setPlayer(message.id);
     freeSlot.setPlayerPseudo(message.pseudo);
