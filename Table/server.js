@@ -43,9 +43,15 @@ var handleTUIO = function(msg) {
       markersTUIO.splice(1,i);
       i--;
       l--;
+      if(game.status == "placement"){
+        socket.emit("checkPlacement",{"idplayer":markersTUIO[i].marker.playerId,"check":false});
+      }
     }else if(markersTUIO[i].status == "update"){
       markersTUIO[i].marker.positionOk = game.checkPlacement(markersTUIO[i].marker);
       socket.emit("updateMarker", markersTUIO[i].marker);
+      if(game.status == "placement"){
+        socket.emit("checkPlacement",{"idplayer":markersTUIO[i].marker.playerId,"check":markersTUIO[i].marker.positionOk});
+      }
     }
 
   }
@@ -62,7 +68,7 @@ var tuioObjectDetected = function(marker){
   if(index == -1){
     markersTUIO.push({"marker": marker, "status": "update"});
     for(i = 0; i < game.players.length; i++)
-      if(game.players[i].marker.id == marker.id)
+      if(game.players[i].markerid == marker.id)
         marker.playerId = game.players[i].id;
   }else{
     if(markersTUIO[index].marker.x != marker.x || markersTUIO[index].marker.y != marker.y || markersTUIO[index].marker.angle != marker.angle){
@@ -107,12 +113,24 @@ socket.on('addPlayer', function (message) {
 });
 
 socket.on('launchGame', function (message) {
-  if(game.creating) {
-    if(game.readyToLaunch()) {
-      Console.log("Launching Game with "+game.players.length+" player(s)");
-      game.launch();
-    }
+  for(i = 0; i < message.length; i++)
+    game.setPlayerTag(message[i].idplayer,message[i].idtag);
+  game.launch();
+});
+
+socket.on('putTower', function(idplayer){
+  marker = null;
+  for(i = 0; i < markersTUIO.length; i++)
+    if(markersTUIO[i].marker.playerId == idplayer)
+      marker = markersTUIO[i].marker;
+  if(marker != null && marker.positionOk == true){
+    game.addTower(idplayer,marker.x,marker.y,marker.angle);
+    socket.emit("validateTower",{"idplayer":idplayer,"x":marker.x,"y":marker.y,"angle":marker.angle});
   }
+});
+
+socket.on('isReady', function(message){
+  game.setPlayerReady(message.idplayer,message.value);
 });
 
 
@@ -122,7 +140,7 @@ socket.on('launchGame', function (message) {
   Launch core
  */
 
-var game = new Game(4);
+var game = new Game(4,socket);
 map = new Map();
 map.setHeight(100);
 map.setWidth(200);

@@ -1,15 +1,19 @@
 /**
  * Created by alex on 14/01/16.
  */
+var User = require('./User.js'),
+    Tower = require('./Tower.js');
 
-module.exports = function(pmax){
+module.exports = function(pmax,socket){
     this.creating = true;
     this.status = "";
     this.maxPlayers = pmax;
     this.players = [];
     this.vague = 0;
+    this.ennemyVague = [5,10,15];
     this.map;
     this.radiusTower = 5;
+    this.socket = socket;
 
     this.addPlayer = function(player){
         this.players.push(player);
@@ -19,9 +23,14 @@ module.exports = function(pmax){
         this.map = map;
     }
 
+    this.setPlayerTag = function(idplayer,idtag){
+        getPlayerFromId(idplayer).setMarkerid(idtag);
+    }
+
     this.launch = function(){
         this.creating = false;
         this.status = "placement";
+        loopPlacement();
     }
 
     this.readyToLaunch = function(){
@@ -30,6 +39,28 @@ module.exports = function(pmax){
                 return false;
         }
         return true;
+    }
+
+    this.loopPlacement = function(){
+        loop = true;
+        while(loop == true){
+            loop = false;
+            for(i = 0; i < players.length; i++)
+                if(players[i].ready == false)
+                    loop = true;
+        }
+        launchNextVague();
+    }
+
+    this.launchNextVague = function(){
+        this.vague++;
+        map.initEnemy(ennemyVague[vague-1],socket);
+        socket.emit("launchVague",this.vague);
+        loopVague();
+    }
+
+    this.initEnemy = function(){
+
     }
 
     this.loopVague = function(){
@@ -48,5 +79,18 @@ module.exports = function(pmax){
             if(this.players[i].id == id)
                 return this.players[i];
     }
+
+    this.addTower = function(idplayer,x,y,angle){
+        player = getPlayerFromId(idplayer);
+        tower = new Tower(x,y,angle,player);
+        player.addTower(tower);
+        map.addTower(tower);
+    }
+
+    this.setPlayerReady = function(idplayer,ready){
+        getPlayerFromId(idplayer).setReady(ready);
+    }
+
+    this.launchVague
 
 }
