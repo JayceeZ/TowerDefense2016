@@ -72,7 +72,7 @@ var handleTUIO = function(msg) {
 var tuioObjectDetected = function(marker){
   var index = -1;
   var i = 0;
-  merker.playerId = getPlayerIdFromMarker(marker.id);
+  marker.playerId = getPlayerIdFromMarker(marker.id);
   for(i = 0; i < markersTUIO.length; i++)
     if(markersTUIO[i].marker.id == marker.id)
       index = i;
