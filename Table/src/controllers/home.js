@@ -61,7 +61,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   function computeAssociations() {
     var associations = [];
     _.forEach($scope.slots, function(slot) {
-      if(slot.player && slot.color)
+      if(slot.player != null && slot.tag != null)
         associations.push({idplayer: slot.player, idtag: slot.tag});
     });
     return associations;
