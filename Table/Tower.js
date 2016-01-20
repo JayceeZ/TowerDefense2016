@@ -4,4 +4,6 @@
 
 module.exports = function(){
 
+    this.radius
+
 }

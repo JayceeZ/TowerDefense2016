@@ -10,6 +10,7 @@ module.exports = function(id,pseudo){
     this.ready;
     this.marker = {"id" : 0, "x": -1, "y": -1, "angle": -1};
     this.markerStatus = "unknown";
+    this.loopTurretCount = 0;
 
     this.setPseudo = function(p){
         this.pseudo = p;

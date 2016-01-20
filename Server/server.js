@@ -80,13 +80,14 @@ ioServer.on('connection', function(socket) {
       var player = {socket: socket, id: players.length, name: message.pseudo};
       players.push(player);
       socket.to('core').emit("addPlayer", {"pseudo": player.name, "id": player.id});
-      socket.to('table').emit("pseudo", {"pseudo" : player.name});
     }
   });
 
   socket.on('connectionStatus', function(message){
     playerSocket = getPlayerSocket(message.id);
     playerSocket.emit("connectionStatus",message);
+    if(message.status == true)
+      socket.to('table').emit("pseudo", {"pseudo" : player.name});
   });
 
   socket.on('disconnect', function() {
@@ -101,10 +102,12 @@ ioServer.on('connection', function(socket) {
     marker --> idmarker, x, y, angle, playerId, placementok
    */
   socket.on('updateMarker', function(marker){
+    console.log("Update marker");
     socket.to("table").emit("updateMarker", marker);
   });
 
   socket.on('removeMarker', function(markerId){
+    console.log("Remove marker");
     socket.to("table").emit("removeMarker", markerId);
   });
 });
