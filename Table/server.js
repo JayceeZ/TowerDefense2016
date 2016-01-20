@@ -39,7 +39,7 @@ var handleTUIO = function(msg) {
       l--;
       continue;
     }
-    if(markersTUIO[i].status == "unknown"){
+    if(markersTUIO[i].status == "unknown" && !game.creating == true){
       socket.emit("removeMarker", markersTUIO[i].marker.id);
       markersTUIO.splice(1,i);
       i--;
