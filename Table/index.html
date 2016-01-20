@@ -13,7 +13,10 @@
   <script src="node_modules/angular-route/angular-route.min.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <body>
-    <div ng-view></div>
+    <div id="viewport" ng-controller="markersCtrl">
+      <div ng-view></div>
+      <canvas class="marker" ng-repeat="m in markers" marker>{{ m.version }}</canvas>
+    </div>
     <script src="src/app.js"></script>
     <script src="src/services.js"></script>
     <script src="src/model/Slot.js"></script>

@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="pull-right btn btn-default {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame()">
+      <div class="pull-right btn {{ slots[0].tag ? 'btn-success' : 'btn-danger' }} {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame()">
         Lancer la partie
       </div>
     </div>

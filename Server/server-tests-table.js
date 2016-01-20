@@ -14,7 +14,7 @@ var ioServer = socketio(8081);
  */
 
 ioServer.on('connection', function (socket) {
-  socket.on('addTable', function () {
+  socket.on('addTable', function (message) {
     console.log('Table authentified');
     socket.join('table');
   });

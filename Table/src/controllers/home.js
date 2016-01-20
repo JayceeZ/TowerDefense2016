@@ -8,11 +8,12 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
 
   socket.emit('addTable');
 
-  for(var n = 0; n < 4; n++) {
+  for (var n = 0; n < 4; n++) {
     $scope.slots.push(new Slot(n));
   }
 
   $scope.createGame = function() {
+    // TODO: verifier que chaque joueur a un tag
     socket.emit('players', computeAssociations());
     socket.on('gameReady', function() {
       startGame();
@@ -33,7 +34,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
     var x = message.x * home[0].clientWidth;
     var y = message.y * home[0].clientHeight;
     var slot = getSlot(x, y);
-    if(slot) {
+    if (slot) {
       slot.setTag(message.id);
     }
   });
@@ -56,20 +57,20 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   function computeAssociations() {
     var associations = [];
     _.forEach($scope.slots, function(slot) {
-      if(slot.player && slot.color)
+      if (slot.player && slot.color)
         associations.push({id: slot.player, color: slot.color});
     });
     return associations;
   }
 
   function startGame() {
-    $location.path( "/map" );
+    $location.path("/map");
   }
 
   socket.emit('performTestsHome');
 });
 
-appTable.directive("slot", function(){
+appTable.directive("slot", function() {
   return {
     restrict: "A",
     link: function(scope, element) {
