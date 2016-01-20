@@ -97,7 +97,7 @@ socket.on('toTable', function(message) {
 });
 
 socket.on('addPlayer', function (message) {
-  status = {"id" : message.id, "status" : true, "message" : "Ok"};
+  status = {"id" : message.id, "status" : true, "message" : "Ok","pseudo":message.pseudo};
   if(game.creating && game.players.length < game.maxPlayers){
     player = new User(message.id,message.pseudo);
     game.addPlayer(player);
@@ -115,6 +115,7 @@ socket.on('addPlayer', function (message) {
 socket.on('launchGame', function (message) {
   for(i = 0; i < message.length; i++)
     game.setPlayerTag(message[i].idplayer,message[i].idtag);
+  socket.emit('gameReady');
   game.launch();
 });
 

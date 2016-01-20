@@ -13,7 +13,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   }
 
   $scope.createGame = function() {
-    socket.emit('players', computeAssociations());
+    socket.emit('launchGame', computeAssociations());
     socket.on('gameReady', function() {
       startGame();
     });
@@ -22,9 +22,10 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   /**
    * Socket updates
    */
-  socket.on('player', function(message) {
+  socket.on('addPlayer', function(message) {
     var freeSlot = getFirstFreeSlot();
     freeSlot.setPlayer(message.id);
+    freeSlot.setPlayerPseudo(message.pseudo);
   });
 
   socket.on('updateMarker', function(message) {
