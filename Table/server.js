@@ -4,7 +4,7 @@ var osc = require('node-osc'),
     User = require('./User.js');
 
 // Socket to common server
-var socket = io.connect("http://192.168.0.13:8081");
+var socket = io.connect("http://192.168.1.21:8081");
 
 /***************
  * TUIO Events *
