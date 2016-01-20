@@ -26,7 +26,7 @@ module.exports = function(){
     }
 
     this.addTower = function(tower){
-        towers.push(tower);
+        this.towers.push(tower);
     }
 
     this.initEnemy = function(n,socket){
@@ -34,8 +34,8 @@ module.exports = function(){
             this.ID_ENEMY++;
             start = getRandomStartPoint();
             path = getPathFromStartPoint(start);
-            enemy.push(new Enemy(ID_ENEMY,start.x,start.y,path.points,path.directions));
-            socket.emit("initEnemy",{"id":ID_ENEMY,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
+            this.enemy.push(new Enemy(this.ID_ENEMY,start.x,start.y,path.points,path.directions));
+            socket.emit("initEnemy",{"id":this.ID_ENEMY,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
         }
     }
 

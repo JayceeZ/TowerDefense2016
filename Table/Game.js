@@ -24,13 +24,13 @@ module.exports = function(pmax,socket){
     }
 
     this.setPlayerTag = function(idplayer,idtag){
-        getPlayerFromId(idplayer).setMarkerid(idtag);
+        this.getPlayerFromId(idplayer).setMarkerid(idtag);
     }
 
     this.launch = function(){
         this.creating = false;
         this.status = "placement";
-        loopPlacement();
+        this.loopPlacement();
     }
 
     this.readyToLaunch = function(){
@@ -49,14 +49,14 @@ module.exports = function(pmax,socket){
                 if(players[i].ready == false)
                     loop = true;
         }
-        launchNextVague();
+        this.launchNextVague();
     }
 
     this.launchNextVague = function(){
         this.vague++;
         map.initEnemy(ennemyVague[vague-1],socket);
         socket.emit("launchVague",this.vague);
-        loopVague();
+        this.loopVague();
     }
 
     this.initEnemy = function(){
@@ -90,9 +90,8 @@ module.exports = function(pmax,socket){
     }
 
     this.setPlayerReady = function(idplayer,ready){
-        getPlayerFromId(idplayer).setReady(ready);
+        this.getPlayerFromId(idplayer).setReady(ready);
     }
 
-    this.launchVague
 
 }
