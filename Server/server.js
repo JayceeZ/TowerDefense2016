@@ -113,6 +113,8 @@ ioServer.on('connection', function(socket) {
 
   socket.on('gameReady', function(){
     socket.to("table").emit("gameReady");
+    for(i = 0; i < players.length;i++)
+      players[i].socket.emit("gameReady");
   });
 
   socket.on('checkPlacement', function(message){

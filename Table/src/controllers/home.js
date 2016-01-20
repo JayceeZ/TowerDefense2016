@@ -13,8 +13,10 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   }
 
   $scope.createGame = function() {
+    console.log("Starting game");
     socket.emit('launchGame', computeAssociations());
     socket.on('gameReady', function() {
+      console.log("launching game");
       startGame();
     });
   };
@@ -31,7 +33,6 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
 
   socket.on('updateMarker', function(message) {
     // x,y inside spot
-    console.log("marker : "+message.id+" "+message.x+" "+message.y);
     var home = angular.element('#home');
     var x = message.x * home[0].clientWidth;
     var y = message.y * home[0].clientHeight;
