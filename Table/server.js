@@ -2,98 +2,47 @@ var osc = require('node-osc'),
     io = require('socket.io-client'),
     Game = require('./Game.js'),
     User = require('./User.js'),
-    Map = require('./Map.js');
+    Map = require('./Map.js'),
+    Marker = require('./Marker.js'),
+    TUIOHandler = require('./TUIOHandler.js');
 
 // Socket to common server
-var socket = io.connect("http://192.168.1.21:8081");
+var socket = io.connect("http://localhost:8081");
 
 /***************
  * TUIO Events *
  ***************/
+
 
 var oscServer = new osc.Server(3333, '192.168.1.7');
 oscServer.on("message", function (msg) {
   handleTUIO(msg);
 });
 
-var lockTUIO = false;
 
-var markersTUIO = [];
-
-var handleTUIO = function(msg) {
-  console.log("handle TUIO");
-  while(lockTUIO == true)
-    console.log("waiting TUIO");
-  lockTUIO = true;
-  var i;
-  for(i = 0; i < markersTUIO.length; i++)
-    markersTUIO[i].status = "unknown";
+var handleTUIO = function(msg){
+  handler.startRefresh();
   var a;
   for(a = 0; a < msg.length; a++){
     if(msg[a].length >= 7 && msg[a][0] == "/tuio/2Dobj"){
-      tag = msg[a][3];
-      x = msg[a][4];
-      y = msg[a][5];
-      angle = msg[a][6];
-      tuioObjectDetected({"id":tag,"x":x-1,"y":y,"angle":angle,"playerId":null,"positionOk":false});
+      var tag = msg[a][3];
+      var x = msg[a][4];
+      var y = msg[a][5];
+      var angle = msg[a][6];
+      var marker = new Marker(tag,x,y,angle);
+      handler.handleMarker(marker);
     }
   }
-  var l = markersTUIO.length;
-
-  for(i = 0; i < l; i++){
-    if(!game.creating && markersTUIO[i].marker.playerId === null) {
-      markersTUIO.splice(1,i);
-      i--;
-      l--;
-      continue;
-    }
-    if(markersTUIO[i].status == "unknown"){
-      socket.emit("removeMarker", markersTUIO[i].marker.id);
-      markersTUIO.splice(1,i);
-      i--;
-      l--;
-      if(game.status == "placement"){
-        socket.emit("checkPlacement",{"idplayer":markersTUIO[i].marker.playerId,"check":false});
-      }
-    }else if(markersTUIO[i].status == "update"){
-      markersTUIO[i].marker.positionOk = game.checkPlacement(markersTUIO[i].marker);
-      socket.emit("updateMarker", markersTUIO[i].marker);
-      if(game.status == "placement"){
-        socket.emit("checkPlacement",{"idplayer":markersTUIO[i].marker.playerId,"check":markersTUIO[i].marker.positionOk});
-      }
-    }
-
+  var updates = handler.getUpdates();
+  for(a = 0; a < updates.length; a++){
+    socket.emit("updateMarker",updates[a]);
+    if(game.status === "placement")
+      socket.emit("checkPlacement",{"idplayer":updates[a].playerId,"check":updates[a].positionOk});
   }
-  lockTUIO = false;
-};
+  var removes = handler.getRemoves();
+  for(a = 0; a < removes.length; a++)
+    socket.emit("removeMarker", removes[a]);
 
-
-
-var tuioObjectDetected = function(marker){
-  var index = -1;
-  var i = 0;
-  marker.playerId = getPlayerIdFromMarker(marker.id);
-  for(i = 0; i < markersTUIO.length; i++)
-    if(markersTUIO[i].marker.id == marker.id)
-      index = i;
-  if(index == -1){
-    markersTUIO.push({"marker": marker, "status": "update"});
-  }else{
-    if(markersTUIO[index].marker.x != marker.x || markersTUIO[index].marker.y != marker.y || markersTUIO[index].marker.angle != marker.angle){
-      markersTUIO[index].marker = marker;
-      markersTUIO[index].status = "update";
-    }else
-      markersTUIO[index].status = "noChange";
-  }
-
-}
-
-var getPlayerIdFromMarker = function(id){
-  var i;
-  for(i = 0; i < game.players.length; i++)
-    if(game.players[i].markerid == id)
-      return game.players[i].id;
-  return null;
 }
 
 
@@ -131,6 +80,7 @@ socket.on('launchGame', function (message) {
   var i;
   for(i = 0; i < message.length; i++)
     game.setPlayerTag(message[i].idplayer,message[i].idtag);
+  handler.clear;
   socket.emit('gameReady');
   game.launch();
 });
@@ -157,7 +107,9 @@ socket.on('isReady', function(message){
   Launch core
  */
 
+
 var game = new Game(4,socket);
+var handler = new TUIOHandler(game);
 map = new Map();
 map.setHeight(100);
 map.setWidth(200);

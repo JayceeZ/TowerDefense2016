@@ -30,7 +30,7 @@ module.exports = function(pmax,socket){
     this.launch = function(){
         this.creating = false;
         this.status = "placement";
-        this.loopPlacement();
+        //this.loopPlacement();
     }
 
     this.readyToLaunch = function(){
@@ -68,8 +68,10 @@ module.exports = function(pmax,socket){
     }
 
     this.checkPlacement = function(marker){
+        if(this.status !== "placement")
+            return false;
         var player = this.getPlayerFromId(marker.playerId);
-        if(player != null) {
+        if(player !== null) {
             if (player.loopTurretCount < 2 && this.map.checkPlacement(marker.x * map.width, marker.y * map.height, this.radiusTower))
                 return true;
         }
@@ -91,6 +93,14 @@ module.exports = function(pmax,socket){
 
     this.setPlayerReady = function(idplayer,ready){
         this.getPlayerFromId(idplayer).setReady(ready);
+    }
+
+    this.getPlayerIdFromMarker = function(id){
+        var i;
+        for(i = 0; i < this.players.length; i++)
+            if(this.players[i].markerid == id)
+                return this.players[i].id;
+        return null;
     }
 
 
