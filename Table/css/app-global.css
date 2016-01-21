@@ -21,6 +21,10 @@ html, body, .ng-scope {
     transform: scale(-1, -1);
 }
 
+.absolute {
+    position: absolute;
+}
+
 .app-title {
     font-size: 5em;
     text-align: center;
@@ -38,7 +42,8 @@ html, body, .ng-scope {
 }
 
 .map {
-    position: relative;
+    position: absolute;
+    width: 100%;
     overflow: hidden;
 }
 
@@ -53,22 +58,20 @@ html, body, .ng-scope {
 }
 
 .player-hand-device {
+    display: inline-block;
     background-image: url('../img/Mobile-Smartphone-Tablet-icon.png');
-    background-size: 100px 100px;
+    background-size: 10em 10em;
     text-align: left;
-    width: 100px;
-    height: 100px;
+    width: 10em;
+    height: 10em;
     padding-top: 10px;
     padding-left: 15px;
     overflow: hidden;
 }
 
-.slot {
-    display: inline-block;
-    margin: 1em;
-}
-
 .marker-space {
-    width: 100px;
-    height: 100px;
+    display: inline-block;
+    overflow: hidden;
+    width: 10em;
+    height: 10em;
 }

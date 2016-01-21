@@ -5,33 +5,45 @@
 appTable.controller('MapCtrl', function($scope, socket) {
   // Template model
   $scope.message = "Phase de placement";
-  $scope.map = new Map();
-  $scope.markers = [];
 
-  socket.on('updateMarker', function(message) {
-    if(message.x <= 1 && message.y <= 1) {
-      var marker = _.find($scope.markers, {id: message.id});
-      if(!marker) {
-        marker = new Marker(message.id);
-        $scope.markers.push(marker);
-      }
-      var map = angular.element('#map');
-      var x = message.x * map[0].clientWidth;
-      var y = message.y * map[0].clientHeight;
-      marker.setX(x);
-      marker.setY(y);
-      marker.setOrientation(message.orientation);
-    }
+  /*******************
+   * Animation setup *
+   *******************/
+  var map = angular.element("#map")[0];
+  var renderer = PIXI.autoDetectRenderer(map.clientWidth, map.clientHeight, {transparent: true});
+  map.appendChild(renderer.view);
+  var container = new PIXI.Container();
+
+  function animate() {
+    renderer.render(container);
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+
+  /***********
+   * Objects *
+   ***********/
+  $scope.map = new Map(container);
+
+  socket.on('addTurret', function(message) {
+    $scope.map.addTurret(message.x*map.clientWidth, message.y*map.clientHeight, message.orientation);
   });
 
-  socket.on('removeMarker', function(message) {
-    _.remove($scope.markers, {id: message.id});
+  socket.on('addEnemy', function(message) {
+    $scope.map.addEnemy(message.x*map.clientWidth, message.y*map.clientHeight, message.orientation);
+  });
+
+  socket.on('turret', function(message) {
+    var t = _.find($scope.map.turrets, {id: message.id});
+    if(t && message.fire)
+      t.fire();
   });
 
   socket.emit('performTestsMap');
 });
 
-appTable.directive("message", function(){
+appTable.directive("message", function() {
   return {
     restrict: "A",
     link: function(scope, element) {
