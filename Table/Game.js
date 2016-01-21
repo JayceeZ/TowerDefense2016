@@ -72,7 +72,8 @@ module.exports = function(pmax,socket){
             return false;
         var player = this.getPlayerFromId(marker.playerId);
         if(player !== null) {
-            if (player.loopTurretCount < 2 && this.map.checkPlacement(marker.x * map.width, marker.y * map.height, this.radiusTower))
+            if (player.loopTurretCount < 2 && this.map.checkPlacement(marker.x * map.width, marker.y * map.height, this.radiusTower)
+                && this.map.collisionTowers(marker.x*map.width,marker.y* map.height,this.radiusTower) === false)
                 return true;
         }
         return false;
@@ -86,7 +87,7 @@ module.exports = function(pmax,socket){
 
     this.addTower = function(idplayer,x,y,angle){
         var player = getPlayerFromId(idplayer);
-        var tower = new Tower(x,y,angle,player);
+        var tower = new Tower(x,y,angle,player,this.radiusTower);
         player.addTower(tower);
         this.map.addTower(tower);
     }
