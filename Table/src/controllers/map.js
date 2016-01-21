@@ -13,18 +13,32 @@ appTable.controller('MapCtrl', function($scope, socket) {
   var renderer = PIXI.autoDetectRenderer(map.clientWidth, map.clientHeight, {transparent: true});
   map.appendChild(renderer.view);
   var container = new PIXI.Container();
+
   function animate() {
     renderer.render(container);
-    requestAnimationFrame( animate );
+    requestAnimationFrame(animate);
   }
+
   requestAnimationFrame(animate);
 
   /***********
    * Objects *
    ***********/
-  var e = new Enemy();
-  container.addChild(e.graphics);
-  e.update();
+  $scope.map = new Map(container);
+
+  socket.on('addTurret', function(message) {
+    $scope.map.addTurret(message.x*map.clientWidth, message.y*map.clientHeight, message.orientation);
+  });
+
+  socket.on('addEnemy', function(message) {
+    $scope.map.addEnemy(message.x*map.clientWidth, message.y*map.clientHeight, message.orientation);
+  });
+
+  socket.on('turret', function(message) {
+    var t = _.find($scope.map.turrets, {id: message.id});
+    if(t && message.fire)
+      t.fire();
+  });
 
   socket.emit('performTestsMap');
 });

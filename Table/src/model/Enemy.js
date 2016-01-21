@@ -2,7 +2,7 @@
  * Represents an enemy
  */
 
-var Enemy = function Enemy(id) {
+var Enemy = function Enemy(id, container) {
   this.id = id;
   this.life = 0;
   this.x = 0;
@@ -24,10 +24,13 @@ var Enemy = function Enemy(id) {
   };
 
   this.update = function() {
+    this.graphics.clear();
     this.graphics.lineStyle(0);
     this.graphics.beginFill(0xFFCC00, 1);
     this.graphics.drawCircle(this.x, this.y, 20);
     this.graphics.endFill();
-  }
+  };
+
+  container.addChild(this.graphics);
 };
 

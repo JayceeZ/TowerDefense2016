@@ -52,16 +52,28 @@ ioServer.on('connection', function (socket) {
       r += 0.3;
       console.log('Rotate A1 ' + (r));
       socket.emit('updateMarker', {id: "A1", x: 720 / 1920, y: 480 / 1080, orientation: r});
-      if(r > 4)
+      if(r > 4) {
+        console.log("Turret fire");
+        socket.emit('addTurret', {id: 1, x: 720 / 1920, y: 480 / 1080, orientation: r});
+        socket.emit('turret', {id: 1, fire: true});
         clearInterval(timerId1);
+      }
     }, 100);
     var timerId2 = setInterval(function () {
       r += 0.3;
       console.log('Rotate A2 ' + (r));
       socket.emit('updateMarker', {id: "A2", x: 200 / 1920, y: 800 / 1080, orientation: r});
-      if(r > 2)
+      if(r > 2) {
+        console.log("Turret fire");
+        socket.emit('addTurret', {id: 0, x: 200 / 1920, y: 800 / 1080, orientation: r});
+        socket.emit('turret', {id: 0, fire: true});
         clearInterval(timerId2);
+      }
     }, 100);
+
+
+    socket.emit('addEnemy', {id: 0, x: 0, y: 500 / 1080, orientation: r});
+
   });
 
 });

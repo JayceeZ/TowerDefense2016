@@ -2,21 +2,21 @@
  * Represents the map
  */
 
-var Map = function Map(renderer) {
+var Map = function Map(container) {
   this.turrets = [];
   this.enemies = [];
+  this.container = container;
 
-  this.setRenderer = function(renderer) {
-    this.renderer = renderer;
+  this.addTurret = function(x, y, orientation) {
+    var t = new Turret(this.turrets.length, this.container);
+    t.setPosition(x, y);
+    t.setOrientation(orientation);
+    this.turrets.push(t);
   };
 
-  this.addTurret = function(turret) {
-    this.turrets.push(turret);
+  this.addEnemy = function(x, y) {
+    var e =  new Enemy(this.enemies.length, this.container);
+    e.setPosition(x, y);
+    this.enemies.push(e);
   };
-
-  this.addEnemy = function(enemy) {
-    this.enemies.push(enemy);
-  };
-
-  this.renderer = renderer;
 };
