@@ -2,10 +2,13 @@
  * Represents the map
  */
 
-var Map = function Map() {
+var Map = function Map(renderer) {
   this.turrets = [];
   this.enemies = [];
-  this.boundaries = new ClientRect();
+
+  this.setRenderer = function(renderer) {
+    this.renderer = renderer;
+  };
 
   this.addTurret = function(turret) {
     this.turrets.push(turret);
@@ -14,4 +17,6 @@ var Map = function Map() {
   this.addEnemy = function(enemy) {
     this.enemies.push(enemy);
   };
+
+  this.renderer = renderer;
 };

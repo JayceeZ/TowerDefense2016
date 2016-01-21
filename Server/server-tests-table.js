@@ -27,12 +27,13 @@ ioServer.on('connection', function (socket) {
     socket.emit('player', {id: "User4"});
 
     console.log('Pose of pieces');
-    socket.emit('updateMarker', {id: "A1", x: 720 / 1920, y: 480 / 1080, orientation: 0});
-    socket.emit('updateMarker', {id: "A2", x: 850 / 1920, y: 480 / 1080, orientation: 0});
+    var res = {width: 1920, height: 1080};
+    socket.emit('updateMarker', {id: "A1", x: 720 / res.width, y: 480 / res.height, orientation: 0});
+    socket.emit('updateMarker', {id: "A2", x: 850 / res.width, y: 480 / res.height, orientation: 0});
     socket.emit('removeMarker', {id: "A1"});
-    socket.emit('updateMarker', {id: "A3", x: 980 / 1920, y: 480 / 1080, orientation: 0});
-    socket.emit('updateMarker', {id: "A4", x: 1180 / 1920, y: 480 / 1080, orientation: 0});
-    socket.emit('updateMarker', {id: "A1", x: 720 / 1920, y: 480 / 1080, orientation: 0});
+    socket.emit('updateMarker', {id: "A3", x: 980 / res.width, y: 480 / res.height, orientation: 0});
+    socket.emit('updateMarker', {id: "A4", x: 1180 / res.width, y: 480 / res.height, orientation: 0});
+    socket.emit('updateMarker', {id: "A1", x: 720 / res.width, y: 480 / res.height, orientation: 0});
   });
 
   socket.on('players', function (message) {
