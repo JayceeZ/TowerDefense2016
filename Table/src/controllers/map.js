@@ -26,18 +26,22 @@ appTable.controller('MapCtrl', function($scope, socket) {
    ***********/
   $scope.map = new Map(container);
 
-  socket.on('addTurret', function(message) {
-    $scope.map.addTurret(message.x*map.clientWidth, message.y*map.clientHeight, message.orientation);
+  socket.on('validateTower', function(data) {
+    $scope.map.addTurret(data.x*map.clientWidth, data.y*map.clientHeight, data.orientation);
   });
 
-  socket.on('addEnemy', function(message) {
-    $scope.map.addEnemy(message.x*map.clientWidth, message.y*map.clientHeight, message.orientation);
+  socket.on('initEnemy', function(data) {
+    $scope.map.addEnemy(data.id, data.startPoint.x, data.startPoint.y, data.pathPoints, data.pathDirections);
   });
 
   socket.on('turret', function(message) {
     var t = _.find($scope.map.turrets, {id: message.id});
     if(t && message.fire)
       t.fire();
+  });
+
+  socket.on('launchVague', function(data) {
+    $scope.map.run();
   });
 
   socket.emit('performTestsMap');
