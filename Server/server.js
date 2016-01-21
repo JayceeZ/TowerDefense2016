@@ -80,13 +80,14 @@ ioServer.on('connection', function(socket) {
       var player = {socket: socket, id: players.length, name: message.pseudo};
       players.push(player);
       socket.to('core').emit("addPlayer", {"pseudo": player.name, "id": player.id});
-      socket.to('table').emit("pseudo", {"pseudo" : player.name});
     }
   });
 
-  socket.on('connectionStatus', function(message){
-    playerSocket = getPlayerSocket(message.id);
-    playerSocket.emit("connectionStatus",message);
+  socket.on('connectionStatus', function(status){
+    playerSocket = getPlayerSocket(status.id);
+    playerSocket.emit("connectionStatus",{"status":status.status,"message":status.message});
+    if(status.status == true)
+      socket.to('table').emit("addPlayer", {"id":status.id, "pseudo" : status.pseudo});
   });
 
   socket.on('disconnect', function() {
@@ -98,22 +99,87 @@ ioServer.on('connection', function(socket) {
    */
 
   /*
-    marker --> idplayer, x, y, angle, playerId
+    marker --> idmarker, x, y, angle, playerId, placementok
    */
   socket.on('updateMarker', function(marker){
+    console.log("Update marker");
     socket.to("table").emit("updateMarker", marker);
   });
 
   socket.on('removeMarker', function(markerId){
+    console.log("Remove marker");
     socket.to("table").emit("removeMarker", markerId);
   });
+
+  socket.on('gameReady', function(){
+    socket.to("table").emit("gameReady");
+    for(i = 0; i < players.length;i++)
+      players[i].socket.emit("gameReady");
+  });
+
+  socket.on('checkPlacement', function(message){
+    playerSocket = getPlayerSocket(message.idplayer);
+    if(playerSocket != null)
+      playerSocket.emit("checkPlacement",message.check);
+  });
+
+  socket.on('launchVague', function(vague){
+    socket.to("table").emit("launchVague",vague);
+    for(i = 0; i < players.length;i++)
+      players[i].socket.emit("launchVague",vague);
+  });
+
+  /*
+    enemy : id, startPoint, pathPoints, pathDirections
+   */
+  socket.on('initEnemy', function(enemy){
+    socket.to("table").emit("initEnemy",enemy);
+  });
+
+  /*
+    message --> idplayer, x , y, angle
+   */
+  socket.on('validateTower', function(message){
+    socket.to("table").emit("validateTower",message);
+  });
+
+
+    /**
+     * Updates from players
+     */
+
+  socket.on('putTower', function(){
+    socket.to("core").emit("putTower",getPlayerFromSocket(socket));
+  });
+
+  socket.on('isReady', function(value){
+    socket.to("core").emit("isReady",{"idplayer":getPlayerFromSocket(socket),"value":value});
+  });
+
+
+  /**
+   * Updates from table
+   */
+
+  socket.on('launchGame', function(message){
+    socket.to("core").emit("launchGame",message);
+  });
+
+
 });
 
 var getPlayerSocket = function(id){
   for(i = 0; i < players.length; i++){
-    console.log("test playerid : "+players[i].id+" , id = "+id);
     if(players[i].id == id)
       return players[i].socket;
+  }
+  return null;
+}
+
+var getPlayerFromSocket = function(socket){
+  for(i = 0; i < players.length; i++){
+    if(players[i].socket == socket)
+      return players[i].id;
   }
   return null;
 }

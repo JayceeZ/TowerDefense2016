@@ -13,9 +13,10 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   }
 
   $scope.createGame = function() {
-    // TODO: verifier que chaque joueur a un tag
-    socket.emit('players', computeAssociations());
+    e.log("Starting game");
+    socket.emit('launchGame', computeAssociations());
     socket.on('gameReady', function() {
+      console.log("launching game");
       startGame();
     });
   };
@@ -23,9 +24,11 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   /**
    * Socket updates
    */
-  socket.on('player', function(message) {
+  socket.on('addPlayer', function(message) {
+    console.log("addPlayer : "+message.id+" "+message.pseudo);
     var freeSlot = getFirstFreeSlot();
     freeSlot.setPlayer(message.id);
+    freeSlot.setPlayerPseudo(message.pseudo);
   });
 
   socket.on('updateMarker', function(message) {
@@ -57,8 +60,8 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   function computeAssociations() {
     var associations = [];
     _.forEach($scope.slots, function(slot) {
-      if (slot.player && slot.id)
-        associations.push({player: slot.player, slot: slot.id});
+      if(slot.player && slot.tag)
+        associations.push({idplayer: slot.player, idtag: slot.tag});
     });
     return associations;
   }

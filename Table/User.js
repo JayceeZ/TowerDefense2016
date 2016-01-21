@@ -7,9 +7,11 @@ module.exports = function(id,pseudo){
     this.id = id;
     this.pseudo = pseudo;
     this.score;
-    this.ready;
-    this.marker = {"id" : 0, "x": -1, "y": -1, "angle": -1};
+    this.ready = false;
+    this.markerid = null;
     this.markerStatus = "unknown";
+    this.loopTurretCount = 0;
+    this.towers = [];
 
     this.setPseudo = function(p){
         this.pseudo = p;
@@ -23,7 +25,15 @@ module.exports = function(id,pseudo){
         this.ready = r;
     }
 
+    this.setMarkerid = function(id){
+        this.markerid = id;
+    }
+
     this.updateMarker = function(marker){
 
+    }
+
+    this.addTower = function(tower){
+        towers.push(tower);
     }
 };

@@ -18,6 +18,7 @@ var Slot = function Slot(id) {
 
   this.id = id;
   this.player = null;
+  this.playerPseudo = null;
   this.tag = null;
   this.color = "grey";
 
@@ -34,8 +35,12 @@ var Slot = function Slot(id) {
     this.player = player;
   };
 
+  this.setPlayerPseudo = function(pseudo){
+    this.playerPseudo = pseudo;
+  }
+
   this.setTag = function(tag) {
-    if(this.player) {
+    if(this.player != null) {
       this.tag = tag;
       this.setColor(tagColors[this.id]);
     }
