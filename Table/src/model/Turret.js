@@ -7,33 +7,23 @@ var Turret = function Turret(id) {
   this.x = 0;
   this.y = 0;
   this.orientation = 0;
+  this.graphics = new PIXI.Graphics();
 
   this.setOrientation = function(orientation) {
     this.orientation = orientation;
+    this.update();
   };
 
-  this.setX = function(x) {
+  this.setPosition = function(x,y) {
     this.x = x;
-  };
-
-  this.setY = function(y) {
     this.y = y;
+    this.update();
   };
+
+  this.update = function() {
+    this.graphics.lineStyle(0);
+    this.graphics.beginFill(0xFFCC00, 1);
+    this.graphics.drawCircle(this.x, this.y, 20);
+    this.graphics.endFill();
+  }
 };
-
-appTable.directive("turret", function(){
-  return {
-    restrict: "A",
-    link: function(scope, element) {
-      var context = element[0].getContext('2d');
-
-      function draw(size){
-        context.beginPath();
-        context.lineWidth = 5;
-        context.arc(size/2, size/2, size/2 - context.lineWidth, 0, 2 * Math.PI, false);
-        context.strokeStyle = '#003300';
-        context.stroke();
-      }
-    }
-  };
-});
