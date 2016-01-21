@@ -20,7 +20,7 @@ var Map = function Map(container) {
   };
 
   this.addEnemy = function(id, start, positions, directions) {
-    var e =  new Enemy(id, this.container);
+    var e = new Enemy(id, this.container);
     e.setPosition(start.x, start.y);
     e.setPoints(positions);
     e.setDirections(directions);
@@ -52,6 +52,15 @@ var Map = function Map(container) {
       }
       _this.currentTime += delta;
     }, delta);
+  };
+
+  this.clean = function() {
+    this.currentTime = 0;
+    _.forEach(this.enemies, function(enemy) {
+      enemy.destroy();
+    });
+    this.enemies = [];
+    this.events = [];
   };
 
   this.stop = function() {

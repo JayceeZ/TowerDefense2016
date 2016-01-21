@@ -42,12 +42,15 @@ appTable.controller('MapCtrl', function($scope, socket) {
     $scope.map.projectile(data.start, data.from, data.end, data.to);
   });
 
-  socket.on('turretFire', function(data) {
-    $scope.map.fireTurret(data.id, data.to, data.index);
-  });
-
   socket.on('launchVague', function(data) {
     $scope.map.run(data.delta);
+    $scope.message = "Vague en cours";
+  });
+
+  socket.on('cleanMap', function(data) {
+    $scope.map.stop();
+    $scope.map.clean();
+    $scope.message = "Phase de placement";
   });
 
   socket.emit('performTestsMap');
