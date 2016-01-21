@@ -53,7 +53,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
 
   function getFirstFreeSlot() {
     return _.find($scope.slots, function(slot) {
-      return slot.player === null;
+      return slot.player === undefined;
     });
   }
 
