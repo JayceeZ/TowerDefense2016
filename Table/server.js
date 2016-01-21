@@ -91,8 +91,8 @@ socket.on('putTower', function(idplayer){
     if(markersTUIO[i].marker.playerId == idplayer)
       marker = markersTUIO[i].marker;
   if(marker != null && marker.positionOk == true){
-    game.addTower(idplayer,marker.x,marker.y,marker.angle);
-    socket.emit("validateTower",{"idplayer":idplayer,"x":marker.x,"y":marker.y,"angle":marker.angle});
+    var id = game.addTower(idplayer,marker.x,marker.y,marker.angle);
+    socket.emit("validateTower",{"idplayer":idplayer,"id":id,"x":marker.x,"y":marker.y,"angle":marker.angle});
   }
 });
 

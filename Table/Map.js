@@ -10,6 +10,7 @@ module.exports = function(){
     this.towers = [];
     this.enemy = [];
     this.ID_ENEMY = 0;
+    this.ID_TOWER = 0;
 
     this.setHeight = function(h){
         this.height = h;
@@ -38,7 +39,10 @@ module.exports = function(){
     };
 
     this.addTower = function(tower){
+        this.ID_TOWER++;
+        tower.id = this.ID_TOWER;
         this.towers.push(tower);
+        return this.ID_TOWER;
     };
 
     this.initEnemy = function(n,socket){
@@ -46,8 +50,9 @@ module.exports = function(){
             this.ID_ENEMY++;
             var start = getRandomStartPoint();
             var path = getPathFromStartPoint(start);
+            var vitesse = 2;
             this.enemy.push(new Enemy(this.ID_ENEMY,start.x,start.y,path.points,path.directions));
-            this.socket.emit("initEnemy",{"id":this.ID_ENEMY,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
+            this.socket.emit("initEnemy",{"id":this.ID_ENEMY,"vitesse":vitesse,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
         }
     };
 
@@ -57,5 +62,11 @@ module.exports = function(){
 
     this.getPathFromStartPoint = function(start){
         return {"points":[{"x":this.width,"y":start.y}],"directions":[{"vx":1,"vy":0}]};
+    }
+
+    this.actuEnemyPosition = function(){
+        var i;
+        for(i = 0; i < this.enemy.length; i++)
+            this.enemy[i].actuPosition();
     }
 }

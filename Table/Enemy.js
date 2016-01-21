@@ -10,5 +10,12 @@ module.exports = function(id,x,y,points,directions){
     this.pathPoints = points;
     this.pathDirections = directions;
     this.indexPath = 0;
+    this.vitesse = 2;
+
+    this.actuPosition = function(){
+        this.x += this.vitesse * this.pathDirections[this.indexPath].vx;
+        this.y += this.vitesse * this.pathDirections[this.indexPath].vy;
+
+    }
 
 }

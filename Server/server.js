@@ -123,26 +123,53 @@ ioServer.on('connection', function(socket) {
       playerSocket.emit("checkPlacement",message.check);
   });
 
+  socket.on('launchPlacement', function(){
+    socket.to("table").emit("launchPlacement");
+    for(i = 0; i < players.length;i++)
+      players[i].socket.emit("launchPlacement");
+  });
+
+  socket.on('endPlacement', function(){
+
+  });
+
   socket.on('launchVague', function(vague){
     socket.to("table").emit("launchVague",vague);
     for(i = 0; i < players.length;i++)
       players[i].socket.emit("launchVague",vague);
   });
 
+  socket.on('endVague', function(){
+
+  });
+
   /*
-    enemy : id, startPoint, pathPoints, pathDirections
+    enemy : id, vitesse, startPoint, pathPoints, pathDirections
    */
   socket.on('initEnemy', function(enemy){
     socket.to("table").emit("initEnemy",enemy);
   });
 
   /*
-    message --> idplayer, x , y, angle
+    message --> idplayer, id, x , y, angle
    */
   socket.on('validateTower', function(message){
     socket.to("table").emit("validateTower",message);
   });
 
+  /*
+    message -->
+   */
+  socket.on('projectile', function(message){
+
+  });
+
+  /*
+    message --> id, t
+   */
+  socket.on('killEnemy', function(message){
+
+  });
 
     /**
      * Updates from players
