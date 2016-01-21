@@ -62,7 +62,7 @@ var Enemy = function Enemy(id, container) {
   this.update = function() {
     this.graphics.clear();
     this.graphics.lineStyle(0);
-    this.graphics.beginFill(0xFFCC00, 1);
+    this.graphics.beginFill(0xFF0000, 1);
     this.graphics.drawCircle(this.x, this.y, 20);
     this.graphics.endFill();
   };

@@ -54,8 +54,7 @@ ioServer.on('connection', function (socket) {
       socket.emit('updateMarker', {id: "A1", x: 720 / 1920, y: 480 / 1080, orientation: r});
       if(r > 4) {
         console.log("Turret fire");
-        //socket.emit('addTurret', {id: 1, x: 720 / 1920, y: 480 / 1080, orientation: r});
-        socket.emit('turret', {id: 1, fire: true});
+        socket.emit('validateTower', {id: 1, x: 720, y: 480, orientation: r});
         clearInterval(timerId1);
       }
     }, 100);
@@ -65,8 +64,7 @@ ioServer.on('connection', function (socket) {
       socket.emit('updateMarker', {id: "A2", x: 200 / 1920, y: 800 / 1080, orientation: r});
       if(r > 2) {
         console.log("Turret fire");
-        //socket.emit('validateTower', {id: 0, x: 200 / 1920, y: 800 / 1080, orientation: r});
-        socket.emit('turret', {id: 0, fire: true});
+        socket.emit('validateTower', {id: 0, x: 200, y: 800, orientation: r});
         clearInterval(timerId2);
       }
     }, 100);
