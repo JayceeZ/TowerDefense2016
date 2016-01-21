@@ -34,6 +34,10 @@ appTable.controller('MapCtrl', function($scope, socket) {
     $scope.map.addEnemy(data.id, data.startPoint, data.pathPoints, data.pathDirections);
   });
 
+  socket.on('killEnemy', function(data) {
+    $scope.map.killEnemy(data.id, data.index);
+  });
+
   socket.on('turret', function(message) {
     var t = _.find($scope.map.turrets, {id: message.id});
     if(t && message.fire)
