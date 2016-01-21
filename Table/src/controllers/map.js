@@ -10,7 +10,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
    * Animation setup *
    *******************/
   var map = angular.element("#map")[0];
-  var renderer = PIXI.autoDetectRenderer(map.clientWidth, map.clientHeight, {transparent: true});
+  var renderer = PIXI.autoDetectRenderer(map.clientWidth, map.clientHeight, {transparent: true, antialiasing: true});
   map.appendChild(renderer.view);
   var container = new PIXI.Container();
 
@@ -38,10 +38,12 @@ appTable.controller('MapCtrl', function($scope, socket) {
     $scope.map.killEnemy(data.id, data.index);
   });
 
-  socket.on('turret', function(message) {
-    var t = _.find($scope.map.turrets, {id: message.id});
-    if(t && message.fire)
-      t.fire();
+  socket.on('projectile', function(data) {
+    $scope.map.projectile(data.start, data.from, data.end, data.to);
+  });
+
+  socket.on('turretFire', function(data) {
+    $scope.map.fireTurret(data.id, data.to, data.index);
   });
 
   socket.on('launchVague', function(data) {

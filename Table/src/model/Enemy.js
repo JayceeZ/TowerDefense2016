@@ -42,17 +42,17 @@ var Enemy = function Enemy(id, container) {
   };
 
   this.updateModel = function() {
-    if(this.index === this.points.length)
-      return;
+    if(this.index < this.points.length) {
+      var pos = this.points[this.index];
+      var direction = this.directions[this.index];
 
-    var pos = this.points[this.index];
-    var direction = this.directions[this.index];
+      if (this.x === pos.x && this.y === pos.y)
+        this.stepTo(this.index + 1);
 
-    if(this.x === pos.x && this.y === pos.y)
-      this.stepTo(this.index+1);
-
-    if(pos && direction)
-      this.setPosition(this.x + this.speed*direction.vx, this.y + this.speed*direction.vy);
+      if (pos && direction)
+        this.setPosition(this.x + this.speed * direction.vx, this.y + this.speed * direction.vy);
+    }
+    return this.index;
   };
 
   this.destroy = function() {

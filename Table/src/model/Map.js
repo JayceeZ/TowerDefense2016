@@ -5,8 +5,9 @@
 var Map = function Map(container) {
   this.turrets = [];
   this.enemies = [];
+  this.events = [];
 
-  this.indexModel = 0;
+  this.currentTime = 0;
 
   this.interval = undefined;
   this.container = container;
@@ -31,12 +32,25 @@ var Map = function Map(container) {
     e.kill(index);
   };
 
+  this.projectile = function(start, from, end, to) {
+    var p = new Projectile(this.container);
+    p.setDuration(end-start);
+    p.setPosition(from.x, from.y);
+    p.setDestination(to.x, to.y);
+    this.events.push({t: start, object: p});
+  };
+
   this.run = function(delta) {
     var _this = this;
     this.interval = setInterval(function() {
+      var loopEvent = _.find(_this.events, {t: _this.currentTime});
       _.forEach(_this.enemies, function(e) {
         e.updateModel();
       });
+      if(loopEvent) {
+        loopEvent.object.fire();
+      }
+      _this.currentTime += delta;
     }, delta);
   };
 

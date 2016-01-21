@@ -73,9 +73,12 @@ ioServer.on('connection', function (socket) {
 
 
     socket.emit('initEnemy', {id: 0, startPoint: {x: 0, y: 100}, pathPoints: [{x: 100, y: 100},{x: 200, y: 100},{x: 300, y: 100}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}]});
+    socket.emit('initEnemy', {id: 0, startPoint: {x: 0, y: 200}, pathPoints: [{x: 100, y: 200},{x: 200, y: 200},{x: 300, y: 200}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}]});
 
     socket.emit('launchVague', {delta: 30});
     socket.emit('killEnemy', {id: 0, index: 2});
+
+    socket.emit('projectile', {start: 120, from: {x: 200, y: 200}, end: 4200, to: {x: 300, y: 100}});
   });
 
 });
