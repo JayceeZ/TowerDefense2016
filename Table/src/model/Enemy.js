@@ -6,10 +6,12 @@ var Enemy = function Enemy(id, container) {
   this.id = id;
   this.x = 0;
   this.y = 0;
-  this.positions = undefined;
+  this.points = undefined;
   this.directions = undefined;
   this.dead = undefined;
   this.speed = 2;
+
+  this.index = 0;
 
   this.container = container;
   this.graphics = new PIXI.Graphics();
@@ -17,6 +19,7 @@ var Enemy = function Enemy(id, container) {
   this.setPosition = function(x,y) {
     this.x = x;
     this.y = y;
+    this.update();
   };
 
   this.setPoints = function(points) {
@@ -31,17 +34,25 @@ var Enemy = function Enemy(id, container) {
     this.dead = t;
   };
 
-  this.step = function(t) {
+  this.stepTo = function(t) {
     if(this.dead === t)
       this.destroy();
-    if(this.directions && this.positions) {
-      // Move to next point if point reached
-      var pos = this.positions[this.indexPosition];
-      var direction = this.directions[this.indexPosition];
-      if(pos && direction) {
-        this.setPosition(this.x + this.speed*direction.vx, this.y + this.speed*direction.vy);
-      }
-    }
+
+    this.index = t;
+  };
+
+  this.updateModel = function() {
+    if(this.index === this.points.length)
+      return;
+
+    var pos = this.points[this.index];
+    var direction = this.directions[this.index];
+
+    if(this.x === pos.x && this.y === pos.y)
+      this.stepTo(this.index+1);
+
+    if(pos && direction)
+      this.setPosition(this.x + this.speed*direction.vx, this.y + this.speed*direction.vy);
   };
 
   this.destroy = function() {
@@ -49,7 +60,6 @@ var Enemy = function Enemy(id, container) {
   };
 
   this.update = function() {
-    this.step();
     this.graphics.clear();
     this.graphics.lineStyle(0);
     this.graphics.beginFill(0xFFCC00, 1);

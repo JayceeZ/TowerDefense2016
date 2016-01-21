@@ -27,11 +27,11 @@ appTable.controller('MapCtrl', function($scope, socket) {
   $scope.map = new Map(container);
 
   socket.on('validateTower', function(data) {
-    $scope.map.addTurret(data.x*map.clientWidth, data.y*map.clientHeight, data.orientation);
+    $scope.map.addTurret(data.id, data.x, data.y, data.orientation);
   });
 
   socket.on('initEnemy', function(data) {
-    $scope.map.addEnemy(data.id, data.startPoint.x, data.startPoint.y, data.pathPoints, data.pathDirections);
+    $scope.map.addEnemy(data.id, data.startPoint, data.pathPoints, data.pathDirections);
   });
 
   socket.on('turret', function(message) {
@@ -41,7 +41,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
   });
 
   socket.on('launchVague', function(data) {
-    $scope.map.run();
+    $scope.map.run(data.delta);
   });
 
   socket.emit('performTestsMap');

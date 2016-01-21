@@ -36,7 +36,7 @@ ioServer.on('connection', function (socket) {
     socket.emit('updateMarker', {id: "A1", x: 720 / res.width, y: 480 / res.height, orientation: 0});
   });
 
-  socket.on('players', function (message) {
+  socket.on('launchGame', function (message) {
     message.forEach(function (e) {
       console.log('Player ' + e.player + ' ' + e.slot);
     });
@@ -54,7 +54,7 @@ ioServer.on('connection', function (socket) {
       socket.emit('updateMarker', {id: "A1", x: 720 / 1920, y: 480 / 1080, orientation: r});
       if(r > 4) {
         console.log("Turret fire");
-        socket.emit('addTurret', {id: 1, x: 720 / 1920, y: 480 / 1080, orientation: r});
+        //socket.emit('addTurret', {id: 1, x: 720 / 1920, y: 480 / 1080, orientation: r});
         socket.emit('turret', {id: 1, fire: true});
         clearInterval(timerId1);
       }
@@ -65,15 +65,16 @@ ioServer.on('connection', function (socket) {
       socket.emit('updateMarker', {id: "A2", x: 200 / 1920, y: 800 / 1080, orientation: r});
       if(r > 2) {
         console.log("Turret fire");
-        socket.emit('addTurret', {id: 0, x: 200 / 1920, y: 800 / 1080, orientation: r});
+        //socket.emit('validateTower', {id: 0, x: 200 / 1920, y: 800 / 1080, orientation: r});
         socket.emit('turret', {id: 0, fire: true});
         clearInterval(timerId2);
       }
     }, 100);
 
 
-    socket.emit('addEnemy', {id: 0, x: 0, y: 500 / 1080, orientation: r});
+    socket.emit('initEnemy', {id: 0, startPoint: {x: 0, y: 100}, pathPoints: [{x: 100, y: 100},{x: 200, y: 100}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}]});
 
+    socket.emit('launchVague', {delta: 30});
   });
 
 });
