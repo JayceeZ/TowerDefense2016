@@ -27,7 +27,7 @@ ioServer.on('connection', function (socket) {
     socket.emit('player', {id: "User4"});
 
     console.log('Pose of pieces');
-    var res = {width: 1920, height: 1080};
+    var res = {width: 720, height: 720};
     socket.emit('updateMarker', {id: "A1", x: 720 / res.width, y: 480 / res.height, orientation: 0});
     socket.emit('updateMarker', {id: "A2", x: 850 / res.width, y: 480 / res.height, orientation: 0});
     socket.emit('removeMarker', {id: "A1"});
@@ -38,7 +38,7 @@ ioServer.on('connection', function (socket) {
 
   socket.on('players', function (message) {
     message.forEach(function (e) {
-      console.log('Player ' + e.id + ' ' + e.color);
+      console.log('Player ' + e.player + ' ' + e.slot);
     });
     socket.emit('gameReady');
   });
