@@ -37,7 +37,7 @@ var Slot = function Slot(id) {
 
   this.setPlayerPseudo = function(pseudo){
     this.playerPseudo = pseudo;
-  }
+  };
 
   this.setTag = function(tag) {
     if(this.player != null) {

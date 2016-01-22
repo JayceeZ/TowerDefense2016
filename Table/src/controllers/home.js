@@ -13,7 +13,6 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   }
 
   $scope.createGame = function() {
-    e.log("Starting game");
     socket.emit('launchGame', computeAssociations());
     socket.on('gameReady', function() {
       console.log("launching game");
@@ -53,7 +52,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
 
   function getFirstFreeSlot() {
     return _.find($scope.slots, function(slot) {
-      return slot.player === null;
+      return slot.player === undefined;
     });
   }
 

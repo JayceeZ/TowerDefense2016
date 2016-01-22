@@ -10,7 +10,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
    * Animation setup *
    *******************/
   var map = angular.element("#map")[0];
-  var renderer = PIXI.autoDetectRenderer(map.clientWidth, map.clientHeight, {transparent: true});
+  var renderer = PIXI.autoDetectRenderer(map.clientWidth, map.clientHeight, {transparent: true, antialiasing: true});
   map.appendChild(renderer.view);
   var container = new PIXI.Container();
 
@@ -26,18 +26,31 @@ appTable.controller('MapCtrl', function($scope, socket) {
    ***********/
   $scope.map = new Map(container);
 
-  socket.on('addTurret', function(message) {
-    $scope.map.addTurret(message.x*map.clientWidth, message.y*map.clientHeight, message.orientation);
+  socket.on('validateTower', function(data) {
+    $scope.map.addTurret(data.id, data.x, data.y, data.orientation);
   });
 
-  socket.on('addEnemy', function(message) {
-    $scope.map.addEnemy(message.x*map.clientWidth, message.y*map.clientHeight, message.orientation);
+  socket.on('initEnemy', function(data) {
+    $scope.map.addEnemy(data.id, data.startPoint, data.pathPoints, data.pathDirections);
   });
 
-  socket.on('turret', function(message) {
-    var t = _.find($scope.map.turrets, {id: message.id});
-    if(t && message.fire)
-      t.fire();
+  socket.on('killEnemy', function(data) {
+    $scope.map.killEnemy(data.id, data.index);
+  });
+
+  socket.on('projectile', function(data) {
+    $scope.map.projectile(data.start, data.from, data.end, data.to);
+  });
+
+  socket.on('launchVague', function(data) {
+    $scope.map.run(data.delta);
+    $scope.message = "Vague en cours";
+  });
+
+  socket.on('cleanMap', function(data) {
+    $scope.map.stop();
+    $scope.map.clean();
+    $scope.message = "Phase de placement";
   });
 
   socket.emit('performTestsMap');
