@@ -13,5 +13,7 @@ socket.on("connectionStatus", function(message){
     id = message.id;
 });
 
-socket.emit("putTower",0);
+//socket.emit("putTower",0);
+
+socket.emit("isReady",{"idplayer":0,"value":true});
 

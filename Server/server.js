@@ -168,7 +168,7 @@ ioServer.on('connection', function(socket) {
   });
 
   /*
-    enemy : id, vitesse, startPoint, pathPoints, pathDirections
+    enemy : id, vitesse, start, pathPoints, pathDirections
    */
   socket.on('initEnemy', function(enemy){
     console.log('Init enemy');
@@ -188,6 +188,7 @@ ioServer.on('connection', function(socket) {
    */
   socket.on('projectile', function(message){
     console.log('Projectile');
+    socket.to('table').emit({"start":message.t1,"from":message.launcher,"end":message.t2,"to":message.target});
   });
 
   /*
@@ -212,15 +213,16 @@ ioServer.on('connection', function(socket) {
      * Updates from players
      */
 
-  socket.on('putTower', function(id){
+  socket.on('putTower', function(){
     console.log("Put tower");
     //socket.to("core").emit("putTower",getPlayerFromSocket(socket));
-    socket.to("core").emit("putTower",id);
+    socket.to("core").emit("putTower",0);
   });
 
   socket.on('isReady', function(value){
     console.log("isReady");
-    socket.to("core").emit("isReady",{"idplayer":getPlayerFromSocket(socket),"value":value});
+    //socket.to("core").emit("isReady",{"idplayer":getPlayerFromSocket(socket),"value":value});
+    socket.to("core").emit("isReady",{"idplayer":0,"value":value});
   });
 
 

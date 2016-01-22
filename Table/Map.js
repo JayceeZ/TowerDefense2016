@@ -63,9 +63,9 @@ module.exports = function(){
             this.ID_ENEMY++;
             var start = this.getRandomStartPoint();
             var path = this.getPathFromStartPoint(start);
-            var vitesse = 2;
-            this.enemies.push(new Enemy(this.ID_ENEMY,start.x,start.y,path.points,path.directions));
-            socket.emit("initEnemy",{"id":this.ID_ENEMY,"vitesse":vitesse,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
+            var enemy = new Enemy(this.ID_ENEMY,start.x,start.y,path.points,path.directions)
+            this.enemies.push(enemy);
+            socket.emit("initEnemy",{"id":this.ID_ENEMY,"vitesse":enemy.vitesse,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
         }
     };
 
