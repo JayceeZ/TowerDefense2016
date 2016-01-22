@@ -14,7 +14,7 @@ var socket = io.connect("http://localhost:8081");
  ***************/
 
 
-var oscServer = new osc.Server(3333, '192.168.1.7');
+var oscServer = new osc.Server(3333, 'localhost');
 oscServer.on("message", function (msg) {
   handleTUIO(msg);
 });
@@ -115,7 +115,6 @@ map.setHeight(1000);
 map.setWidth(2000);
 game.setMap(map);
 
-game.launch();
 
 
 

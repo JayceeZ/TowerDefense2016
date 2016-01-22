@@ -36,7 +36,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
     var x = message.x * home[0].clientWidth;
     var y = message.y * home[0].clientHeight;
     var slot = getSlot(x, y);
-    if (slot) {
+    if (slot !== null) {
       slot.setTag(message.id);
     }
   });

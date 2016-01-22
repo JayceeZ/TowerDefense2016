@@ -14,7 +14,7 @@ appTable.controller('markersCtrl',  function($scope, socket) {
       var y = message.y * viewport[0].clientHeight;
       marker.setX(x);
       marker.setY(y);
-      marker.setOrientation(message.orientation);
+      marker.setOrientation(message.angle);
     }
   });
 

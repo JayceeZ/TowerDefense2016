@@ -40,7 +40,7 @@ var Slot = function Slot(id) {
   };
 
   this.setTag = function(tag) {
-    if(this.player != null) {
+    if(this.player && this.player !== null) {
       this.tag = tag;
       this.setColor(tagColors[this.id]);
     }
