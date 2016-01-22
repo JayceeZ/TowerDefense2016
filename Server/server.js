@@ -161,7 +161,7 @@ ioServer.on('connection', function(socket) {
    */
   socket.on('enemyEscape', function(message){
     console.log('Enemy escape');
-    socket.to('table').emit("enemyEscape",{"id":message.id,"t":message.t});
+    socket.to('table').emit("killEnemy",{"id":message.id,"t":message.t});
   });
 
   socket.on('endVague', function(){
@@ -173,7 +173,7 @@ ioServer.on('connection', function(socket) {
     enemy : id, vitesse, start, pathPoints, pathDirections
    */
   socket.on('initEnemy', function(enemy){
-    console.log('Init enemy');
+    console.log('Init enemy : '+enemy.vitesse);
     socket.to("table").emit("initEnemy",enemy);
   });
 
@@ -197,7 +197,6 @@ ioServer.on('connection', function(socket) {
     message --> id, t, idplayer
    */
   socket.on('killEnemy', function(message){
-    console.log('Kill enemy');
     socket.to('table').emit("killEnemy",{"id":message.id,"t":message.t});
     socket.to('stats').emit("killEnemy",message.idplayer);
   });
