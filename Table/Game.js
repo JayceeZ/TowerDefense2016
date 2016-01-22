@@ -82,7 +82,8 @@ module.exports = function(pmax,socket){
         var tower = new Tower(markerx*this.map.width,markery*this.map.height,angle,player,this.radiusTower);
         player.addTower(tower);
         player.turretCount++;
-        return this.map.addTower(tower);
+        this.map.addTower(tower);
+        return tower;
     };
 
     this.setPlayerReady = function(idplayer,ready){
