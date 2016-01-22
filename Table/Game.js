@@ -5,6 +5,7 @@ var User = require('./User.js'),
     Tower = require('./Tower.js');
 
 module.exports = function(pmax,socket){
+    var oThis = this;
     this.creating = true;
     this.status = "";
     this.maxPlayers = pmax;
@@ -13,7 +14,7 @@ module.exports = function(pmax,socket){
     this.nbvague = 3;
     this.ennemyVague = [5,10,15];
     this.map;
-    this.radiusTower = 5;
+    this.radiusTower = 50;
     this.socket = socket;
     this.clock = 0;
     this.stopVague = false;
@@ -35,7 +36,6 @@ module.exports = function(pmax,socket){
 
     this.launch = function(){
         this.creating = false;
-        this.status = "placement";
         this.launchPlacement();
     };
 
@@ -78,7 +78,7 @@ module.exports = function(pmax,socket){
     };
 
     this.addTower = function(idplayer,x,y,angle){
-        var player = getPlayerFromId(idplayer);
+        var player = this.getPlayerFromId(idplayer);
         var tower = new Tower(x,y,angle,player,this.radiusTower);
         player.addTower(tower);
         player.turretCount++;
@@ -86,15 +86,17 @@ module.exports = function(pmax,socket){
     };
 
     this.setPlayerReady = function(idplayer,ready){
-        this.getPlayerFromId(idplayer).setReady(ready);
-        this.checkPlayersReady();
+        if(this.status === "placement") {
+            this.getPlayerFromId(idplayer).setReady(ready);
+            this.checkPlayersReady();
+        }
     };
 
     this.checkPlayersReady = function(){
         var check = true;
         var i;
-        for(i = 0; i < players.length; i++)
-            if(players[i].ready === false)
+        for(i = 0; i < this.players.length; i++)
+            if(this.players[i].ready === false)
                 check = false;
         if(check === true)
             this.endPlacement();
@@ -111,18 +113,19 @@ module.exports = function(pmax,socket){
 
     this.launchNextVague = function(){
         this.vague++;
+        this.status = "vague";
         this.map.initNewVague();
         this.map.initEnemy(this.ennemyVague[this.vague-1],this.socket);
         this.socket.emit("launchVague",this.vague);
         this.clock = 0;
-        this.timer = setInterval("this.loopVague()",this.INTERVAL);
+        this.timer = setInterval(function(){ oThis.loopVague()},this.INTERVAL);
     };
 
     this.loopVague = function(){
         this.clock++;
         this.map.actuEnemyPosition(this.socket,this.clock);
-        this.map.updateProjectile(this.socket,this.clock);
-        if(this.enemies.length === 0)
+        this.map.updateProjectiles(this.socket,this.clock);
+        if(this.map.enemies.length === 0)
             this.endVague();
     };
 
@@ -141,8 +144,6 @@ module.exports = function(pmax,socket){
             if(this.players[i].id == id)
                 return this.players[i];
     };
-
-
 
     this.getPlayerIdFromMarker = function(id){
         var i;

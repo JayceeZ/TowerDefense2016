@@ -19,21 +19,21 @@ module.exports = function(id,pseudo){
 
     this.setScore = function(s){
         this.score = s;
-    }
+    };
 
     this.setReady = function(r){
         this.ready = r;
-    }
+    };
 
     this.setMarkerid = function(id){
         this.markerid = id;
-    }
+    };
 
     this.updateMarker = function(marker){
 
-    }
+    };
 
     this.addTower = function(tower){
-        towers.push(tower);
+        this.towers.push(tower);
     }
 };

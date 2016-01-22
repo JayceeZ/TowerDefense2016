@@ -13,7 +13,7 @@ module.exports = function(x,y,count,tower){
     this.getTargets = function(){
         var targets = [];
 
-        targets.push(singleTarget);
+        targets.push(this.singleTarget);
 
         return targets;
     };

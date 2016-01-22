@@ -10,7 +10,7 @@ module.exports = function(id,x,y,points,directions){
     this.pathPoints = points;
     this.pathDirections = directions;
     this.indexPath = 0;
-    this.vitesse = 2;
+    this.vitesse = 20;
 
     this.actuPosition = function(){
         this.x += this.vitesse * this.pathDirections[this.indexPath].vx;
@@ -26,6 +26,7 @@ module.exports = function(id,x,y,points,directions){
 
     this.shot = function(socket, clock){
         socket.emit("killEnemy",{"id":this.id,"t":clock});
+        return true;
     };
 
     this.getPrediction = function(n){

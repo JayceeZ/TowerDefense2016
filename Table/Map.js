@@ -28,7 +28,7 @@ module.exports = function(){
     };
 
     this.checkPlacement = function(x,y,radius){
-        if(y+radius < 30 || y-radius > 70)
+        if(y+radius < 300 || y-radius > 700)
             return true;
         return false;
     };
@@ -61,11 +61,11 @@ module.exports = function(){
     this.initEnemy = function(n,socket){
         for(i = 0; i < n; i++){
             this.ID_ENEMY++;
-            var start = getRandomStartPoint();
-            var path = getPathFromStartPoint(start);
+            var start = this.getRandomStartPoint();
+            var path = this.getPathFromStartPoint(start);
             var vitesse = 2;
             this.enemies.push(new Enemy(this.ID_ENEMY,start.x,start.y,path.points,path.directions));
-            this.socket.emit("initEnemy",{"id":this.ID_ENEMY,"vitesse":vitesse,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
+            socket.emit("initEnemy",{"id":this.ID_ENEMY,"vitesse":vitesse,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
         }
     };
 
@@ -91,7 +91,7 @@ module.exports = function(){
             }
         if(escape !== 0){
             this.escaped += escape;
-            this.socket.emit("updateEscaped",this.escaped);
+            socket.emit("updateEscaped",this.escaped);
         }
     };
 
@@ -99,21 +99,21 @@ module.exports = function(){
         // UPDATES
         var i;
         var kill = 0;
-        var l = projectiles.length();
+        var l = this.projectiles.length;
         for(i = 0; i < l; i++){
-            if(projectiles[i].updateCount() === true){
-                var targets = projectiles[i].getTargets();
+            if(this.projectiles[i].updateCount() === true){
+                var targets = this.projectiles[i].getTargets();
                 var j;
-                for(j = 0; j < targets.length(); j++)
+                for(j = 0; j < targets.length; j++)
                     if(targets[j].shot(socket,clock) === true) {
-                        this.removeEnemy(targets[j]);
+                        this.removeEnemy(targets[j].id);
                         kill++;
                     }
             }
         }
         if(kill !== 0){
             this.kills += kill;
-            this.socket.emit("updateKills",this.kills);
+            socket.emit("updateKills",this.kills);
         }
         // NEW PROJECTILES
         for(i = 0; i < this.towers.length; i++){
@@ -124,10 +124,10 @@ module.exports = function(){
 
     };
 
-    this.removeEnemy = function(enemy){
+    this.removeEnemy = function(enemyId){
         var i;
         for(i = 0; i < this.enemies.length; i++)
-            if(enemy === this.enemies[i]){
+            if(enemyId === this.enemies[i].id){
                 this.enemies.splice(i,1);
                 break;
             }

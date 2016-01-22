@@ -16,7 +16,7 @@ module.exports = function(x,y,angle,player,radius){
     this.reloadcount = 0;
     this.firespeed = 10;
 
-    this.radiusrange = 30;
+    this.radiusrange = 200;
 
     this.resetFire = function(){
         this.reloading = false;
@@ -27,8 +27,8 @@ module.exports = function(x,y,angle,player,radius){
         if(this.reloadcount >= this.reloadtime)
             this.reloading = false;
         if(this.reloading === false){
-            var targets = getEnemiesInRange(enemies);
-            var target = getBestTarget(enemies);
+            var targets = this.getEnemiesInRange(enemies);
+            var target = this.getBestTarget(enemies);
             if(target !== null){
                 this.reloading = true;
                 this.reloadcount = 0;

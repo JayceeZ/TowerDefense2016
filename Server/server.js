@@ -135,10 +135,11 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('endPlacement', function(){
-
+    console.log('End Placement');
   });
 
   socket.on('launchVague', function(vague){
+    console.log('Launch vague : '+vague);
     socket.to("table").emit("launchVague",vague);
     for(i = 0; i < players.length;i++)
       players[i].socket.emit("launchVague",vague);
@@ -148,24 +149,25 @@ ioServer.on('connection', function(socket) {
     escape : nb d'escapes
    */
   socket.on('updateEscaped', function(escape){
-
+    console.log('Update escaped');
   });
 
   /*
     message : id , t
    */
   socket.on('enemyEscape', function(message){
-
+    console.log('Enemy escape');
   });
 
   socket.on('endVague', function(){
-
+    console.log('End vague');
   });
 
   /*
     enemy : id, vitesse, startPoint, pathPoints, pathDirections
    */
   socket.on('initEnemy', function(enemy){
+    console.log('Init enemy');
     socket.to("table").emit("initEnemy",enemy);
   });
 
@@ -173,32 +175,33 @@ ioServer.on('connection', function(socket) {
     message --> idplayer, id, x , y, angle
    */
   socket.on('validateTower', function(message){
+    console.log('Validate tower');
     socket.to("table").emit("validateTower",message);
   });
 
   /*
-    message -->
+    message --> t1 , launcher, t2, target
    */
   socket.on('projectile', function(message){
-
+    console.log('Projectile');
   });
 
   /*
     message --> id, t
    */
   socket.on('killEnemy', function(message){
-
+    console.log('Kill enemy');
   });
 
   /*
     kills : nb kills
    */
   socket.on('updateKills', function(kills){
-
+    console.log('Update kills');
   });
 
   socket.on('endGame', function(){
-
+    console.log('End Game');
   });
 
     /**
