@@ -1,0 +1,59 @@
+<ion-view view-title="Placer mes defenses">
+    <ion-content ng-class="{expanded:isExpanded}" ng-controller="PlacementCtrl" >
+
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input type="text" placeholder="Recherche par nom" id="query" ng-model="query">
+        </label>
+      </div>
+
+
+      <ion-scroll direction="x" scrollbar-x="true" scrollbar-y="false" class="wide-as-needed">
+        <montruc  ng-repeat="d in defenses | filter:query | orderBy:'name'" ng-last-repeat="mylist">
+
+          <mabalise ng-show="d.id == selectedItem" class="card" style="width: 25%; display: inline-table; border: solid; border-color:green" ng-click="disableSelection()" on-double-tap="onDoubleTap({{d.id}})">
+            <img ng-src="{{defenses[$index].image}}" width="100%" />
+            <p class="itemTitle">{{defenses[$index].name}}</p>
+          </mabalise>
+
+          <mabalise ng-show="d.id != selectedItem" class="card" style="width: 25%; display: inline-table;" on-double-tap="onDoubleTap({{d.id}})">
+            <img ng-src="{{defenses[$index].image}}" width="100%" />
+            <p class="itemTitle">{{defenses[$index].name}}</p>
+          </mabalise>
+
+        </montruc>
+      </ion-scroll>
+
+
+      <div class="list" ng-show="selectedItem != -1">
+        <div class="item item-divider">Caractéristiques</div>
+        <al class="item item-icon-left" ng-repeat="(key, value) in defenses[selectedItem].caracteristics" ng-last-repeat="mylist">
+          <i class="icon ion-email"></i>{{key}}
+          <span class="item-note">{{value}}</span>
+        </al>
+      </div>
+
+
+      <div ng-show="selectedItem == -1" style="height : 30%;display: flex; justify-content: center;">
+        <div style="text-align : center; align-self: center;">
+          <h3>Aucune pièce selectionnée !</h3>
+          <p>Double cliquez pour selectionner une pièce, puis placez là sur la table en appuyant sur le bouton <i>Placer sur la table</i> lorsqu'il n'est pas grisé.</p>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col col-50"  style="text-align: center">
+            <button ng-show="!canValid()" class="button button-balanced" disabled>Placer sur la table</button>
+            <button ng-show="canValid()" class="button button-balanced" ng-click="validIt()">Placer sur la table</button>
+        </div>
+
+        <div class="col col-50" style="text-align: center">
+            <button class="button button-positive"  ng-click="ready()">Prêt</button>
+        </div>
+      </div>
+
+
+    </ion-content>
+</ion-view>
