@@ -10,10 +10,10 @@
       </div>
     </div>
     <div class="row">
-      <div id="slot-{{ s.id }}" class="marker-space" style="background-color: {{ s.getColorCSS() }}" ng-repeat="s in slots" slot>
+      <div id="slot-{{ s.id }}" class="slot marker-space" style="background-color: {{ s.getColorCSS() }}" ng-repeat="s in slots" slot>
       </div>
     </div>
-    <div class="col-md-offset-8 col-md-2 btn {{ slots[0].tag ? 'btn-success' : 'btn-danger' }} {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame()">
+    <div class="col-md-offset-4 col-md-4 btn {{ slots[0].tag ? 'btn-success' : 'btn-danger' }} {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame()">
       Lancer la partie
     </div>
   </div>
