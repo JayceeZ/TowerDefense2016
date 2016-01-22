@@ -108,8 +108,8 @@ socket.on('isReady', function(message){
 var game = new Game(4,socket);
 var handler = new TUIOHandler(game);
 map = new Map();
-map.setHeight(1000);
-map.setWidth(2000);
+map.setHeight(1080);
+map.setWidth(1920);
 game.setMap(map);
 
 
