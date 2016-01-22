@@ -7,7 +7,7 @@ var osc = require('node-osc'),
     TUIOHandler = require('./TUIOHandler.js');
 
 // Socket to common server
-var socket = io.connect("http://localhost:8081");
+var socket = io.connect("http://192.168.1.21:8081");
 
 /***************
  * TUIO Events *
@@ -86,10 +86,7 @@ socket.on('launchGame', function (message) {
 });
 
 socket.on('putTower', function(idplayer){
-  var marker = null;
-  for(i = 0; i < markersTUIO.length; i++)
-    if(markersTUIO[i].marker.playerId == idplayer)
-      marker = markersTUIO[i].marker;
+  var marker = handler.getMarkerFromIdPlayer(idplayer);
   if(marker != null && marker.positionOk == true){
     var id = game.addTower(idplayer,marker.x,marker.y,marker.angle);
     socket.emit("validateTower",{"idplayer":idplayer,"id":id,"x":marker.x,"y":marker.y,"angle":marker.angle});
