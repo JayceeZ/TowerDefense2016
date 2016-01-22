@@ -3,7 +3,7 @@
  */
 
 var Slot = function Slot(id) {
-  var tagColors = ["red", "blue", "green", "purple"];
+  var tagColors = {A6: "red", 1: "blue", 20: "green", C4: "purple"};
   var availableColors = {
     grey: [0, 0, 0, 0.2],
     orange: [255,120,50,1],
@@ -40,9 +40,9 @@ var Slot = function Slot(id) {
   };
 
   this.setTag = function(tag) {
-    if(this.player && this.player !== null) {
+    if(this.player !== null) {
       this.tag = tag;
-      this.setColor(tagColors[this.id]);
+      this.setColor(tagColors[tag]);
     }
   };
 

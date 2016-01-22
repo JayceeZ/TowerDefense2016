@@ -7,6 +7,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   $scope.slots = [];
 
   socket.emit('addTable');
+  socket.emit('addPlayer', {id:0, pseudo: "Lilol"});
 
   for (var n = 0; n < 4; n++) {
     $scope.slots.push(new Slot(n));
@@ -36,7 +37,7 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
     var x = message.x * home[0].clientWidth;
     var y = message.y * home[0].clientHeight;
     var slot = getSlot(x, y);
-    if (slot !== null) {
+    if (slot && slot !== null) {
       slot.setTag(message.id);
     }
   });
