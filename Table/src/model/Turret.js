@@ -9,6 +9,8 @@ var Turret = function Turret(id, container) {
   this.orientation = 0;
   this.size = 50;
 
+  this.tag = null;
+
   this.container = container;
   this.graphics = new PIXI.Graphics();
 
@@ -21,6 +23,15 @@ var Turret = function Turret(id, container) {
     this.x = x;
     this.y = y;
     this.update();
+  };
+
+  this.setTag = function(tag) {
+    this.tag = tag;
+  };
+
+  this.getColor = function() {
+    var color = availableColors[tag];
+    return "#"+color[0]+color[1]+color[2]+color[3];
   };
 
   this.update = function() {

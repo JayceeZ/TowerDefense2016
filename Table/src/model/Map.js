@@ -6,8 +6,10 @@ var Map = function Map(container) {
   this.turrets = [];
   this.enemies = [];
   this.events = [];
+  this.message = "Phase de placement";
 
   this.currentTime = 0;
+  this.end = 0;
 
   this.interval = undefined;
   this.graphics = new PIXI.Graphics();
@@ -51,26 +53,32 @@ var Map = function Map(container) {
     var loopEvents;
     this.interval = setInterval(function() {
       loopEvents = _this.events[_this.currentTime];
-      _.forEach(_this.enemies, function(e) {
-        e.updateModel(_this.currentTime);
-      });
+      for(var i=0; i < _this.enemies.length; i++) {
+        _this.enemies[i].updateModel(_this.currentTime);
+      }
       if(loopEvents && loopEvents.length) {
         console.log("Events at "+_this.currentTime);
-        _.forEach(loopEvents, function(event) {
-          event.fire(delta);
-        });
+        for(var i=0; i < loopEvents.length; i++) {
+          loopEvents[i].fire(delta);
+        }
       }
       _this.currentTime++;
+      if(_this.currentTime === _this.end) {
+        _this.stop();
+        _this.clean();
+      }
     }, delta);
+    this.message = "Vague en cours";
   };
 
-  this.clean = function(t) {
+  this.clean = function() {
     this.currentTime = 0;
     _.forEach(this.enemies, function(enemy) {
       enemy.destroy();
     });
     this.enemies = [];
     this.events = [];
+    this.message = "Phase de placement";
   };
 
   this.stop = function() {

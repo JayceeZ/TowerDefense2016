@@ -18,7 +18,7 @@ module.exports = function(x,y,angle,player,radius){
     this.kills = 0;
     this.shots = 0
 
-    this.radiusrange = 200;
+    this.radiusrange = 400;
 
     this.resetFire = function(){
         this.reloading = false;

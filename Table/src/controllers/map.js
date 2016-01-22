@@ -4,8 +4,6 @@
 
 appTable.controller('MapCtrl', function($scope, socket) {
   // Template model
-  $scope.message = "Phase de placement";
-
   /*******************
    * Animation setup *
    *******************/
@@ -18,7 +16,6 @@ appTable.controller('MapCtrl', function($scope, socket) {
     renderer.render(container);
     requestAnimationFrame(animate);
   }
-
   requestAnimationFrame(animate);
 
   /***********
@@ -47,10 +44,8 @@ appTable.controller('MapCtrl', function($scope, socket) {
     $scope.message = "Vague en cours";
   });
 
-  socket.on('endVague', function() {
-    //$scope.map.stop();
-    //$scope.map.clean();
-    //$scope.message = "Phase de placement";
+  socket.on('endVague', function(t) {
+    $scope.map.end = t;
   });
 
   socket.emit('performTestsMap');

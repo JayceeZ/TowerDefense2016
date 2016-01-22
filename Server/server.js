@@ -167,7 +167,7 @@ ioServer.on('connection', function(socket) {
 
   socket.on('endVague', function(time){
     console.log('End vague');
-    socket.to('table').emit("endVague",time);
+    socket.to('table').emit("endVague", time);
   });
 
   /*
