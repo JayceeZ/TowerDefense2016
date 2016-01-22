@@ -114,13 +114,13 @@ game.setMap(map);
 
 
 //TESTS
-
+/*
 var player = new User(1,"test");
 game.addPlayer(player);
 game.addTower(1,0.5,0.5,0);
 game.launch();
 game.setPlayerReady(1,true);
-
+*/
 /**
  Core
  **/
