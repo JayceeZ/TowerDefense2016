@@ -88,8 +88,11 @@ module.exports = function(pmax,socket){
 
     this.setPlayerReady = function(idplayer,ready){
         if(this.status === "placement") {
-            this.getPlayerFromId(idplayer).setReady(ready);
-            this.checkPlayersReady();
+            var player = this.getPlayerFromId(idplayer);
+            if(player !== null) {
+                player.setReady(ready);
+                this.checkPlayersReady();
+            }
         }
     };
 
