@@ -35,12 +35,15 @@ var Enemy = function Enemy(id, container) {
   };
 
   this.kill = function(t) {
+    console.log("Enemy "+this.id + " will die at "+t);
     this.dead = t;
   };
 
   this.updateModel = function(t) {
-    if(this.dead === t)
+    if(this.dead === t) {
+      console.log("Enemy destroyed at "+t);
       this.destroy();
+    }
 
     if(this.index < this.points.length) {
       var pos = this.points[this.index];

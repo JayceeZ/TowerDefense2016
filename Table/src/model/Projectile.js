@@ -26,11 +26,12 @@ var Projectile = function Projectile(container) {
     this.toY = y;
   };
 
-  this.fire = function() {
+  this.fire = function(delta) {
     var _this = this;
+    console.log("Projectile fired");
 
     var distance = Math.sqrt(Math.pow(this.toX-this.x,2)+Math.pow(this.toY-this.y,2));
-    this.speed = distance / this.duration;
+    this.speed = distance / (this.duration * delta);
     var dx = (this.toX-this.x) / distance;
     var dy = (this.toY-this.y) / distance;
     var x = this.x;

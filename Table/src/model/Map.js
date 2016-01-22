@@ -10,6 +10,7 @@ var Map = function Map(container) {
   this.currentTime = 0;
 
   this.interval = undefined;
+  this.graphics = new PIXI.Graphics();
   this.container = container;
 
   this.addTurret = function(id, x, y, orientation) {
@@ -38,26 +39,32 @@ var Map = function Map(container) {
     p.setDuration(end-start);
     p.setPosition(from.x, from.y);
     p.setDestination(to.x, to.y);
-    this.events.push({t: start, object: p});
+    if(this.events[start])
+      this.events[start].push(p);
+    else
+      this.events[start] = [p];
+    console.log("Projectile scheduled at "+start);
   };
 
   this.run = function(delta) {
     var _this = this;
+    var loopEvents;
     this.interval = setInterval(function() {
-      var loopEvent = _.find(_this.events, {t: _this.currentTime});
+      loopEvents = _this.events[_this.currentTime];
       _.forEach(_this.enemies, function(e) {
-        e.updateModel(_this._currentTime);
+        e.updateModel(_this.currentTime);
       });
-      if(loopEvent) {
-        _.forEach(loopEvent, function(event) {
-          event.object.fire();
+      if(loopEvents && loopEvents.length) {
+        console.log("Events at "+_this.currentTime);
+        _.forEach(loopEvents, function(event) {
+          event.fire(delta);
         });
       }
-      _this.currentTime += delta;
+      _this.currentTime++;
     }, delta);
   };
 
-  this.clean = function() {
+  this.clean = function(t) {
     this.currentTime = 0;
     _.forEach(this.enemies, function(enemy) {
       enemy.destroy();
@@ -69,4 +76,15 @@ var Map = function Map(container) {
   this.stop = function() {
     clearInterval(this.interval);
   };
+
+  this.drawEdges = function() {
+    this.graphics.lineStyle(2, 0x0000FF, 1);
+    this.graphics.moveTo(0, 300);
+    this.graphics.lineTo(1920, 300);
+    this.graphics.moveTo(0, 700);
+    this.graphics.lineTo(1920, 700);
+  };
+
+  this.drawEdges();
+  container.addChild(this.graphics);
 };

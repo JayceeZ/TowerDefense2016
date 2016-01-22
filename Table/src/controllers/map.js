@@ -35,7 +35,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
   });
 
   socket.on('killEnemy', function(data) {
-    $scope.map.killEnemy(data.id, data.index);
+    $scope.map.killEnemy(data.id, data.t);
   });
 
   socket.on('projectile', function(data) {
@@ -47,10 +47,10 @@ appTable.controller('MapCtrl', function($scope, socket) {
     $scope.message = "Vague en cours";
   });
 
-  socket.on('cleanMap', function(data) {
-    $scope.map.stop();
-    $scope.map.clean();
-    $scope.message = "Phase de placement";
+  socket.on('endVague', function() {
+    //$scope.map.stop();
+    //$scope.map.clean();
+    //$scope.message = "Phase de placement";
   });
 
   socket.emit('performTestsMap');
