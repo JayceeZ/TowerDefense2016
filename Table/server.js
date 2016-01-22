@@ -88,8 +88,8 @@ socket.on('launchGame', function (message) {
 socket.on('putTower', function(idplayer){
   var marker = handler.getMarkerFromIdPlayer(idplayer);
   if(marker != null && marker.positionOk == true){
-    var id = game.addTower(idplayer,marker.x,marker.y,marker.angle);
-    socket.emit("validateTower",{"idplayer":idplayer,"id":id,"x":marker.x,"y":marker.y,"angle":marker.angle});
+    var tower = game.addTower(idplayer,marker.x,marker.y,marker.angle);
+    socket.emit("validateTower",{"idplayer":idplayer,"id":tower.id,"x":tower.x,"y":tower.y,"angle":tower.angle});
   }
 });
 
