@@ -187,7 +187,7 @@ ioServer.on('connection', function(socket) {
   });
 
   /*
-    message --> id, t
+    message --> id, t, idplayer
    */
   socket.on('killEnemy', function(message){
     console.log('Kill enemy');
