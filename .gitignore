@@ -30,3 +30,12 @@
 
 # PLATFORMS
 **/platforms/
+
+node_modules/
+platforms/
+plugins/
+resources/
+.idea
+.editorconfig
+.bowerrc
+.DS_Store

@@ -8,9 +8,9 @@ var socket = io.connect("http://localhost:8081");
 
 
 
-socket.emit("addPlayer",{"pseudo":"test"});
+//socket.emit("addPlayer",{"pseudo":"test"});
 
 //socket.emit("putTower",0);
 
-//socket.emit("isReady",{"idplayer":0,"value":true});
+socket.emit("isReady",{"idplayer":0,"value":true});
 

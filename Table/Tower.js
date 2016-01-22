@@ -15,10 +15,11 @@ module.exports = function(x,y,angle,player,radius){
     this.reloadtime = 200;
     this.reloadcount = 0;
     this.firespeed = 33;
+    this.damage;
     this.kills = 0;
-    this.shots = 0
+    this.shots = 0;
 
-    this.radiusrange = 400;
+    this.radiusrange = 600;
 
     this.resetFire = function(){
         this.reloading = false;

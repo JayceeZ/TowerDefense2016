@@ -1,0 +1,58 @@
+<ion-view view-title="Defense details">
+    <ion-content ng-class="{expanded:isExpanded}" ng-controller="DetailsCtrl" ng-init="getDefense()">
+
+        <div class="hero">
+            <div class="content">
+                <div class="avatar" style="background-image: url({{defense.image}});"></div>
+                <h3><a class="assertive">{{defense.name}}</a></h3>
+                <h4><a class="assertive">{{defense.caracteristics.Type}}</a></h4>
+            </div>
+        </div>
+
+        <div class="tabs tabs-dark tabs-icon-top static">
+            <div ng-click="infos(0)" class="tab-item">
+                <i class="icon ion-information"></i> Description
+            </div>
+            <div ng-click="infos(1)" class="tab-item">
+                <i class="icon ion-gear-a"></i> Caractéristiques
+            </div>
+        </div>
+
+      <!-- Description -->
+      <div ng-show="buttonNavigation.description" class="list">
+          <h4 class="content padding double-padding-x">Description</h4>
+          <div class="card">
+            <div class="item item-divider">
+              Points forts
+            </div>
+            <div class="item item-text-wrap" style="padding: 25px">
+            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+            </div>
+          </div>
+
+        <div class="card">
+          <div class="item item-divider">
+            POints faibles
+          </div>
+          <div class="item item-text-wrap" style="padding: 25px">
+            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Caracteristics -->
+      <div ng-show="buttonNavigation.caracteristics" class="list">
+        <h4 class="content padding double-padding-x">Caractéristiques</h4>
+
+        <div class="list">
+          <a class="item item-icon-left" href="#" ng-repeat="(key, value) in defense.caracteristics">
+            <i class="icon ion-email"></i>{{key}}
+            <span class="item-note">{{value}}</span>
+          </a>
+        </div>
+
+      </div>
+
+
+    </ion-content>
+</ion-view>

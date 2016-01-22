@@ -235,13 +235,21 @@ ioServer.on('connection', function(socket) {
 
   socket.on('putTower', function(){
     console.log("Put tower");
-    //socket.to("core").emit("putTower",getPlayerFromSocket(socket));
-    socket.to("core").emit("putTower",0);
+    socket.to("core").emit("putTower",getPlayerFromSocket(socket));
   });
 
   socket.on('isReady', function(value){
     console.log("isReady");
-    //socket.to("core").emit("isReady",{"idplayer":getPlayerFromSocket(socket),"value":value});
+    socket.to("core").emit("isReady",{"idplayer":getPlayerFromSocket(socket),"value":value});
+  });
+
+  socket.on('putTowerTest', function(){
+    console.log("Put tower");
+    socket.to("core").emit("putTower",0);
+  });
+
+  socket.on('isReadyTest', function(value){
+    console.log("isReady");
     socket.to("core").emit("isReady",{"idplayer":0,"value":value});
   });
 

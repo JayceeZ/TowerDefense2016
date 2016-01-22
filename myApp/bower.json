@@ -1,0 +1,17 @@
+{
+  "name": "HelloIonic",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.2.4"
+  },
+  "dependencies": {
+    "ionic-material": "~0.4.2",
+    "ion-md-input": "~1.0.4",
+    "ngCordova": "~0.1.24-alpha",
+    "ionic-ion-horizontal-scroll-cards": "*",
+    "angular-chart.js": "~0.8.8",
+    "humanize-duration": "~3.5.0",
+    "moment": "momentjs#~2.11.1",
+    "angular-timer": "~1.3.3"
+  }
+}
