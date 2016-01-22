@@ -67,8 +67,8 @@ module.exports = function(game){
     this.getMarkerFromIdPlayer = function(id){
         var i;
         for(i = 0; i < this.markers.length; i++)
-            if(this.markers[i].playerId === id)
-                return this.markers[i];
+            if(this.markers[i].marker.playerId === id)
+                return this.markers[i].marker;
         return null;
     }
 }

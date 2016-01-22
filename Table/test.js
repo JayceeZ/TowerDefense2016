@@ -13,5 +13,5 @@ socket.on("connectionStatus", function(message){
     id = message.id;
 });
 
-setTimeout(function(){socket.emit("putTower",1)},5000);
+socket.emit("putTower",0);
 

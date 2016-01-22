@@ -80,7 +80,7 @@ socket.on('launchGame', function (message) {
   var i;
   for(i = 0; i < message.length; i++)
     game.setPlayerTag(message[i].idplayer,message[i].idtag);
-  handler.clear;
+  handler.clear();
   socket.emit('gameReady');
   game.launch();
 });
