@@ -38,20 +38,16 @@ var Enemy = function Enemy(id, container) {
     this.dead = t;
   };
 
-  this.stepTo = function(t) {
+  this.updateModel = function(t) {
     if(this.dead === t)
       this.destroy();
 
-    this.index = t;
-  };
-
-  this.updateModel = function() {
     if(this.index < this.points.length) {
       var pos = this.points[this.index];
       var direction = this.directions[this.index];
 
       if (this.x === pos.x && this.y === pos.y)
-        this.stepTo(this.index + 1);
+        this.index += 1;
 
       if (pos && direction)
         this.setPosition(this.x + this.speed * direction.vx, this.y + this.speed * direction.vy);

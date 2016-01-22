@@ -28,9 +28,9 @@ var Map = function Map(container) {
     this.enemies.push(e);
   };
 
-  this.killEnemy = function(id, index) {
+  this.killEnemy = function(id, t) {
     var e = _.find(this.enemies, {id: id});
-    e.kill(index);
+    e.kill(t);
   };
 
   this.projectile = function(start, from, end, to) {
@@ -46,10 +46,12 @@ var Map = function Map(container) {
     this.interval = setInterval(function() {
       var loopEvent = _.find(_this.events, {t: _this.currentTime});
       _.forEach(_this.enemies, function(e) {
-        e.updateModel();
+        e.updateModel(_this._currentTime);
       });
       if(loopEvent) {
-        loopEvent.object.fire();
+        _.forEach(loopEvent, function(event) {
+          event.object.fire();
+        });
       }
       _this.currentTime += delta;
     }, delta);
