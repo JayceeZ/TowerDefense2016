@@ -72,6 +72,7 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('addPlayer', function(message) {
+    console.log('Add Player');
     already = false;
     for(i = 0; i < players.length; i ++)
       if(players[i].pseudo == message.pseudo)
@@ -84,6 +85,7 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('connectionStatus', function(status){
+    console.log('Connection status : '+status.status);
     playerSocket = getPlayerSocket(status.id);
     playerSocket.emit("connectionStatus",{"status":status.status,"message":status.message});
     if(status.status == true)
@@ -112,18 +114,21 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('gameReady', function(){
+    console.log('Game ready');
     socket.to("table").emit("gameReady");
     for(i = 0; i < players.length;i++)
       players[i].socket.emit("gameReady");
   });
 
   socket.on('checkPlacement', function(message){
+    console.log('Check placement');
     playerSocket = getPlayerSocket(message.idplayer);
     if(playerSocket != null)
       playerSocket.emit("checkPlacement",message.check);
   });
 
   socket.on('launchPlacement', function(){
+    console.log('Launch placement');
     socket.to("table").emit("launchPlacement");
     for(i = 0; i < players.length;i++)
       players[i].socket.emit("launchPlacement");
@@ -137,6 +142,20 @@ ioServer.on('connection', function(socket) {
     socket.to("table").emit("launchVague",vague);
     for(i = 0; i < players.length;i++)
       players[i].socket.emit("launchVague",vague);
+  });
+
+  /*
+    escape : nb d'escapes
+   */
+  socket.on('updateEscaped', function(escape){
+
+  });
+
+  /*
+    message : id , t
+   */
+  socket.on('enemyEscape', function(message){
+
   });
 
   socket.on('endVague', function(){
@@ -168,6 +187,17 @@ ioServer.on('connection', function(socket) {
     message --> id, t
    */
   socket.on('killEnemy', function(message){
+
+  });
+
+  /*
+    kills : nb kills
+   */
+  socket.on('updateKills', function(kills){
+
+  });
+
+  socket.on('endGame', function(){
 
   });
 

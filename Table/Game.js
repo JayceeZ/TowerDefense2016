@@ -10,6 +10,7 @@ module.exports = function(pmax,socket){
     this.maxPlayers = pmax;
     this.players = [];
     this.vague = 0;
+    this.nbvague = 3;
     this.ennemyVague = [5,10,15];
     this.map;
     this.radiusTower = 5;
@@ -18,6 +19,7 @@ module.exports = function(pmax,socket){
     this.stopVague = false;
     this.timer;
     this.INTERVAL = 33;
+    this.escaped = 0;
 
     this.addPlayer = function(player){
         this.players.push(player);
@@ -45,34 +47,22 @@ module.exports = function(pmax,socket){
         return true;
     };
 
+    this.endGame = function (){
+        socket.emit("endGame");
+    }
+
+    /**
+     * ------------------------   PHASE  DE  PLACEMENT   ----------------------------------------------------------
+     */
+
     this.launchPlacement = function(){
+        this.status = "placement";
         var i;
-        for(i = 0; i < this.players.length; i++)
+        for(i = 0; i < this.players.length; i++) {
             this.players[i].ready = false;
+            this.players[i].turretCount = 0;
+        }
         this.socket.emit("launchPlacement");
-    };
-
-    this.endPlacement = function(){
-        this.socket.emit("endPlacement");
-    };
-
-    this.launchNextVague = function(){
-        this.vague++;
-        this.map.initEnemy(this.ennemyVague[this.vague-1],this.socket);
-        this.socket.emit("launchVague",this.vague);
-        this.clock = 0;
-        this.timer = setInterval("this.loopVague()",this.INTERVAL);
-    };
-
-    this.loopVague = function(){
-        this.map.actuEnemyPosition();
-
-    };
-
-    this.endVague = function(){
-        clearInterval(this.timer);
-
-        socket.emit("endVague");
     };
 
     this.checkPlacement = function(marker){
@@ -87,16 +77,11 @@ module.exports = function(pmax,socket){
         return false;
     };
 
-    this.getPlayerFromId = function(id){
-        for(i = 0; i < this.players.length; i++)
-            if(this.players[i].id == id)
-                return this.players[i];
-    };
-
     this.addTower = function(idplayer,x,y,angle){
         var player = getPlayerFromId(idplayer);
         var tower = new Tower(x,y,angle,player,this.radiusTower);
         player.addTower(tower);
+        player.turretCount++;
         return this.map.addTower(tower);
     };
 
@@ -115,13 +100,57 @@ module.exports = function(pmax,socket){
             this.endPlacement();
     };
 
+    this.endPlacement = function(){
+        this.socket.emit("endPlacement");
+        this.launchNextVague();
+    };
+
+    /**
+     * ------------------------   PHASE  DE  VAGUE   ----------------------------------------------------------
+     */
+
+    this.launchNextVague = function(){
+        this.vague++;
+        this.map.initNewVague();
+        this.map.initEnemy(this.ennemyVague[this.vague-1],this.socket);
+        this.socket.emit("launchVague",this.vague);
+        this.clock = 0;
+        this.timer = setInterval("this.loopVague()",this.INTERVAL);
+    };
+
+    this.loopVague = function(){
+        this.clock++;
+        this.map.actuEnemyPosition(this.socket,this.clock);
+        this.map.updateProjectile(this.socket,this.clock);
+        if(this.enemies.length === 0)
+            this.endVague();
+    };
+
+
+    this.endVague = function(){
+        clearInterval(this.timer);
+        socket.emit("endVague");
+        if(this.vague < this.nbvague)
+            this.launchPlacement();
+        else
+            this.endGame();
+    };
+
+    this.getPlayerFromId = function(id){
+        for(i = 0; i < this.players.length; i++)
+            if(this.players[i].id == id)
+                return this.players[i];
+    };
+
+
+
     this.getPlayerIdFromMarker = function(id){
         var i;
         for(i = 0; i < this.players.length; i++)
             if(this.players[i].markerid == id)
                 return this.players[i].id;
         return null;
-    }
+    };
 
 
 }
