@@ -125,7 +125,7 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('checkPlacement', function(message){
-    console.log('Check placement');
+    console.log('Check placement : '+message.check);
     playerSocket = getPlayerSocket(message.idplayer);
     if(playerSocket != null)
       playerSocket.emit("checkPlacement",message.check);
@@ -212,11 +212,14 @@ ioServer.on('connection', function(socket) {
      * Updates from players
      */
 
-  socket.on('putTower', function(){
-    socket.to("core").emit("putTower",getPlayerFromSocket(socket));
+  socket.on('putTower', function(id){
+    console.log("Put tower");
+    //socket.to("core").emit("putTower",getPlayerFromSocket(socket));
+    socket.to("core").emit("putTower",id);
   });
 
   socket.on('isReady', function(value){
+    console.log("isReady");
     socket.to("core").emit("isReady",{"idplayer":getPlayerFromSocket(socket),"value":value});
   });
 
