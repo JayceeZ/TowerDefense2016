@@ -11,7 +11,6 @@
     </div>
     <div class="row">
       <div id="slot-{{ s.id }}" class="marker-space" style="background-color: {{ s.getColorCSS() }}" ng-repeat="s in slots" slot>
-        <span ng-repeat="b in s.boundaries">{{ b }}<br /></span>
       </div>
     </div>
     <div class="col-md-offset-8 col-md-2 btn {{ slots[0].tag ? 'btn-success' : 'btn-danger' }} {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame()">

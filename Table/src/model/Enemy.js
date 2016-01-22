@@ -30,6 +30,10 @@ var Enemy = function Enemy(id, container) {
     this.directions = directions;
   };
 
+  this.setSpeed = function(speed) {
+    this.speed = speed;
+  };
+
   this.kill = function(t) {
     this.dead = t;
   };

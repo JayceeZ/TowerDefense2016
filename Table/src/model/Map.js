@@ -19,11 +19,12 @@ var Map = function Map(container) {
     this.turrets.push(t);
   };
 
-  this.addEnemy = function(id, start, positions, directions) {
+  this.addEnemy = function(id, start, positions, directions, speed) {
     var e = new Enemy(id, this.container);
     e.setPosition(start.x, start.y);
     e.setPoints(positions);
     e.setDirections(directions);
+    e.setSpeed(speed);
     this.enemies.push(e);
   };
 
