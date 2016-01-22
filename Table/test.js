@@ -5,13 +5,9 @@ var io = require('socket.io-client');
 
 var socket = io.connect("http://localhost:8081");
 
-var id = 0;
+
 
 //socket.emit("addPlayer",{"pseudo":"test"});
-
-socket.on("connectionStatus", function(message){
-    id = message.id;
-});
 
 //socket.emit("putTower",0);
 

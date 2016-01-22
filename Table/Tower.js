@@ -12,9 +12,9 @@ module.exports = function(x,y,angle,player,radius){
     this.player = player;
     this.radius = radius;
     this.reloading = false;
-    this.reloadtime = 50;
+    this.reloadtime = 200;
     this.reloadcount = 0;
-    this.firespeed = 10;
+    this.firespeed = 33;
 
     this.radiusrange = 200;
 
