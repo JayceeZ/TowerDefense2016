@@ -143,6 +143,7 @@ module.exports = function(pmax,socket){
         for(i = 0; i < this.players.length; i++)
             if(this.players[i].id == id)
                 return this.players[i];
+        return null;
     };
 
     this.getPlayerIdFromMarker = function(id){
