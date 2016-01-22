@@ -114,14 +114,9 @@ map = new Map();
 map.setHeight(1000);
 map.setWidth(2000);
 game.setMap(map);
-var player = new User(1,"test");
-game.addPlayer(player);
-game.launch();
-game.addTower(1,300,250,0);
 
-setTimeout(function(){game.setPlayerReady(1,true)},2000);
-setTimeout(function(){game.setPlayerReady(1,true)},10000);
-setTimeout(function(){game.setPlayerReady(1,true)},20000);
+game.launch();
+
 
 
 
