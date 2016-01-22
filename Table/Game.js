@@ -22,6 +22,7 @@ module.exports = function(pmax,socket){
     this.INTERVAL = 33;
     this.escaped = 0;
 
+
     this.addPlayer = function(player){
         this.players.push(player);
     }
@@ -79,7 +80,8 @@ module.exports = function(pmax,socket){
 
     this.addTower = function(idplayer,markerx,markery,angle){
         var player = this.getPlayerFromId(idplayer);
-        var tower = new Tower(markerx*this.map.width,markery*this.map.height,angle,player,this.radiusTower);
+        console.log("addTower : x = "+markerx+" ,y = "+markery);
+        var tower = new Tower(Math.round(markerx*this.map.width),Math.round(markery*this.map.height),angle,player,this.radiusTower);
         player.addTower(tower);
         player.turretCount++;
         this.map.addTower(tower);
@@ -128,7 +130,7 @@ module.exports = function(pmax,socket){
     this.loopVague = function(){
         this.clock++;
         this.map.actuEnemyPosition(this.socket,this.clock);
-        this.map.updateProjectiles(this.socket,this.clock);
+        this.map.updateProjectiles(this.socket,this.clock,this.vague);
         if(this.map.enemies.length === 0)
             this.endVague();
     };
@@ -136,7 +138,7 @@ module.exports = function(pmax,socket){
 
     this.endVague = function(){
         clearInterval(this.timer);
-        socket.emit("endVague");
+        socket.emit("endVague",this.clock);
         if(this.vague < this.nbvague)
             this.launchPlacement();
         else
@@ -158,5 +160,9 @@ module.exports = function(pmax,socket){
         return null;
     };
 
+    this.updateVague = function(socket){
+        var updates = {};
+    };
 
-}
+
+};
