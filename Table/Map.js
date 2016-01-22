@@ -70,7 +70,7 @@ module.exports = function(){
     };
 
     this.getRandomStartPoint = function(){
-        return {"x":0, "y":Math.floor((Math.random() * 38) + 32)};
+        return {"x":0, "y":Math.floor((Math.random() * 380) + 320)};
     };
 
     this.getPathFromStartPoint = function(start){
@@ -105,7 +105,7 @@ module.exports = function(){
                 var targets = this.projectiles[i].getTargets();
                 var j;
                 for(j = 0; j < targets.length; j++)
-                    if(targets[j].shot(this.projectiles[i],socket,clock) === true) {
+                    if(targets[j].dead === false && targets[j].shot(this.projectiles[i],socket,clock) === true) {
                         this.removeEnemy(targets[j].id);
                         kill++;
                     }

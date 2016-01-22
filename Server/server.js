@@ -161,10 +161,12 @@ ioServer.on('connection', function(socket) {
    */
   socket.on('enemyEscape', function(message){
     console.log('Enemy escape');
+    socket.to('table').emit("enemyEscape",{"id":message.id,"t":message.t});
   });
 
   socket.on('endVague', function(){
     console.log('End vague');
+    socket.to('table').emit("endVague");
   });
 
   /*
@@ -196,6 +198,8 @@ ioServer.on('connection', function(socket) {
    */
   socket.on('killEnemy', function(message){
     console.log('Kill enemy');
+    socket.to('table').emit("killEnemy",{"id":message.id,"t":message.t});
+    socket.to('stats').emit("killEnemy",message.idplayer);
   });
 
   /*

@@ -11,6 +11,7 @@ module.exports = function(id,x,y,points,directions){
     this.pathDirections = directions;
     this.indexPath = 0;
     this.vitesse = 1;
+    this.dead = false;
 
     this.actuPosition = function(){
         this.x += this.vitesse * this.pathDirections[this.indexPath].vx;
@@ -26,6 +27,7 @@ module.exports = function(id,x,y,points,directions){
 
     this.shot = function(projectile,socket, clock){
         socket.emit("killEnemy",{"id":this.id,"t":clock,"idplayer":projectile.tower.player.id});
+        this.dead = true;
         return true;
     };
 
@@ -39,5 +41,6 @@ module.exports = function(id,x,y,points,directions){
         }
         return {"x":x,"y":y};
     };
+
 
 };
