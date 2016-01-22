@@ -1,0 +1,22 @@
+<ion-view view-title="Stats">
+  <ion-content ng-class="{expanded:isExpanded}" ng-controller="StatsCtrl">
+
+    <div class="row" style="height: 50%; border-bottom: 1px solid;">
+      <div class="col col-50 col-center" style="border-right: 1px solid; text-align: center">
+        <h1 class="assertive"><timer>{{minutes}} minutes, {{seconds}} seconds.</timer></h1>
+        <h4>Statut : <b>{{statut}}</b></h4>
+      </div>
+
+      <div class="col col-50" >
+        <canvas id="pie" class="chart chart-pie"
+                chart-data="data" chart-labels="labels" chart-legend="true">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="row" style="height: 50%;">
+
+    </div>
+
+  </ion-content>
+</ion-view>

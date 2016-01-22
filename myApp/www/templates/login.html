@@ -1,0 +1,43 @@
+<style>
+  .scroll-content {
+    display: table !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .scroll {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+</style>
+
+<ion-view view-title="Connexion" align-title="left">
+    <ion-content ng-controller="LoginCtrl" style="background: url(img/bb1.jpg) center; background-size: cover;">
+
+      <div class="hero no-header flat">
+          <div class="app-icon" ng-click="howTakePhoto()"></div>
+
+            <div class="content">
+                <h1>Poly'Defense</h1>
+                <h4>par des élèves de Polytech'Nice Sophia</h4>
+            </div>
+        </div>
+
+        <div ng-show="!isConnect">
+          <div class="list">
+            <button class="button button-full button-balanced ink" ng-click="connect()">Connexion à la table</button>
+          </div>
+        </div>
+
+        <div ng-show="isConnect">
+          <div class="list">
+              <ion-md-input placeholder="Pseudo" highlight-color="balanced" type="text" ng-model="username"></ion-md-input>
+          </div>
+          <div class="padding">
+              <button class="button button-full button-balanced ink" ng-click="play()">Rejoindre une partie</button>
+          </div>
+        </div>
+
+
+    </ion-content>
+</ion-view>
