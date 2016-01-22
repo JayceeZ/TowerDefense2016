@@ -6,14 +6,15 @@ module.exports = function(id,pseudo){
 
     this.id = id;
     this.pseudo = pseudo;
-    this.score;
+    this.score = 0;
+    this.money = 0;
     this.ready = false;
     this.markerid = null;
     this.markerStatus = "unknown";
     this.loopTurretCount = 0;
     this.towers = [];
     this.kills = 0;
-    this.shots = 0
+    this.shots = 0;
     this.killsVague = 0;
     this.shotsVague = 0;
 
