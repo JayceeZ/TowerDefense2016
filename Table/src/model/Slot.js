@@ -17,8 +17,8 @@ var Slot = function Slot(id) {
   };
 
   this.id = id;
-  this.player = undefined;
-  this.playerPseudo = undefined;
+  this.player = null;
+  this.playerPseudo = null;
   this.tag = null;
   this.color = "grey";
 

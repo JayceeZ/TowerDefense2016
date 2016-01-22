@@ -7,7 +7,6 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
   $scope.slots = [];
 
   socket.emit('addTable');
-  socket.emit('addPlayer', {id:0, pseudo: "Lilol"});
 
   for (var n = 0; n < 4; n++) {
     $scope.slots.push(new Slot(n));
@@ -53,14 +52,14 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
 
   function getFirstFreeSlot() {
     return _.find($scope.slots, function(slot) {
-      return slot.player === undefined;
+      return slot.player === null;
     });
   }
 
   function computeAssociations() {
     var associations = [];
     _.forEach($scope.slots, function(slot) {
-      if(slot.player && slot.tag)
+      if(slot.player !== null && slot.tag !== null)
         associations.push({idplayer: slot.player, idtag: slot.tag});
     });
     return associations;
