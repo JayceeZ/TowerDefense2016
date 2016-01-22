@@ -78,7 +78,8 @@ ioServer.on('connection', function(socket) {
       if(players[i].pseudo == message.pseudo)
         already = true;
     if(!already) {
-      var player = {socket: socket, id: players.length, name: message.pseudo};
+      var player = {socket: socket, id: PLAYER_ID, name: message.pseudo};
+      PLAYER_ID++;
       players.push(player);
       socket.to('core').emit("addPlayer", {"pseudo": player.name, "id": player.id});
     }
@@ -88,8 +89,10 @@ ioServer.on('connection', function(socket) {
     console.log('Connection status : '+status.status);
     playerSocket = getPlayerSocket(status.id);
     playerSocket.emit("connectionStatus",{"status":status.status,"message":status.message});
-    if(status.status == true)
-      socket.to('table').emit("addPlayer", {"id":status.id, "pseudo" : status.pseudo});
+    if(status.status == true) {
+      socket.to('table').emit("addPlayer", {"id": status.id, "pseudo": status.pseudo});
+      socket.to('stats').emit("connection",{"id":status.id, "pseudo":status.pseudo});
+    }
   });
 
   socket.on('disconnect', function() {
@@ -106,6 +109,7 @@ ioServer.on('connection', function(socket) {
   socket.on('updateMarker', function(marker){
     console.log("Update marker");
     socket.to("table").emit("updateMarker", marker);
+    socket.to("stats").emit("updateMarker", marker);
   });
 
   socket.on('removeMarker', function(markerId){
@@ -222,6 +226,7 @@ ioServer.on('connection', function(socket) {
    */
 
   socket.on('launchGame', function(message){
+    console.log("launchGame : "+message.length);
     socket.to("core").emit("launchGame",message);
   });
 
