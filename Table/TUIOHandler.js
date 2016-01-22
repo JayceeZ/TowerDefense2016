@@ -63,4 +63,12 @@ module.exports = function(game){
             }
         return removes;
     };
+
+    this.getMarkerFromIdPlayer = function(id){
+        var i;
+        for(i = 0; i < this.markers.length; i++)
+            if(this.markers[i].playerId === id)
+                return this.markers[i];
+        return null;
+    }
 }
