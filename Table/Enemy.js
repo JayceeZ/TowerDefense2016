@@ -24,8 +24,8 @@ module.exports = function(id,x,y,points,directions){
         return false;
     };
 
-    this.shot = function(socket, clock){
-        socket.emit("killEnemy",{"id":this.id,"t":clock});
+    this.shot = function(projectile,socket, clock){
+        socket.emit("killEnemy",{"id":this.id,"t":clock,"idplayer":projectile.tower.player.id});
         return true;
     };
 

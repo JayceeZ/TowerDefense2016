@@ -7,14 +7,14 @@ var osc = require('node-osc'),
     TUIOHandler = require('./TUIOHandler.js');
 
 // Socket to common server
-var socket = io.connect("http://192.168.1.21:8081");
+var socket = io.connect("http://localhost:8081");
 
 /***************
  * TUIO Events *
  ***************/
 
 
-var oscServer = new osc.Server(3333, 'localhost');
+var oscServer = new osc.Server(3333, '192.168.1.7');
 oscServer.on("message", function (msg) {
   handleTUIO(msg);
 });
@@ -114,9 +114,6 @@ map = new Map();
 map.setHeight(1000);
 map.setWidth(2000);
 game.setMap(map);
-
-
-
 
 
 /**

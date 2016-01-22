@@ -105,7 +105,7 @@ module.exports = function(){
                 var targets = this.projectiles[i].getTargets();
                 var j;
                 for(j = 0; j < targets.length; j++)
-                    if(targets[j].shot(socket,clock) === true) {
+                    if(targets[j].shot(this.projectiles[i],socket,clock) === true) {
                         this.removeEnemy(targets[j].id);
                         kill++;
                     }
