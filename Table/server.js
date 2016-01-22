@@ -115,10 +115,6 @@ map.setHeight(1000);
 map.setWidth(2000);
 game.setMap(map);
 
-game.launch();
-
-
-
 
 /**
  Core
