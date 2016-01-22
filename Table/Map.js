@@ -95,7 +95,7 @@ module.exports = function(){
         }
     };
 
-    this.updateProjectiles = function(socket, clock){
+    this.updateProjectiles = function(socket, clock,vague){
         // UPDATES
         var i;
         var kill = 0;
@@ -105,9 +105,10 @@ module.exports = function(){
                 var targets = this.projectiles[i].getTargets();
                 var j;
                 for(j = 0; j < targets.length; j++)
-                    if(targets[j].dead === false && targets[j].shot(this.projectiles[i],socket,clock) === true) {
+                    if(targets[j].dead === false && targets[j].shot(this.projectiles[i],socket,clock,vague) === true) {
                         this.removeEnemy(targets[j].id);
                         kill++;
+                        this.projectiles[i].tower.updateKills();
                     }
             }
         }
@@ -118,8 +119,10 @@ module.exports = function(){
         // NEW PROJECTILES
         for(i = 0; i < this.towers.length; i++){
             var projectile = this.towers[i].onFire(this.enemies,socket,clock);
-            if(projectile !== null)
+            if(projectile !== null) {
                 this.projectiles.push(projectile);
+                projectile.tower.updateShots();
+            };
         }
 
     };

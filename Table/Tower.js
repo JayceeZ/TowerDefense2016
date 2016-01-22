@@ -15,6 +15,8 @@ module.exports = function(x,y,angle,player,radius){
     this.reloadtime = 200;
     this.reloadcount = 0;
     this.firespeed = 33;
+    this.kills = 0;
+    this.shots = 0
 
     this.radiusrange = 200;
 
@@ -28,7 +30,7 @@ module.exports = function(x,y,angle,player,radius){
             this.reloading = false;
         if(this.reloading === false){
             var targets = this.getEnemiesInRange(enemies);
-            var target = this.getBestTarget(enemies);
+            var target = this.getBestTarget(targets);
             if(target !== null){
                 this.reloading = true;
                 this.reloadcount = 0;
@@ -45,15 +47,16 @@ module.exports = function(x,y,angle,player,radius){
         var targets = [];
         var i;
         for(i = 0; i < enemies.length; i++)
-            if(this.isInRange(enemies[i]) === true)
+            if(this.isInRange(enemies[i]) === true) {
                 targets.push(enemies[i]);
+            }
         return targets;
     };
 
     this.isInRange = function(enemy){
-        // TO DO
-        if(Math.sqrt(Math.pow(this.x - enemy.x,2) + Math.pow(this.y - enemy.y,2)) < this.radiusrange)
+        if(Math.sqrt(Math.pow(this.x - enemy.x,2) + Math.pow(this.y - enemy.y,2)) < this.radiusrange) {
             return true;
+        }
         return false;
     };
 
@@ -63,6 +66,16 @@ module.exports = function(x,y,angle,player,radius){
             return {"x":prediction.x,"y":prediction.y};
         }
         return null;
+    };
+
+    this.updateKills= function(){
+        this.kills++;
+        this.player.updateKills();
+    };
+
+    this.updateShots = function(){
+        this.shots++;
+        this.player.updateShots();
     };
 
 

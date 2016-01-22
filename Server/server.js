@@ -147,6 +147,7 @@ ioServer.on('connection', function(socket) {
     socket.to("table").emit("launchVague",vague);
     for(i = 0; i < players.length;i++)
       players[i].socket.emit("launchVague",vague);
+    socket.to("stats").emit("launchVague",vague);
   });
 
   /*
@@ -164,9 +165,9 @@ ioServer.on('connection', function(socket) {
     socket.to('table').emit("killEnemy",{"id":message.id,"t":message.t});
   });
 
-  socket.on('endVague', function(){
+  socket.on('endVague', function(time){
     console.log('End vague');
-    socket.to('table').emit("endVague");
+    socket.to('table').emit("endVague",time);
   });
 
   /*
@@ -189,14 +190,15 @@ ioServer.on('connection', function(socket) {
     message --> t1 , launcher, t2, target
    */
   socket.on('projectile', function(message){
-    console.log('Projectile');
-    socket.to('table').emit({"start":message.t1,"from":message.launcher,"end":message.t2,"to":message.target});
+    console.log('Projectile : t1 = '+message.t1+" , x = "+message.launcher.x+" , y = "+message.launcher.y+"t2 = "+message.t2+" , x = "+message.target.x+" , y = "+message.target.y);
+    socket.to('table').emit("projectile",{"start":message.t1,"from":message.launcher,"end":message.t2,"to":message.target});
   });
 
   /*
     message --> id, t, idplayer
    */
   socket.on('killEnemy', function(message){
+    console.log("kill enemy : id = "+message.id+" , t = "+message.t);
     socket.to('table').emit("killEnemy",{"id":message.id,"t":message.t});
     socket.to('stats').emit("killEnemy",message.idplayer);
   });
@@ -211,6 +213,21 @@ ioServer.on('connection', function(socket) {
   socket.on('endGame', function(){
     console.log('End Game');
   });
+
+  /*
+    message : infosPlayers[] (kills, shots, time)
+   */
+  socket.on('updateVague',function(message){
+
+  });
+
+  /*
+    message : infosPlayers[] (kills, shots)
+   */
+  socket.on('updateGame', function(message){
+
+  });
+
 
     /**
      * Updates from players
