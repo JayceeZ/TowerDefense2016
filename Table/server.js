@@ -7,7 +7,7 @@ var osc = require('node-osc'),
     TUIOHandler = require('./TUIOHandler.js');
 
 // Socket to common server
-var socket = io.connect("http://192.168.1.21:8081");
+var socket = io.connect("http://localhost:8081");
 
 /***************
  * TUIO Events *
@@ -85,11 +85,16 @@ socket.on('launchGame', function (message) {
   game.launch();
 });
 
+socket.on('selectTower', function(message){
+  game.setSelectedTower(message.idplayer,message.type);
+});
+
 socket.on('putTower', function(idplayer){
   var marker = handler.getMarkerFromIdPlayer(idplayer);
   if(marker != null && marker.positionOk == true){
     var tower = game.addTower(idplayer,marker.x,marker.y,marker.angle);
-    socket.emit("validateTower",{"idplayer":idplayer,"id":tower.id,"x":tower.x,"y":tower.y,"angle":tower.angle});
+    if(tower !== null)
+      socket.emit("validateTower",{"idplayer":idplayer,"id":tower.id,"x":tower.x,"y":tower.y,"angle":tower.angle,"type":tower.type});
   }
 });
 
@@ -118,6 +123,7 @@ game.setMap(map);
 var player = new User(1,"test");
 game.addPlayer(player);
 game.addTower(1,0.5,0.5,0);
+game.setPlayerTag(1,"B2");
 game.launch();
 game.setPlayerReady(1,true);
 */

@@ -1,5 +1,5 @@
 /**
- * Created by alex on 22/01/16.
+ * Created by alex on 28/01/16.
  */
 
 module.exports = function(type){
@@ -13,6 +13,6 @@ module.exports = function(type){
 };
 
 var data = [
-    {"type": 1,"name":"basique","price":50, "radius":30, "reloadtime" : 200, "firespeed": 33, "damage":50, "damagetype":"singleTarget", "damageradius":0 }
+    {"type": 1,"hp":50,"gain":25, "damage":1, "vitesse" : 5}
 
 ];

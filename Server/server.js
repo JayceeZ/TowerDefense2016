@@ -179,7 +179,7 @@ ioServer.on('connection', function(socket) {
   });
 
   /*
-    message --> idplayer, id, x , y, angle
+    message --> idplayer, id, x , y, angle, type
    */
   socket.on('validateTower', function(message){
     console.log('Validate tower');
@@ -222,10 +222,19 @@ ioServer.on('connection', function(socket) {
   });
 
   /*
-    message : infosPlayers[] (kills, shots)
+    message : infosPlayers[] , infoGame
    */
-  socket.on('updateGame', function(message){
-
+  socket.on('globalUpdate', function(message){
+    //console.log("GlobalUpdate");
+    //console.log("Info game : id = "+message.infoGame.id+" , vague : "+message.infoGame.vague+" totalEscaped : "+message.infoGame.totalEscapes);
+    socket.to("stats").emit("globalUpdate",message);
+    var i;
+    for(i = 0; i < message.infoPlayers.length; i++){
+      //console.log("Info Player :  id = "+message.infoPlayers[i].id+" ,pseudo = "+message.infoPlayers[i].pseudo+" , kills = "+message.infoPlayers[i].kills+" ,score = "+message.infoPlayers[i].score);
+      var playerSocket = getPlayerSocket(message.infoPlayers[i].id);
+      if(playerSocket !== null)
+        playerSocket.emit("globalUpdate",{"infoGame":message.infoGame,"infoPlayer":message.infoPlayers[i]});
+    }
   });
 
 
@@ -243,6 +252,11 @@ ioServer.on('connection', function(socket) {
     socket.to("core").emit("isReady",{"idplayer":getPlayerFromSocket(socket),"value":value});
   });
 
+  socket.on('selectTower', function(type){
+    console.log("selectTower");
+    socket.to("core").emit("selectTower",{"idplayer":getPlayerFromSocket(socket),"type":type});
+  });
+
   socket.on('putTowerTest', function(){
     console.log("Put tower");
     socket.to("core").emit("putTower",0);
@@ -252,6 +266,8 @@ ioServer.on('connection', function(socket) {
     console.log("isReady");
     socket.to("core").emit("isReady",{"idplayer":0,"value":value});
   });
+
+
 
 
   /**

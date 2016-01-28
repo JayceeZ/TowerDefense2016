@@ -3,7 +3,7 @@
  */
 var Projectile = require('./Projectile.js');
 
-module.exports = function(x,y,angle,player,radius){
+module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, damage){
 
     this.id = 0;
     this.x = x;
@@ -12,12 +12,13 @@ module.exports = function(x,y,angle,player,radius){
     this.player = player;
     this.radius = radius;
     this.reloading = false;
-    this.reloadtime = 200;
+    this.reloadtime = reloadtime;
     this.reloadcount = 0;
-    this.firespeed = 33;
-    this.damage;
+    this.firespeed = firespeed;
+    this.damage = damage;
     this.kills = 0;
     this.shots = 0;
+    this.type = type;
 
     this.radiusrange = 600;
 
@@ -69,9 +70,9 @@ module.exports = function(x,y,angle,player,radius){
         return null;
     };
 
-    this.updateKills= function(){
+    this.updateKills= function(gain){
         this.kills++;
-        this.player.updateKills();
+        this.player.updateKills(gain);
     };
 
     this.updateShots = function(){

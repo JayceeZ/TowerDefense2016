@@ -2,7 +2,8 @@
  * Created by alex on 14/01/16.
  */
 var User = require('./User.js'),
-    Tower = require('./Tower.js');
+    Tower = require('./Tower.js'),
+    TowerFactory = require('./TowerFactory.js');
 
 module.exports = function(pmax,socket){
     var oThis = this;
@@ -19,8 +20,11 @@ module.exports = function(pmax,socket){
     this.clock = 0;
     this.stopVague = false;
     this.timer;
+    this.updateTimer;
     this.INTERVAL = 33;
+    this.UPDATE_INTERVAL = 500;
     this.escaped = 0;
+    this.ID = 0;
 
 
     this.addPlayer = function(player){
@@ -38,6 +42,20 @@ module.exports = function(pmax,socket){
     this.launch = function(){
         this.creating = false;
         this.launchPlacement();
+        this.clearPlayers();
+        this.updateTimer = setInterval(function(){ oThis.loopUpdate()},this.UPDATE_INTERVAL);
+    };
+
+    this.clearPlayers = function(){
+        var i;
+        var l = this.players.length;
+        for(i = 0; i < l; i++){
+            if(this.players[i].markerid === null) {
+                this.players.splice(i,1);
+                i--;
+                l--;
+            }
+        };
     };
 
     this.readyToLaunch = function(){
@@ -50,7 +68,21 @@ module.exports = function(pmax,socket){
 
     this.endGame = function (){
         socket.emit("endGame");
-    }
+        clearInterval(this.updateTimer);
+    };
+
+    this.loopUpdate = function(){
+        var infoPlayers = [];
+        var i;
+        for(i = 0; i < this.players.length; i++){
+            var player = this.players[i];
+            var infoPlayer = {"id":player.id,"pseudo":player.pseudo,"color":player.color,"money":player.money,"score":player.score,
+                "nbtowers":player.towerCount,"kills":player.kills,"shots":player.shots,"killsvague":player.killsVague,"shotsvague":player.shotsVague};
+            infoPlayers.push(infoPlayer);
+        }
+        var infoGame = {"id":this.ID,"vague":this.vague,"totalScore":this.map.totalScore,"totalKills":this.map.kills,"totalEscapes":this.map.escaped};
+        this.socket.emit("globalUpdate",{"infoPlayers":infoPlayers,"infoGame":infoGame});
+    };
 
     /**
      * ------------------------   PHASE  DE  PLACEMENT   ----------------------------------------------------------
@@ -66,13 +98,20 @@ module.exports = function(pmax,socket){
         this.socket.emit("launchPlacement");
     };
 
+    this.setSelectedTower = function(idplayer, type){
+        var player = getPlayerFromId(idplayer);
+        if(player !== null)
+            player.selectedTower = type;
+    };
+
     this.checkPlacement = function(marker){
         if(this.status !== "placement")
             return false;
         var player = this.getPlayerFromId(marker.playerId);
-        if(player !== null) {
-            if (player.loopTurretCount < 2 && this.map.checkPlacement(marker.x * map.width, marker.y * map.height, this.radiusTower)
-                && this.map.collisionTowers(marker.x*map.width,marker.y* map.height,this.radiusTower) === false)
+        var dataTower = TowerFactory(player.selectedTower);
+        if(player !== null && dataTower != null) {
+            if (player.money >= dataTower.price && this.map.checkPlacement(marker.x * map.width, marker.y * map.height, dataTower.radius)
+                && this.map.collisionTowers(marker.x*map.width,marker.y* map.height,dataTower.radius) === false)
                 return true;
         }
         return false;
@@ -80,12 +119,15 @@ module.exports = function(pmax,socket){
 
     this.addTower = function(idplayer,markerx,markery,angle){
         var player = this.getPlayerFromId(idplayer);
-        console.log("addTower : x = "+markerx+" ,y = "+markery);
-        var tower = new Tower(Math.round(markerx*this.map.width),Math.round(markery*this.map.height),angle,player,this.radiusTower);
-        player.addTower(tower);
-        player.turretCount++;
-        this.map.addTower(tower);
-        return tower;
+        var dataTower = TowerFactory(player.selectedTower);
+        if(player !== null && dataTower != null && player.money >= dataTower.price) {
+            console.log("addTower : x = " + markerx + " ,y = " + markery);
+            var tower = new Tower(dataTower.type,Math.round(markerx * this.map.width), Math.round(markery * this.map.height), angle, player, dataTower.radius,dataTower.reloadtime, dataTower.firespeed, dataTower.damage);
+            player.addTower(tower);
+            this.map.addTower(tower);
+            return tower;
+        };
+        return null;
     };
 
     this.setPlayerReady = function(idplayer,ready){
@@ -110,6 +152,9 @@ module.exports = function(pmax,socket){
 
     this.endPlacement = function(){
         this.socket.emit("endPlacement");
+        var i;
+        for(i = 0; i < this.players.length;i++)
+            this.players[i].ready = false;
         this.launchNextVague();
     };
 
