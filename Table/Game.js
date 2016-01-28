@@ -130,7 +130,6 @@ module.exports = function(pmax,socket){
         var player = this.getPlayerFromId(idplayer);
         var dataTower = TowerFactory(player.selectedTower);
         if(player !== null && dataTower != null && player.money >= dataTower.price) {
-            console.log("addTower : x = " + markerx + " ,y = " + markery);
             var tower = new Tower(dataTower.type,Math.round(markerx * this.map.width), Math.round(markery * this.map.height), angle, player, dataTower.radius,dataTower.reloadtime, dataTower.firespeed, dataTower.damage);
             player.addTower(tower);
             this.map.addTower(tower);

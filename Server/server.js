@@ -157,13 +157,6 @@ ioServer.on('connection', function(socket) {
   });
 
   /*
-    escape : nb d'escapes
-   */
-  socket.on('updateEscaped', function(escape){
-    console.log('Update escaped');
-  });
-
-  /*
     message : id , t
    */
   socket.on('enemyEscape', function(message){
@@ -209,22 +202,10 @@ ioServer.on('connection', function(socket) {
     socket.to('stats').emit("killEnemy",message.idplayer);
   });
 
-  /*
-    kills : nb kills
-   */
-  socket.on('updateKills', function(kills){
-    console.log('Update kills');
-  });
-
   socket.on('endGame', function(){
     console.log('End Game');
-  });
-
-  /*
-    message : infosPlayers[] (kills, shots, time)
-   */
-  socket.on('updateVague',function(message){
-
+    socket.to('table').emit("endGame");
+    socket.to('stats').emit("endGame");
   });
 
   /*
