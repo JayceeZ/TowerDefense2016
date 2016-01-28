@@ -2,7 +2,7 @@ var express = require('express');
 var socketio = require('socket.io');
 
 var app = express();
-app.use(express.static(__dirname + '/'));
+app.use(express.static(__dirname));
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');

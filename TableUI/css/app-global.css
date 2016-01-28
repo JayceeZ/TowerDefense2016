@@ -11,8 +11,6 @@ html, body, .ng-scope {
 }
 
 .flip-mirror {
-    position: absolute;
-    width: 100%;
     bottom: 0;
     -moz-transform: scale(-1, -1);
     -webkit-transform: scale(-1, -1);
@@ -36,15 +34,22 @@ html, body, .ng-scope {
 }
 
 .message-top {
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
     text-align: center;
     font-weight: bold;
     font-size: 4em;
+    color: black;
+    text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
 }
 
 .map {
     position: absolute;
     width: 100%;
     overflow: hidden;
+    background-image: url('../img/map.jpg');
+    background-size: 1920px 1080px;
 }
 
 .marker {

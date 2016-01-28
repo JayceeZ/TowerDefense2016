@@ -27,12 +27,12 @@ ioServer.on('connection', function (socket) {
     socket.emit('addPlayer', {id: "User4"});
 
     console.log('Pose of pieces');
-    var res = {width: 1920, height: 1080};
-    socket.emit('updateMarker', {id: "A1", x: 720 / res.width, y: 480 / res.height, orientation: 0});
-    socket.emit('updateMarker', {id: "A2", x: 850 / res.width, y: 480 / res.height, orientation: 0});
+    var res = {width: 1366, height: 720};
+    socket.emit('updateMarker', {id: "A1", x: 200 / res.width, y: 480 / res.height, orientation: 0});
+    socket.emit('updateMarker', {id: "A2", x: 400 / res.width, y: 480 / res.height, orientation: 0});
     socket.emit('removeMarker', {id: "A1"});
-    socket.emit('updateMarker', {id: "A3", x: 980 / res.width, y: 480 / res.height, orientation: 0});
-    socket.emit('updateMarker', {id: "A4", x: 1180 / res.width, y: 480 / res.height, orientation: 0});
+    socket.emit('updateMarker', {id: "A3", x: 600 / res.width, y: 480 / res.height, orientation: 0});
+    socket.emit('updateMarker', {id: "A4", x: 1000 / res.width, y: 480 / res.height, orientation: 0});
     socket.emit('updateMarker', {id: "A1", x: 720 / res.width, y: 480 / res.height, orientation: 0});
   });
 
@@ -70,8 +70,8 @@ ioServer.on('connection', function (socket) {
     }, 100);
 
 
-    socket.emit('initEnemy', {id: 0, startPoint: {x: 0, y: 100}, pathPoints: [{x: 100, y: 100},{x: 200, y: 100},{x: 300, y: 100}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}]});
-    socket.emit('initEnemy', {id: 0, startPoint: {x: 0, y: 200}, pathPoints: [{x: 100, y: 200},{x: 200, y: 200},{x: 300, y: 200}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}]});
+    socket.emit('initEnemy', {id: 0, start: {x: 0, y: 200}, startPoint: {x: 0, y: 100}, pathPoints: [{x: 100, y: 100},{x: 200, y: 100},{x: 300, y: 100}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}]});
+    socket.emit('initEnemy', {id: 0, start: {x: 0, y: 200}, startPoint: {x: 0, y: 200}, pathPoints: [{x: 100, y: 200},{x: 200, y: 200},{x: 300, y: 200}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}]});
 
     socket.emit('launchVague', {delta: 30});
     socket.emit('killEnemy', {id: 0, index: 2});

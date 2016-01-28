@@ -26,7 +26,7 @@ var handleTUIO = function(msg){
   for(a = 0; a < msg.length; a++){
     if(msg[a].length >= 7 && msg[a][0] == "/tuio/2Dobj"){
       var tag = msg[a][3];
-      var x = msg[a][4] - 1;
+      var x = msg[a][4];
       var y = msg[a][5];
       var angle = msg[a][6];
       var marker = new Marker(tag,x,y,angle);
