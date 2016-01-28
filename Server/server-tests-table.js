@@ -60,7 +60,7 @@ ioServer.on('connection', function (socket) {
       socket.emit('updateMarker', {id: "20", x: 720 / res.width, y: 480 / res.height, angle: r});
       if(r > 4) {
         console.log("Turret fire");
-        socket.emit('validateTower', {idplayer: 2, id: 1, x: 720, y: 480, angle: r});
+        socket.emit('validateTower', {idplayer: "User1", id: 1, x: 720, y: 480, angle: r});
         clearInterval(timerId1);
       }
     }, 100);
@@ -70,14 +70,14 @@ ioServer.on('connection', function (socket) {
       socket.emit('updateMarker', {id: "A6", x: 200 / res.height, y: 200 / res.height, angle: r});
       if(r > 2) {
         console.log("Turret fire");
-        socket.emit('validateTower', {idplayer: 1, id: 0, x: 200, y: 200 , angle: r, type: "First"});
+        socket.emit('validateTower', {idplayer: "User2", id: 0, x: 200, y: 200 , angle: r, type: "First"});
         clearInterval(timerId2);
       }
     }, 100);
 
 
-    socket.emit('initEnemy', {id: 0, start: {x: 0, y: 200}, pathPoints: [{x: 100, y: 100},{x: 200, y: 100},{x: 300, y: 100}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}], vitesse: 2});
-    socket.emit('initEnemy', {id: 0, start: {x: 0, y: 200}, pathPoints: [{x: 100, y: 200},{x: 200, y: 200},{x: 300, y: 200}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}], vitesse: 2});
+    socket.emit('initEnemy', {id: 0, start: {x: 0, y: 400}, pathPoints: [{x: 100, y: 400},{x: 200, y: 140000},{x: 700, y: 400}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}], vitesse: 2});
+    socket.emit('initEnemy', {id: 0, start: {x: 0, y: 450}, pathPoints: [{x: 50, y: 450},{x: 200, y: 450},{x: 1000, y: 450}], pathDirections: [{vx: 1, vy: 0}, {vx: 1, vy: 0}, {vx: 1, vy: 0}], vitesse: 2});
 
     socket.emit('launchVague', {delta: 30});
     socket.emit('killEnemy', {id: 0, t: 10*30});

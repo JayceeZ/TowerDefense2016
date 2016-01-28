@@ -29,15 +29,15 @@ var Turret = function Turret(id, container) {
 
   this.setPlayer = function(player) {
     this.player = player;
-    this.color = this.getColor(player);
+    this.color = this.__getColor(player);
     this.update();
   };
 
-  this.getColor = function(idplayer) {
+  this.__getColor = function(idplayer) {
     var ret = "grey";
     var playerTag = _.forEach(window.associations, function(association) {
       if(association.idplayer === idplayer) {
-        ret = tagColors[association.tag];
+        ret = association.color;
       }
     });
     return ret;
@@ -48,8 +48,11 @@ var Turret = function Turret(id, container) {
     this.graphics.lineStyle(0);
 
     // Circle color of user tag
-    //this.graphics.lineStyle(2, 0xFFCC00);
-    this.graphics.beginFill(0xFFCC00, 1);
+    var hexColor = "0xAAAAAA";
+    var color = availableColors[this.color];
+    if(color)
+      hexColor = "0x"+color[0].toString(16)+color[1].toString(16)+color[2].toString(16);
+    this.graphics.beginFill(parseInt(hexColor, 16), 1);
     this.graphics.drawCircle(this.x, this.y, 8);
     this.graphics.endFill();
 
@@ -64,7 +67,7 @@ var Turret = function Turret(id, container) {
 
   // center the sprite's anchor point
   this.texture.anchor.x = 0.5;
-  this.texture.anchor.y = 0.6;
+  this.texture.anchor.y = 0.58;
 
   container.addChild(this.texture);
   container.addChild(this.graphics);
