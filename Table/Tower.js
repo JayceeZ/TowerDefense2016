@@ -3,7 +3,7 @@
  */
 var Projectile = require('./Projectile.js');
 
-module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, damage){
+module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, damage, rangelength, rangeradius){
 
     this.id = 0;
     this.x = x;
@@ -19,8 +19,8 @@ module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, da
     this.kills = 0;
     this.shots = 0;
     this.type = type;
-
-    this.radiusrange = 600;
+    this.rangelength = rangelength;
+    this.rangeradius = rangeradius;
 
     this.resetFire = function(){
         this.reloading = false;
@@ -56,10 +56,25 @@ module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, da
     };
 
     this.isInRange = function(enemy){
-        if(Math.sqrt(Math.pow(this.x - enemy.x,2) + Math.pow(this.y - enemy.y,2)) < this.radiusrange) {
+        if(Math.sqrt(Math.pow(this.x - enemy.x,2) + Math.pow(this.y - enemy.y,2)) <= this.rangelength) {
+            var p1 = {"x":this.x+this.radius*Math.cos(this.angle),"y":this.y+this.radius*Math.sin(this.angle)};
+            var d1 = {"c":(p1.y-this.y)/(p1.x-this.x),"h":0};
+            d1.h = this.y - d1.c * this.x;
+            if(this.isAbove(d1,{"x":enemy.x,"y":enemy.y}) === true)
+                return false;
+            var p2 = {"x":this.x+this.radius*Math.cos(this.angle+this.rangeradius),"y":this.y+this.radius*Math.sin(this.angle+this.rangeradius)};
+            var d2 = {"c":(p2.y-this.y)/(p2.x-this.x),"h":0};
+            d2.h = this.y - d1.c * this.x;
+            if(this.isAbove(d2,{"x":enemy.x,"y":enemy.y}) === false)
+                return false;
             return true;
         }
         return false;
+    };
+
+    this.isAbove = function(droite,point){
+        if(point.y > droite.c * point.x + droite.h)
+            return true;
     };
 
     this.getBestTarget = function(enemies){

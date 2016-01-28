@@ -79,7 +79,7 @@ socket.on('addPlayer', function (message) {
 socket.on('launchGame', function (message) {
   var i;
   for(i = 0; i < message.length; i++)
-    game.setPlayerTag(message[i].idplayer,message[i].idtag);
+    game.setPlayerTag(message[i].idplayer,message[i].idtag,message[i].color);
   handler.clear();
   socket.emit('gameReady');
   game.launch();
@@ -128,7 +128,7 @@ game.setMap(map);
 var player = new User(1,"test");
 game.addPlayer(player);
 game.addTower(1,0.5,0.5,0);
-game.setPlayerTag(1,"B2");
+game.setPlayerTag(1,"B2","black");
 game.launch();
 game.setPlayerReady(1,true);
 */

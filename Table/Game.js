@@ -44,8 +44,12 @@ module.exports = function(pmax,socket){
         this.map = map;
     };
 
-    this.setPlayerTag = function(idplayer,idtag){
-        this.getPlayerFromId(idplayer).setMarkerid(idtag);
+    this.setPlayerTag = function(idplayer,idtag,color){
+        var player = this.getPlayerFromId(idplayer);
+        if(player !== null) {
+            player.setMarkerid(idtag);
+            player.color = color;
+        }
     };
 
     this.launch = function(){
@@ -130,11 +134,11 @@ module.exports = function(pmax,socket){
         var player = this.getPlayerFromId(idplayer);
         var dataTower = TowerFactory(player.selectedTower);
         if(player !== null && dataTower != null && player.money >= dataTower.price) {
-            var tower = new Tower(dataTower.type,Math.round(markerx * this.map.width), Math.round(markery * this.map.height), angle, player, dataTower.radius,dataTower.reloadtime, dataTower.firespeed, dataTower.damage);
+            var tower = new Tower(dataTower.type,Math.round(markerx * this.map.width), Math.round(markery * this.map.height), angle, player, dataTower.radius,dataTower.reloadtime, dataTower.firespeed, dataTower.damage, dataTower.rangelength, dataTower.rangeradius);
             player.addTower(tower);
             this.map.addTower(tower);
             return tower;
-        };
+        }
         return null;
     };
 
