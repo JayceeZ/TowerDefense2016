@@ -45,6 +45,8 @@ html, body, .ng-scope {
     position: absolute;
     width: 100%;
     overflow: hidden;
+    background-image: url('../img/map.jpg');
+    background-size: 1920px 1080px;
 }
 
 .marker {
