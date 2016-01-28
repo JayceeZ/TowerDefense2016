@@ -2,7 +2,7 @@
  * Represents the map
  */
 
-var Map = function Map(container) {
+var Map = function Map(scope, container) {
   this.turrets = [];
   this.enemies = [];
   this.events = [];
@@ -10,15 +10,20 @@ var Map = function Map(container) {
 
   this.currentTime = 0;
   this.end = 0;
+  this.lastVague = false;
+
+  // Scope of Ctrl for textual updates
+  this.scope = scope;
 
   this.interval = undefined;
   this.graphics = new PIXI.Graphics();
   this.container = container;
 
-  this.addTurret = function(id, x, y, orientation) {
+  this.addTurret = function(idplayer, id, x, y, orientation) {
     var t = new Turret(id, this.container);
     t.setPosition(x, y);
     t.setOrientation(orientation);
+    t.setPlayer(idplayer);
     this.turrets.push(t);
   };
 
@@ -49,6 +54,8 @@ var Map = function Map(container) {
   };
 
   this.run = function(delta) {
+    if((this.interval || null) !== null)
+      return;
     var _this = this;
     var loopEvents;
     this.interval = setInterval(function() {
@@ -78,11 +85,27 @@ var Map = function Map(container) {
     });
     this.enemies = [];
     this.events = [];
-    this.message = "Phase de placement";
+    var _this = this;
+    this.scope.$apply(function() {
+      _this.message = "Phase de placement";
+    });
   };
 
   this.stop = function() {
     clearInterval(this.interval);
+    this.interval = null;
+    console.log('Map animation stopped');
+  };
+
+  this.isEndGame = function() {
+    if (this.interval === null && this.lastVague === true) {
+      var _this = this;
+      this.scope.$apply(function() {
+        _this.message = "Fin de partie";
+      });
+      return true;
+    }
+    return false;
   };
 
   this.drawEdges = function() {

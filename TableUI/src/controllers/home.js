@@ -12,12 +12,27 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
     $scope.slots.push(new Slot(n));
   }
 
-  $scope.createGame = function() {
-    socket.emit('launchGame', computeAssociations());
-    socket.on('gameReady', function() {
-      console.log("launching game");
-      startGame();
+  $scope.createGame = function($event) {
+    $event.preventDefault();
+    if($scope.allPlayersAssociated()) {
+      console.log("Create game button pressed");
+      socket.emit('launchGame', computeAssociations());
+      socket.on('gameReady', function() {
+        console.log("launching game");
+        startGame();
+      });
+    }
+  };
+
+  $scope.allPlayersAssociated = function() {
+    var ret = true;
+    _.forEach($scope.slots, function(slot) {
+      if (slot.player !== null) {
+        if (slot.tag === null)
+          ret = false;
+      }
     });
+    return ret;
   };
 
   /**
@@ -28,6 +43,15 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
     var freeSlot = getFirstFreeSlot();
     freeSlot.setPlayer(message.id);
     freeSlot.setPlayerPseudo(message.pseudo);
+  });
+
+  socket.on('removePlayer', function(id) {
+    console.log("removePlayer : "+id);
+    _.forEach($scope.slots, function(slot) {
+      if(slot.player === id) {
+        slot.setPlayer(null);
+      }
+    });
   });
 
   socket.on('updateMarker', function(message) {
@@ -62,8 +86,9 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
     var associations = [];
     _.forEach($scope.slots, function(slot) {
       if(slot.player !== null && slot.tag !== null)
-        associations.push({idplayer: slot.player, idtag: slot.tag});
+        associations.push({idplayer: slot.player, idtag: slot.tag, color: slot.color});
     });
+    window.associations = associations;
     return associations;
   }
 

@@ -11,9 +11,10 @@
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/angular-route/angular-route.min.js"></script>
+  <script src="node_modules/angular-touch/angular-touch.min.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="lib/pixi.min.js"></script>
-  <body>
+  <body oncontextmenu="return false;">
     <div id="viewport" ng-controller="markersCtrl">
       <div ng-view></div>
       <canvas class="marker" ng-repeat="m in markers" marker>{{ m.version }}</canvas>

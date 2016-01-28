@@ -3,28 +3,28 @@
  */
 
 appTable.controller('MapCtrl', function($scope, socket) {
-  // Template model
   /*******************
    * Animation setup *
    *******************/
   var map = angular.element("#map")[0];
-  var renderer = PIXI.autoDetectRenderer(map.clientWidth, map.clientHeight, {transparent: true, antialiasing: true});
+  var renderer = PIXI.autoDetectRenderer(map.clientWidth, map.clientHeight, {transparent: true, antialiasing: false});
   map.appendChild(renderer.view);
   var container = new PIXI.Container();
 
   function animate() {
     renderer.render(container);
-    requestAnimationFrame(animate);
+    if(!$scope.map.isEndGame())
+      requestAnimationFrame(animate);
   }
   requestAnimationFrame(animate);
 
   /***********
    * Objects *
    ***********/
-  $scope.map = new Map(container);
+  $scope.map = new Map($scope, container);
 
   socket.on('validateTower', function(data) {
-    $scope.map.addTurret(data.id, data.x, data.y, data.angle);
+    $scope.map.addTurret(data.idplayer, data.id, data.x, data.y, data.angle);
   });
 
   socket.on('initEnemy', function(data) {
@@ -41,11 +41,14 @@ appTable.controller('MapCtrl', function($scope, socket) {
 
   socket.on('launchVague', function(data) {
     $scope.map.run(33);
-    $scope.message = "Vague en cours";
   });
 
   socket.on('endVague', function(t) {
     $scope.map.end = t;
+  });
+
+  socket.on('endGame', function() {
+    $scope.map.lastVague = true;
   });
 
   socket.emit('performTestsMap');
@@ -55,7 +58,7 @@ appTable.directive("message", function() {
   return {
     restrict: "A",
     link: function(scope, element) {
-      scope.$watch("message", function(newValue, oldValue) {
+      scope.$watch("map.message", function(newValue, oldValue) {
         element[0].content = newValue;
       });
     }

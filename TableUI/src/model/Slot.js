@@ -3,19 +3,6 @@
  */
 
 var Slot = function Slot(id) {
-  var tagColors = {A6: "red", 1: "blue", 20: "green", C4: "purple"};
-  var availableColors = {
-    grey: [0, 0, 0, 0.2],
-    orange: [255,120,50,1],
-    yellow: [253,214,0,1],
-    green: [140,210,17,1],
-    cyan: [0,180,160,1],
-    blue: [85,150,230,1],
-    purple: [152,85,212,1],
-    pink: [255,60,160,1],
-    red: [231,29,50,1]
-  };
-
   this.id = id;
   this.player = null;
   this.playerPseudo = null;
@@ -33,6 +20,11 @@ var Slot = function Slot(id) {
 
   this.setPlayer = function(player) {
     this.player = player;
+    if(player === null) {
+      this.playerPseudo = "";
+      this.tag = null;
+      this.color = "grey";
+    }
   };
 
   this.setPlayerPseudo = function(pseudo){

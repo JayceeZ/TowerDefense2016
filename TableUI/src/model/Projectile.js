@@ -44,7 +44,7 @@ var Projectile = function Projectile(container) {
       if(Math.sqrt(Math.pow(x-_this.x,2)+Math.pow(y-_this.y,2)) >= distance)
         _this.destroy();
       _this.graphics.clear();
-      _this.graphics.lineStyle(2, 0x0000FF, 1);
+      _this.graphics.lineStyle(10, 0xFFFFFF, 1);
       _this.graphics.moveTo(x, y);
       _this.graphics.lineTo(x + dx * _this.length, y + dy * _this.length);
     }, this.speed);

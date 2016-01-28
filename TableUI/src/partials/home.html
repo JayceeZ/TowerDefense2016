@@ -13,7 +13,7 @@
       <div id="slot-{{ s.id }}" class="slot marker-space" style="background-color: {{ s.getColorCSS() }}" ng-repeat="s in slots" slot>
       </div>
     </div>
-    <div class="col-md-offset-4 col-md-4 btn {{ slots[0].tag ? 'btn-success' : 'btn-danger' }} {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame()">
+    <div class="col-md-offset-4 col-md-4 btn {{ allPlayersAssociated() ? 'btn-success' : 'btn-danger' }} {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame($event)" ng-touch="createGame($event)">
       Lancer la partie
     </div>
   </div>
