@@ -102,6 +102,11 @@ socket.on('isReady', function(message){
   game.setPlayerReady(message.idplayer,message.value);
 });
 
+socket.on('removePlayer', function(id){
+  if(game.creating === true)
+    game.removePlayer(id);
+});
+
 
 
 

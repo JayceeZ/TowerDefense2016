@@ -29,15 +29,24 @@ module.exports = function(pmax,socket){
 
     this.addPlayer = function(player){
         this.players.push(player);
-    }
+    };
+
+    this.removePlayer = function(id){
+        var i;
+        for(i = 0; i < this.players.length; i++)
+            if(this.players[i].id === id){
+                this.players.splice(i,1);
+                break;
+            }
+    };
 
     this.setMap = function(map){
         this.map = map;
-    }
+    };
 
     this.setPlayerTag = function(idplayer,idtag){
         this.getPlayerFromId(idplayer).setMarkerid(idtag);
-    }
+    };
 
     this.launch = function(){
         this.creating = false;

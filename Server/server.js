@@ -97,6 +97,12 @@ ioServer.on('connection', function(socket) {
 
   socket.on('disconnect', function() {
     console.log("PERTE DE CONNEXION");
+    var player = getPlayerFromSocket(socket);
+    if(player != null) {
+      console.log("Player disconnect : "+player);
+      socket.to('table').emit("removePlayer",player);
+      socket.to('core').emit("removePlayer",player);
+    }
   });
 
   /**
@@ -288,7 +294,7 @@ var getPlayerSocket = function(id){
       return players[i].socket;
   }
   return null;
-}
+};
 
 var getPlayerFromSocket = function(socket){
   for(i = 0; i < players.length; i++){
@@ -296,4 +302,4 @@ var getPlayerFromSocket = function(socket){
       return players[i].id;
   }
   return null;
-}
+};
