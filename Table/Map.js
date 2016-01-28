@@ -1,7 +1,8 @@
 /**
  * Created by alex on 14/01/16.
  */
-var Enemy = require('./Enemy.js');
+var Enemy = require('./Enemy.js'),
+    EnemyFactory = require('./EnemyFactory.js');
 
 module.exports = function(){
 
@@ -14,6 +15,7 @@ module.exports = function(){
     this.ID_TOWER = 0;
     this.escaped = 0;
     this.kills = 0;
+    this.totalScore = 0;
 
     this.setHeight = function(h){
         this.height = h;
@@ -56,16 +58,26 @@ module.exports = function(){
         var i;
         for(i = 0; i < this.towers.length;i++)
             this.towers[i].resetFire();
-    }
+    };
 
     this.initEnemy = function(n,socket){
         for(i = 0; i < n; i++){
             this.ID_ENEMY++;
             var start = this.getRandomStartPoint();
             var path = this.getPathFromStartPoint(start);
-            var enemy = new Enemy(this.ID_ENEMY,start.x,start.y,path.points,path.directions)
-            this.enemies.push(enemy);
-            socket.emit("initEnemy",{"id":this.ID_ENEMY,"vitesse":enemy.vitesse,"start":start,"pathPoints":path.points,"pathDirections":path.directions});
+            var enemyData = EnemyFactory(1);
+            if(enemyData !== null) {
+                var enemy = new Enemy(this.ID_ENEMY, start.x, start.y, enemyData.hp, enemyData.gain, enemyData.damage, enemyData.vitesse, path.points, path.directions);
+                this.enemies.push(enemy);
+                socket.emit("initEnemy", {
+                    "id": this.ID_ENEMY,
+                    "vitesse": enemy.vitesse,
+                    "start": start,
+                    "pathPoints": path.points,
+                    "pathDirections": path.directions,
+                    "hp":enemy.hp
+                });
+            }
         }
     };
 
@@ -83,11 +95,11 @@ module.exports = function(){
         var l = this.enemies.length;
         for(i = 0; i < l; i++)
             if(this.enemies[i].actuPosition() === true) {
-                escape++;
                 socket.emit("enemyEscape",{"id":this.enemies[i].id,"t":clock});
                 this.enemies.splice(i,1);
                 i--;
                 l--;
+                escape++;
             }
         if(escape !== 0){
             this.escaped += escape;
@@ -106,9 +118,10 @@ module.exports = function(){
                 var j;
                 for(j = 0; j < targets.length; j++)
                     if(targets[j].dead === false && targets[j].shot(this.projectiles[i],socket,clock,vague) === true) {
-                        this.removeEnemy(targets[j].id);
                         kill++;
-                        this.projectiles[i].tower.updateKills();
+                        this.projectiles[i].tower.updateKills(targets[j].gain);
+                        this.totalScore += targets[j].gain;
+                        this.removeEnemy(targets[j].id);
                     }
             }
         }

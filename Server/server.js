@@ -97,6 +97,12 @@ ioServer.on('connection', function(socket) {
 
   socket.on('disconnect', function() {
     console.log("PERTE DE CONNEXION");
+    var player = getPlayerFromSocket(socket);
+    if(player != null) {
+      console.log("Player disconnect : "+player);
+      socket.to('table').emit("removePlayer",player);
+      socket.to('core').emit("removePlayer",player);
+    }
   });
 
   /**
@@ -151,13 +157,6 @@ ioServer.on('connection', function(socket) {
   });
 
   /*
-    escape : nb d'escapes
-   */
-  socket.on('updateEscaped', function(escape){
-    console.log('Update escaped');
-  });
-
-  /*
     message : id , t
    */
   socket.on('enemyEscape', function(message){
@@ -179,7 +178,7 @@ ioServer.on('connection', function(socket) {
   });
 
   /*
-    message --> idplayer, id, x , y, angle
+    message --> idplayer, id, x , y, angle, type
    */
   socket.on('validateTower', function(message){
     console.log('Validate tower');
@@ -203,29 +202,26 @@ ioServer.on('connection', function(socket) {
     socket.to('stats').emit("killEnemy",message.idplayer);
   });
 
-  /*
-    kills : nb kills
-   */
-  socket.on('updateKills', function(kills){
-    console.log('Update kills');
-  });
-
   socket.on('endGame', function(){
     console.log('End Game');
+    socket.to('table').emit("endGame");
+    socket.to('stats').emit("endGame");
   });
 
   /*
-    message : infosPlayers[] (kills, shots, time)
+    message : infosPlayers[] , infoGame
    */
-  socket.on('updateVague',function(message){
-
-  });
-
-  /*
-    message : infosPlayers[] (kills, shots)
-   */
-  socket.on('updateGame', function(message){
-
+  socket.on('globalUpdate', function(message){
+    //console.log("GlobalUpdate");
+    //console.log("Info game : id = "+message.infoGame.id+" , vague : "+message.infoGame.vague+" totalEscaped : "+message.infoGame.totalEscapes);
+    socket.to("stats").emit("globalUpdate",message);
+    var i;
+    for(i = 0; i < message.infoPlayers.length; i++){
+      //console.log("Info Player :  id = "+message.infoPlayers[i].id+" ,pseudo = "+message.infoPlayers[i].pseudo+" , kills = "+message.infoPlayers[i].kills+" ,score = "+message.infoPlayers[i].score);
+      var playerSocket = getPlayerSocket(message.infoPlayers[i].id);
+      if(playerSocket !== null)
+        playerSocket.emit("globalUpdate",{"infoGame":message.infoGame,"infoPlayer":message.infoPlayers[i]});
+    }
   });
 
 
@@ -243,6 +239,11 @@ ioServer.on('connection', function(socket) {
     socket.to("core").emit("isReady",{"idplayer":getPlayerFromSocket(socket),"value":value});
   });
 
+  socket.on('selectTower', function(type){
+    console.log("selectTower");
+    socket.to("core").emit("selectTower",{"idplayer":getPlayerFromSocket(socket),"type":type});
+  });
+
   socket.on('putTowerTest', function(){
     console.log("Put tower");
     socket.to("core").emit("putTower",0);
@@ -252,6 +253,8 @@ ioServer.on('connection', function(socket) {
     console.log("isReady");
     socket.to("core").emit("isReady",{"idplayer":0,"value":value});
   });
+
+
 
 
   /**
@@ -272,7 +275,7 @@ var getPlayerSocket = function(id){
       return players[i].socket;
   }
   return null;
-}
+};
 
 var getPlayerFromSocket = function(socket){
   for(i = 0; i < players.length; i++){
@@ -280,4 +283,4 @@ var getPlayerFromSocket = function(socket){
       return players[i].id;
   }
   return null;
-}
+};

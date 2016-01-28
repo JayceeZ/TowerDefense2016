@@ -2,17 +2,19 @@
  * Created by alex on 14/01/16.
  */
 
-module.exports = function(id,x,y,points,directions){
+module.exports = function(id,x,y,hp,gain,damage,vitesse,points,directions){
 
     this.id = id;
     this.x = x;
     this.y = y;
+    this.hp = hp;
+    this.gain = gain;
+    this.damage = damage;
     this.pathPoints = points;
     this.pathDirections = directions;
     this.indexPath = 0;
-    this.vitesse = 1;
+    this.vitesse = vitesse;
     this.dead = false;
-    this.gain;
 
     this.actuPosition = function(){
         this.x += this.vitesse * this.pathDirections[this.indexPath].vx;

@@ -13,6 +13,6 @@ module.exports = function(type){
 };
 
 var data = [
-    {"type": 1,"name":"basique", "radius":30, "reloadtime" : 200, "firespeed": 33, "damage":50, "damagetype":"singleTarget", "damageradius":0 }
+    {"type": 1,"name":"basique","price":50, "radius":50, "reloadtime" : 200, "firespeed": 33, "damage":50,"rangelength": 300,"rangeradius" : 0.5, "damagetype":"singleTarget", "damageradius":0 }
 
 ];

@@ -3,7 +3,7 @@
  */
 var Projectile = require('./Projectile.js');
 
-module.exports = function(x,y,angle,player,radius){
+module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, damage, rangelength, rangeradius){
 
     this.id = 0;
     this.x = x;
@@ -12,14 +12,15 @@ module.exports = function(x,y,angle,player,radius){
     this.player = player;
     this.radius = radius;
     this.reloading = false;
-    this.reloadtime = 200;
+    this.reloadtime = reloadtime;
     this.reloadcount = 0;
-    this.firespeed = 33;
-    this.damage;
+    this.firespeed = firespeed;
+    this.damage = damage;
     this.kills = 0;
     this.shots = 0;
-
-    this.radiusrange = 600;
+    this.type = type;
+    this.rangelength = rangelength;
+    this.rangeradius = rangeradius;
 
     this.resetFire = function(){
         this.reloading = false;
@@ -55,10 +56,25 @@ module.exports = function(x,y,angle,player,radius){
     };
 
     this.isInRange = function(enemy){
-        if(Math.sqrt(Math.pow(this.x - enemy.x,2) + Math.pow(this.y - enemy.y,2)) < this.radiusrange) {
+        if(Math.sqrt(Math.pow(this.x - enemy.x,2) + Math.pow(this.y - enemy.y,2)) <= this.rangelength) {
+            var p1 = {"x":this.x+this.radius*Math.cos(this.angle),"y":this.y+this.radius*Math.sin(this.angle)};
+            var d1 = {"c":(p1.y-this.y)/(p1.x-this.x),"h":0};
+            d1.h = this.y - d1.c * this.x;
+            if(this.isAbove(d1,{"x":enemy.x,"y":enemy.y}) === true)
+                return false;
+            var p2 = {"x":this.x+this.radius*Math.cos(this.angle+this.rangeradius),"y":this.y+this.radius*Math.sin(this.angle+this.rangeradius)};
+            var d2 = {"c":(p2.y-this.y)/(p2.x-this.x),"h":0};
+            d2.h = this.y - d1.c * this.x;
+            if(this.isAbove(d2,{"x":enemy.x,"y":enemy.y}) === false)
+                return false;
             return true;
         }
         return false;
+    };
+
+    this.isAbove = function(droite,point){
+        if(point.y > droite.c * point.x + droite.h)
+            return true;
     };
 
     this.getBestTarget = function(enemies){
@@ -69,9 +85,9 @@ module.exports = function(x,y,angle,player,radius){
         return null;
     };
 
-    this.updateKills= function(){
+    this.updateKills= function(gain){
         this.kills++;
-        this.player.updateKills();
+        this.player.updateKills(gain);
     };
 
     this.updateShots = function(){

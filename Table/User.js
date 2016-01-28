@@ -7,16 +7,17 @@ module.exports = function(id,pseudo){
     this.id = id;
     this.pseudo = pseudo;
     this.score = 0;
-    this.money = 0;
+    this.money = 100;
     this.ready = false;
     this.markerid = null;
-    this.markerStatus = "unknown";
-    this.loopTurretCount = 0;
     this.towers = [];
     this.kills = 0;
     this.shots = 0;
     this.killsVague = 0;
     this.shotsVague = 0;
+    this.selectedTower = 1;
+    this.towerCount = 0;
+    this.color = null;
 
 
     this.setPseudo = function(p){
@@ -41,11 +42,14 @@ module.exports = function(id,pseudo){
 
     this.addTower = function(tower){
         this.towers.push(tower);
+        this.towerCount++;
     };
 
-    this.updateKills = function(){
+    this.updateKills = function(gain){
         this.kills ++;
         this.killsVague++;
+        this.score += gain;
+        this.money += gain;
     };
 
     this.updateShots = function(){
