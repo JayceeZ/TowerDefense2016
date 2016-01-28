@@ -43,6 +43,21 @@ var Turret = function Turret(id, container) {
     return ret;
   };
 
+  this.__drawAimZone = function(hexColor, size, r) {
+
+    this.graphics.lineStyle(2, 0xA5A5A5, 0.6);
+
+
+    this.graphics.beginFill(hexColor, 0.4);
+    this.graphics.moveTo(this.x, this.y); // center turret
+    this.graphics.lineTo(this.x+Math.cos(this.orientation+r)*size, this.y+Math.sin(this.orientation+r)*size);
+    this.graphics.moveTo(this.x, this.y); // center turret
+    this.graphics.lineTo(this.x+Math.cos(this.orientation-r)*size, this.y+Math.sin(this.orientation-r)*size);
+
+    this.graphics.arc(this.x, this.y, size*2, this.orientation-r, this.orientation+r, false);
+    this.graphics.endFill();
+  };
+
   this.update = function() {
     this.graphics.clear();
     this.graphics.lineStyle(0);
@@ -52,7 +67,7 @@ var Turret = function Turret(id, container) {
     var color = availableColors[this.color];
     if(color)
       hexColor = "0x"+color[0].toString(16)+color[1].toString(16)+color[2].toString(16);
-    this.graphics.beginFill(parseInt(hexColor, 16), 1);
+    this.graphics.beginFill(hexColor, 1);
     this.graphics.drawCircle(this.x, this.y, 8);
     this.graphics.endFill();
 
@@ -60,6 +75,8 @@ var Turret = function Turret(id, container) {
     this.texture.position.y = this.y;
 
     this.texture.rotation = this.orientation+(Math.PI/2);
+
+    //this.__drawAimZone(hexColor, 100, Math.PI/4);
   };
 
   // create a new Sprite using the texture
