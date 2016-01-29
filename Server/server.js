@@ -273,6 +273,10 @@ ioServer.on('connection', function(socket) {
     socket.to("core").emit("selectTower",{"idplayer":getPlayerFromSocket(socket),"type":type});
   });
 
+  socket.on('selectTowerTest', function(type){
+    socket.to("core").emit("selectTower",{"idplayer":0,"type":type});
+  });
+
   socket.on('putTowerTest', function(){
     console.log("Put tower");
     socket.to("core").emit("putTower",0);

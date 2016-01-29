@@ -26,7 +26,9 @@ var timer = setInterval(function(){
 
 //socket.emit("addPlayer",{"pseudo":"test"});
 
-socket.emit("putTowerTest",0);
+socket.emit("selectTowerTest",1);
+
+//socket.emit("putTowerTest",0);
 
 //socket.emit("isReadyTest",true);
 
