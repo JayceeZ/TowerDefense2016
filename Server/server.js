@@ -273,8 +273,6 @@ ioServer.on('connection', function(socket) {
     console.log("player "+ message.pseudo +" color update "+message.color);
     socket.to("stats").emit("playerColorUpdate", message);
   });
-
-
 });
 
 var getPlayerSocket = function(id){

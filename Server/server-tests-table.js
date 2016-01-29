@@ -41,6 +41,9 @@ ioServer.on('connection', function (socket) {
     socket.emit('updateMarker', {id: "A4", x: 1100 / res.width, y: 700 / res.height, angle: 0});
     socket.emit('updateMarker', {id: "A6", x: 720 / res.width, y: 700 / res.height, angle: 0});
   });
+  socket.on('playerColorUpdate', function(message) {
+    console.log('Player color update ' + message.pseudo + " " + message.color);
+  });
 
   socket.on('launchGame', function (message) {
     message.forEach(function (e) {
