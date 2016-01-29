@@ -309,6 +309,8 @@ ioServer.on('connection', function(socket) {
   socket.on('playerColorUpdate', function(message) {
     console.log("player "+ message.pseudo +" color update "+message.color);
     socket.to("stats").emit("playerColorUpdate", message);
+    playerSocket = getPlayerSocket(message.id);
+    playerSocket.emit("playerColorUpdate",message.color);
   });
 });
 
