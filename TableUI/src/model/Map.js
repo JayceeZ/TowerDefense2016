@@ -12,6 +12,9 @@ var Map = function Map(scope, container) {
   this.end = 0;
   this.lastVague = false;
 
+  this.width = 1920;
+  this.height = 1080;
+
   // Scope of Ctrl for textual updates
   this.scope = scope;
 
@@ -19,12 +22,38 @@ var Map = function Map(scope, container) {
   this.graphics = new PIXI.Graphics();
   this.container = container;
 
-  this.addTurret = function(idplayer, id, x, y, orientation) {
-    var t = new Turret(id, this.container);
-    t.setPosition(x, y);
-    t.setOrientation(orientation);
-    t.setPlayer(idplayer);
-    this.turrets.push(t);
+  this.validateTurret = function(idplayer, id, x, y, angle) {
+    _.forEach(this.turrets, function(turret) {
+      if(turret.id === idplayer && turret.isPreview) {
+        turret.setPosition(x, y);
+        turret.setOrientation(angle);
+        turret.validate(id);
+      }
+    });
+  };
+
+  this.previewPlacingTurret = function(idplayer, x, y, angle) {
+    var _this = this;
+    _.forEach(this.turrets, function(turret) {
+      if(turret.id === idplayer && turret.isPreview) {
+        turret.isHidden = false;
+        turret.setPosition(x * _this.width, y * _this.height);
+        turret.setOrientation(angle);
+      }
+    });
+  };
+
+  this.setPlayerTurretSpecs = function(idplayer, aimZone) {
+    var turret = new Turret(idplayer, this.container);
+    turret.setAimZone(aimZone.distance, aimZone.arc);
+    this.turrets.push(turret);
+  };
+
+  this.removePlacingTurret = function(idmarker) {
+    _.forEach(this.turrets, function(turret) {
+      if(turret.id === idmarker && turret.isPreview)
+        turret.hide();
+    });
   };
 
   this.addEnemy = function(id, start, positions, directions, speed) {
@@ -34,6 +63,10 @@ var Map = function Map(scope, container) {
     e.setDirections(directions);
     e.setSpeed(speed);
     this.enemies.push(e);
+  };
+
+  this.getTurret = function(id) {
+    _.find(this.turrets, {id: id});
   };
 
   this.killEnemy = function(id, t) {

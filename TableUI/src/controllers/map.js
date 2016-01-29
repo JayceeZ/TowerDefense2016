@@ -24,7 +24,20 @@ appTable.controller('MapCtrl', function($scope, socket) {
   $scope.map = new Map($scope, container);
 
   socket.on('validateTower', function(data) {
-    $scope.map.addTurret(data.idplayer, data.id, data.x, data.y, data.angle);
+    // Tower preview validated
+    $scope.map.validateTurret(data.playerId, data.id, data.x, data.y, data.angle);
+  });
+
+  socket.on('updateMarker', function(data) {
+    $scope.map.previewPlacingTurret(data.playerId, data.x, data.y, data.angle);
+  });
+
+  socket.on('removeMarker', function(data) {
+    $scope.map.removePlacingTurret(data.playerId);
+  });
+
+  socket.on('playerSelectTower', function(data) {
+    $scope.map.setPlayerTurretSpecs(data.playerId, data.preview);
   });
 
   socket.on('initEnemy', function(data) {

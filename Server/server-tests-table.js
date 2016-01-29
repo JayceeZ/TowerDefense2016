@@ -41,6 +41,9 @@ ioServer.on('connection', function (socket) {
     socket.emit('updateMarker', {id: "A4", x: 1100 / res.width, y: 700 / res.height, angle: 0});
     socket.emit('updateMarker', {id: "A6", x: 720 / res.width, y: 700 / res.height, angle: 0});
   });
+  socket.on('playerColorUpdate', function(message) {
+    console.log('Player color update ' + message.pseudo + " " + message.color);
+  });
 
   socket.on('launchGame', function (message) {
     message.forEach(function (e) {
@@ -52,25 +55,26 @@ ioServer.on('connection', function (socket) {
   socket.on('performTestsMap', function () {
     console.log('Tests Map');
 
-    socket.emit('updateMarker', {id: "20", x: 720 / res.width, y: 480 / res.height, angle: 0});
+    socket.emit('updateMarker', {id: "20", playerId: "User1", x: 720 / res.width, y: 480 / res.height, angle: 0});
     var r = 0;
     var timerId1 = setInterval(function () {
       r += 0.3;
       console.log('Rotate A1 ' + (r));
-      socket.emit('updateMarker', {id: "20", x: 720 / res.width, y: 480 / res.height, angle: r});
+      socket.emit('updateMarker', {id: "20", playerId: "User1", x: 720 / res.width, y: 480 / res.height, angle: r});
       if(r > 4) {
         console.log("Turret fire");
-        socket.emit('validateTower', {idplayer: "User1", id: 1, x: 720, y: 480, angle: r});
+        socket.emit('validateTower', {playerId: "User1", x: 720, y: 480, angle: r});
         clearInterval(timerId1);
       }
     }, 100);
+    socket.emit('playerSelectTower', {playerId: "User1", preview: {distance: 20, arc: Math.PI/4}});
     var timerId2 = setInterval(function () {
       r += 0.3;
       console.log('Rotate A2 ' + (r));
-      socket.emit('updateMarker', {id: "A6", x: 200 / res.height, y: 200 / res.height, angle: r});
+      socket.emit('updateMarker', {id: "A6", playerId: "User2", x: 200 / res.height, y: 200 / res.height, angle: r});
       if(r > 2) {
         console.log("Turret fire");
-        socket.emit('validateTower', {idplayer: "User2", id: 0, x: 200, y: 200 , angle: r, type: "First"});
+        socket.emit('validateTower', {playerId: "User2", x: 200, y: 200 , angle: r, type: "First"});
         clearInterval(timerId2);
       }
     }, 100);
