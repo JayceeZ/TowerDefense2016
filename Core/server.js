@@ -87,7 +87,7 @@ socket.on('launchGame', function (message) {
 
 socket.on('selectTower', function(message){
   game.setSelectedTower(message.idplayer,message.type);
-  socket.emit('playerSelectTower',{"idplayer":message.idplayer,"type":message.type,"preview":game.getPreviewTower(message.idplayer)});
+  socket.emit('playerSelectTower',{"playerId":message.idplayer,"type":message.type,"preview":game.getPreviewTower(message.idplayer)});
 });
 
 
