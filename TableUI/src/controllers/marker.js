@@ -15,6 +15,7 @@ appTable.controller('markersCtrl',  function($scope, socket) {
       marker.setX(x);
       marker.setY(y);
       marker.setOrientation(message.angle);
+      marker.setPlayer(message.playerId);
     }
   });
 

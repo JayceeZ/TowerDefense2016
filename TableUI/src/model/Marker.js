@@ -3,7 +3,6 @@
  */
 
 var Marker = function Marker(id) {
-
   this.id = id;
   this.x = 0;
   this.y = 0;
@@ -19,6 +18,10 @@ var Marker = function Marker(id) {
 
   this.setY = function(y) {
     this.y = y;
+  };
+
+  this.setPlayer = function(playerId) {
+    this.player = playerId;
   };
 };
 
