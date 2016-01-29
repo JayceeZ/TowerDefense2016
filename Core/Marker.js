@@ -9,5 +9,4 @@ module.exports = function(id,x,y,angle){
     this.angle = angle;
     this.playerId = null;
     this.positionOk = null;
-    this.previewTower = null;
-}
+};
