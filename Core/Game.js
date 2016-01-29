@@ -138,7 +138,7 @@ module.exports = function(socket){
         var player = this.getPlayerFromId(marker.playerId);
         var dataTower = TowerFactory(player.selectedTower);
         if(player !== null && dataTower != null) {
-            if (player.money >= dataTower.price && this.map.checkPlacement(marker.x * map.width, marker.y * map.height, dataTower.radius)
+            if (player.money >= dataTower.price && this.map.checkPlacement(marker.x * this.map.width, marker.y * this.map.height, dataTower.radius)
                 && this.map.collisionTowers(marker.x*map.width,marker.y* map.height,dataTower.radius) === false)
                 return true;
         }

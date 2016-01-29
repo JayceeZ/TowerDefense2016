@@ -3,8 +3,8 @@
  */
 var io = require('socket.io-client');
 
-var socket;
-
+var socket = io.connect("http://192.168.1.21:8081");
+/*
 var i = 0;
 
 var timer = setInterval(function(){
@@ -17,16 +17,16 @@ var timer = setInterval(function(){
     socket.on('coreDetected', function(message){
         console.log("Core detected : "+message.ip+" , status : "+message.status);
     });
-}, 50);
+}, 50);*/
 
 
 
 
 
 
-//socket.emit("addPlayer",{"pseudo":"test3"});
+//socket.emit("addPlayer",{"pseudo":"test"});
 
-//socket.emit("putTowerTest",0);
+socket.emit("putTowerTest",0);
 
 //socket.emit("isReadyTest",true);
 
