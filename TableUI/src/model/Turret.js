@@ -7,8 +7,8 @@ var turretTexture = PIXI.Texture.fromImage('img/turret_100x120.png');
 
 var Turret = function Turret(idplayer, container) {
   this.id = idplayer;
-  this.x = 0;
-  this.y = 0;
+  this.x = -200;
+  this.y = -200;
   this.orientation = 0;
 
   this.color = getPlayerColor(idplayer);
