@@ -90,8 +90,8 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.endFill();
 
     if(!this.isValidable) {
-      this.graphics.beginFill(0xFF0000, 0.1);
-      this.graphics.drawCircle(this.x, this.y, 100);
+      this.graphics.beginFill(0xFF0000, 0.3);
+      this.graphics.drawCircle(this.x, this.y, 60);
       this.graphics.endFill();
     }
 

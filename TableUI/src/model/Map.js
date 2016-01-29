@@ -40,11 +40,7 @@ var Map = function Map(scope, container) {
         turret.show();
         turret.setPosition(x * _this.width, y * _this.height);
         turret.setOrientation(angle);
-        if(placementOk) {
-          turret.unValidable();
-        } else {
-          turret.validable();
-        }
+        turret.setValidable(placementOk);
       }
     });
   };
