@@ -17,7 +17,7 @@ var Turret = function Turret(idplayer, container) {
   this.player = idplayer;
 
   this.isPreview = true;
-  this.isHidden = false;
+  this.isHidden = true;
 
   this.container = container;
   this.graphics = new PIXI.Graphics();
