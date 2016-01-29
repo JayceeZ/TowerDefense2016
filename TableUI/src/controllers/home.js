@@ -61,8 +61,10 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
       var x = message.x * home[0].clientWidth;
       var y = message.y * home[0].clientHeight;
       var slot = getSlot(x, y);
-      if (slot && slot !== null) {
+      // Only if a player is connected in the slot
+      if (slot && slot !== null && slot.player !== null) {
         slot.setTag(message.id);
+        socket.emit('playerColorUpdate', {pseudo: slot.playerPseudo, color: slot.color});
       }
     }
   });
