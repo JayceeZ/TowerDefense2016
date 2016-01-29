@@ -89,6 +89,12 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.drawCircle(this.x, this.y, 8);
     this.graphics.endFill();
 
+    if(!this.isValidable) {
+      this.graphics.beginFill(0xFF0000, 0.1);
+      this.graphics.drawCircle(this.x, this.y, 100);
+      this.graphics.endFill();
+    }
+
     this.texture.position.x = this.x;
     this.texture.position.y = this.y;
 
@@ -107,6 +113,11 @@ var Turret = function Turret(idplayer, container) {
   this.show = function() {
     this.isHidden = false;
     this.container.addChild(this.texture);
+    this.update();
+  };
+
+  this.setValidable = function(bool) {
+    this.isValidable = bool;
     this.update();
   };
 

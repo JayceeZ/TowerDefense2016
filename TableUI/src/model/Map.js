@@ -33,13 +33,18 @@ var Map = function Map(scope, container) {
     });
   };
 
-  this.previewPlacingTurret = function(idplayer, x, y, angle) {
+  this.previewPlacingTurret = function(idplayer, x, y, angle, placementOk) {
     var _this = this;
     _.forEach(this.turrets, function(turret) {
       if(turret.id === idplayer && turret.isPreview) {
         turret.show();
         turret.setPosition(x * _this.width, y * _this.height);
         turret.setOrientation(angle);
+        if(placementOk) {
+          turret.unValidable();
+        } else {
+          turret.validable();
+        }
       }
     });
   };
