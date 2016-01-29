@@ -3,8 +3,9 @@
  */
 var io = require('socket.io-client');
 
-var socket = io.connect("http://192.168.1.21:8081");
+
 /*
+var socket;
 var i = 0;
 
 var timer = setInterval(function(){
@@ -20,15 +21,13 @@ var timer = setInterval(function(){
 }, 50);*/
 
 
-
-
-
+var socket = io.connect("http://192.168.1.21:8081");
 
 //socket.emit("addPlayer",{"pseudo":"test"});
 
-socket.emit("selectTowerTest",1);
+//socket.emit("selectTowerTest",1);
 
-//socket.emit("putTowerTest",0);
+socket.emit("putTowerTest",0);
 
 //socket.emit("isReadyTest",true);
 

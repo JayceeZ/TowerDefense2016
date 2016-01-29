@@ -63,7 +63,7 @@ ioServer.on('connection', function(socket) {
   socket.on('addCore', function() {
     if(coreIp === null) {
       console.log('Core authentified');
-      coreIp = socket.request.connection.remoteAddress;
+      coreIp = socket.handshake.address.address;
       socket.join('core');
     }else
       console.log('Core already authentified');
@@ -104,12 +104,13 @@ ioServer.on('connection', function(socket) {
 
   socket.on('disconnect', function() {
     console.log("PERTE DE CONNEXION");
+    /*
     var player = getPlayerFromSocket(socket);
     if(player != null) {
       console.log("Player disconnect : "+player);
       socket.to('table').emit("removePlayer",player);
       socket.to('core').emit("removePlayer",player);
-    }
+    }*/
   });
 
   socket.on('discover', function(){
@@ -131,7 +132,7 @@ ioServer.on('connection', function(socket) {
     marker --> idmarker, x, y, angle, playerId, placementok
    */
   socket.on('updateMarker', function(marker){
-    console.log("Update marker");
+    //console.log("Update marker");
     socket.to("table").emit("updateMarker", marker);
     socket.to("stats").emit("updateMarker", marker);
   });
@@ -141,7 +142,7 @@ ioServer.on('connection', function(socket) {
     message : id, playerId
    */
   socket.on('removeMarker', function(message){
-    console.log("Remove marker");
+    console.log("Remove marker : "+message.playerId+"  , "+message.id);
     socket.to("table").emit("removeMarker", message);
   });
 
@@ -153,7 +154,7 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('checkPlacement', function(message){
-    console.log('Check placement : '+message.check);
+    //console.log('Check placement : '+message.check);
     playerSocket = getPlayerSocket(message.idplayer);
     if(playerSocket != null)
       playerSocket.emit("checkPlacement",message.check);
