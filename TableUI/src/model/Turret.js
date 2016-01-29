@@ -79,8 +79,6 @@ var Turret = function Turret(idplayer, container) {
   this.update = function() {
     this.graphics.clear();
 
-    if(this.isHidden)
-      return;
     this.graphics.lineStyle(0);
 
     var hexColor = this.__getColorHEX();
@@ -98,8 +96,19 @@ var Turret = function Turret(idplayer, container) {
   };
 
   this.hide = function() {
+    if(!this.isHidden)
+      return;
+    this.container.removeChild(this.texture);
+    this.container.removeChild(this.graphics);
     this.isHidden = true;
-    this.update();
+  };
+
+  this.show = function() {
+    if(this.isHidden)
+      return;
+    this.container.addChild(this.texture);
+    this.container.addChild(this.graphics);
+    this.isHidden = false;
   };
 
   // create a new Sprite using the texture
@@ -108,7 +117,4 @@ var Turret = function Turret(idplayer, container) {
   // center the sprite's anchor point
   this.texture.anchor.x = 0.5;
   this.texture.anchor.y = 0.58;
-
-  this.container.addChild(this.texture);
-  this.container.addChild(this.graphics);
 };

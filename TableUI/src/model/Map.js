@@ -9,7 +9,7 @@ var Map = function Map(scope, container) {
   this.message = "Phase de placement";
 
   this.currentTime = 0;
-  this.end = 0;
+  this.end = null;
   this.lastVague = false;
 
   this.width = 1920;
@@ -37,7 +37,8 @@ var Map = function Map(scope, container) {
     var _this = this;
     _.forEach(this.turrets, function(turret) {
       if(turret.id === idplayer && turret.isPreview) {
-        turret.isHidden = false;
+        console.log("Turret visible "+turret.player);
+        turret.show();
         turret.setPosition(x * _this.width, y * _this.height);
         turret.setOrientation(angle);
       }
@@ -47,12 +48,15 @@ var Map = function Map(scope, container) {
   this.setPlayerTurretSpecs = function(idplayer, aimZone) {
     var turret = new Turret(idplayer, this.container);
     turret.setAimZone(aimZone.distance, aimZone.arc);
+    console.log("Turret created with "+aimZone);
     var marker = _.find(this.scope.markers, {player: idplayer});
     if(marker) {
+      console.log("at ("+turret.x+","+turret.y+")");
+      turret.show();
       turret.setPosition(marker.x, marker.y);
       turret.setOrientation(marker.orientation);
     }
-    console.log("Turret created at ("+turret.x+","+turret.y+") for player "+turret.player);
+    console.log("for player "+turret.player);
     this.turrets.push(turret);
   };
 
@@ -70,10 +74,6 @@ var Map = function Map(scope, container) {
     e.setDirections(directions);
     e.setSpeed(speed);
     this.enemies.push(e);
-  };
-
-  this.getTurret = function(id) {
-    _.find(this.turrets, {id: id});
   };
 
   this.killEnemy = function(id, t) {
@@ -110,7 +110,7 @@ var Map = function Map(scope, container) {
         }
       }
       _this.currentTime++;
-      if(_this.currentTime === _this.end) {
+      if(_this.end != null && _this.currentTime >= _this.end) {
         _this.stop();
         _this.clean();
       }
