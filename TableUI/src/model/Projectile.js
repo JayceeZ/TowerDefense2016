@@ -31,7 +31,7 @@ var Projectile = function Projectile(container) {
     console.log("Projectile fired");
 
     var distance = Math.sqrt(Math.pow(this.toX-this.x,2)+Math.pow(this.toY-this.y,2));
-    this.speed = distance / (this.duration * delta);
+    this.speed = distance / this.duration;
     var dx = (this.toX-this.x) / distance;
     var dy = (this.toY-this.y) / distance;
     var x = this.x;
@@ -47,7 +47,7 @@ var Projectile = function Projectile(container) {
       _this.graphics.lineStyle(5, 0xFFFFFF, 1);
       _this.graphics.moveTo(x, y);
       _this.graphics.lineTo(x + dx * _this.length, y + dy * _this.length);
-    }, this.speed);
+    }, delta);
   };
 
   this.destroy = function() {

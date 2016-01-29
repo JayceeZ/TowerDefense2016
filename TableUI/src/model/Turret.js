@@ -108,6 +108,7 @@ var Turret = function Turret(idplayer, container) {
   this.hide = function() {
     this.x = -200;
     this.y = -200;
+    this.isValidable = false;
     this.update();
   };
 
