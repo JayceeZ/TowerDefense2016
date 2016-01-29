@@ -119,4 +119,7 @@ var Turret = function Turret(idplayer, container) {
   // center the sprite's anchor point
   this.texture.anchor.x = 0.5;
   this.texture.anchor.y = 0.58;
+
+  this.container.addChild(this.texture);
+  this.container.addChild(this.graphics);
 };
