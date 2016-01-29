@@ -7,6 +7,7 @@ var Marker = function Marker(id) {
   this.x = 0;
   this.y = 0;
   this.orientation = 0; // Angle of rotation from original
+  this.player = null;
 
   this.setOrientation = function(orientation) {
     this.orientation = orientation % (Math.PI*2);
