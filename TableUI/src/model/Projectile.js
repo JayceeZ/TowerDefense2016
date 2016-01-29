@@ -28,10 +28,12 @@ var Projectile = function Projectile(container) {
 
   this.fire = function(delta) {
     var _this = this;
-    console.log("Projectile fired");
+    console.log("Projectile fired : delta = "+delta+" , duration = "+this.duration);
 
     var dx = (this.toX-this.x) / this.duration;
     var dy = (this.toY-this.y) / this.duration;
+
+    console.log("dx = "+dx+" , dy = "+dy);
     var x = this.x;
     var y = this.y;
     var elapsed = 0;
