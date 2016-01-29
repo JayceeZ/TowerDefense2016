@@ -116,6 +116,6 @@ var Map = function Map(scope, container) {
     this.graphics.lineTo(1920, 700);
   };
 
-  this.drawEdges();
+  //this.drawEdges();
   container.addChild(this.graphics);
 };

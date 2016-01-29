@@ -1,6 +1,11 @@
 /**
  * Represents an enemy
  */
+var textures = [
+  PIXI.Texture.fromImage('img/enemy1.png'),
+  PIXI.Texture.fromImage('img/enemy2.png'),
+  PIXI.Texture.fromImage('img/enemy3.png')
+];
 
 var Enemy = function Enemy(id, container) {
   this.id = id;
@@ -13,6 +18,7 @@ var Enemy = function Enemy(id, container) {
 
   this.index = 0;
 
+  this.currentTexture = 0;
   this.container = container;
   this.graphics = new PIXI.Graphics();
 
@@ -63,13 +69,19 @@ var Enemy = function Enemy(id, container) {
   };
 
   this.update = function() {
-    this.graphics.clear();
-    this.graphics.lineStyle(0);
+    /*this.graphics.lineStyle(0);
     this.graphics.beginFill(0xFF0000, 1);
     this.graphics.drawCircle(this.x, this.y, 20);
-    this.graphics.endFill();
+    this.graphics.endFill();*/
+
+    this.graphics.texture = textures[++this.currentTexture];
+    this.graphics.position.x = this.x;
+    this.graphics.position.y = this.y;
+    if(this.currentTexture === textures.length - 1)
+      this.currentTexture = 0;
   };
 
+  this.graphics = new PIXI.Sprite(textures[0]);
   this.container.addChild(this.graphics);
 };
 

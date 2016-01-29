@@ -56,12 +56,21 @@ appTable.directive("marker", function(){
 
       function draw(size){
         context.clearRect(0,0,size,size);
+        // circle with color
         context.beginPath();
         context.lineWidth = 5;
         context.arc(size/2, size/2, size/2 - context.lineWidth, 0, scope.m.orientation, false);
         context.lineTo(size/2, size/2);
         context.arc(size/2, size/2, size/2 - context.lineWidth, scope.m.orientation, Math.PI*2, false);
         context.strokeStyle = getColorHEX(scope.m.id);
+        context.stroke();
+        // circle black thinner
+        context.beginPath();
+        context.lineWidth = 2;
+        context.arc(size/2, size/2, size/2 - 3, 0, scope.m.orientation, false);
+        context.lineTo(size/2, size/2);
+        context.arc(size/2, size/2, size/2 - 3, scope.m.orientation, Math.PI*2, false);
+        context.strokeStyle = "#000000";
         context.stroke();
       }
     }

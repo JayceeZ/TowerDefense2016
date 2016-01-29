@@ -29,18 +29,33 @@ var Turret = function Turret(id, container) {
 
   this.setPlayer = function(player) {
     this.player = player;
-    this.color = this.getColor(player);
+    this.color = this.__getColor(player);
     this.update();
   };
 
-  this.getColor = function(idplayer) {
+  this.__getColor = function(idplayer) {
     var ret = "grey";
     var playerTag = _.forEach(window.associations, function(association) {
       if(association.idplayer === idplayer) {
-        ret = tagColors[association.tag];
+        ret = association.color;
       }
     });
     return ret;
+  };
+
+  this.__drawAimZone = function(hexColor, size, r) {
+
+    this.graphics.lineStyle(2, 0xA5A5A5, 0.6);
+
+
+    this.graphics.beginFill(hexColor, 0.4);
+    this.graphics.moveTo(this.x, this.y); // center turret
+    this.graphics.lineTo(this.x+Math.cos(this.orientation+r)*size, this.y+Math.sin(this.orientation+r)*size);
+    this.graphics.moveTo(this.x, this.y); // center turret
+    this.graphics.lineTo(this.x+Math.cos(this.orientation-r)*size, this.y+Math.sin(this.orientation-r)*size);
+
+    this.graphics.arc(this.x, this.y, size*2, this.orientation-r, this.orientation+r, false);
+    this.graphics.endFill();
   };
 
   this.update = function() {
@@ -48,8 +63,11 @@ var Turret = function Turret(id, container) {
     this.graphics.lineStyle(0);
 
     // Circle color of user tag
-    //this.graphics.lineStyle(2, 0xFFCC00);
-    this.graphics.beginFill(0xFFCC00, 1);
+    var hexColor = "0xAAAAAA";
+    var color = availableColors[this.color];
+    if(color)
+      hexColor = "0x"+color[0].toString(16)+color[1].toString(16)+color[2].toString(16);
+    this.graphics.beginFill(hexColor, 1);
     this.graphics.drawCircle(this.x, this.y, 8);
     this.graphics.endFill();
 
@@ -57,6 +75,8 @@ var Turret = function Turret(id, container) {
     this.texture.position.y = this.y;
 
     this.texture.rotation = this.orientation+(Math.PI/2);
+
+    //this.__drawAimZone(hexColor, 100, Math.PI/4);
   };
 
   // create a new Sprite using the texture
@@ -64,7 +84,7 @@ var Turret = function Turret(id, container) {
 
   // center the sprite's anchor point
   this.texture.anchor.x = 0.5;
-  this.texture.anchor.y = 0.6;
+  this.texture.anchor.y = 0.58;
 
   container.addChild(this.texture);
   container.addChild(this.graphics);
