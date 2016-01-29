@@ -32,10 +32,8 @@ var Slot = function Slot(id) {
   };
 
   this.setTag = function(tag) {
-    if(this.player !== null) {
-      this.tag = tag;
-      this.setColor(tagColors[tag]);
-    }
+    this.tag = tag;
+    this.setColor(tagColors[tag]);
   };
 
   this.setBoundaries = function(left, top, right, bottom) {

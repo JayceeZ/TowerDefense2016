@@ -267,6 +267,14 @@ ioServer.on('connection', function(socket) {
     socket.to("stats").emit("launchGame");
   });
 
+  /**
+   * -> pseudo, color
+   */
+  socket.on('playerColorUpdate', function(message) {
+    console.log("player "+ message.pseudo +" color update "+message.color);
+    socket.to("stats").emit("playerColorUpdate", message);
+  });
+
 
 });
 
