@@ -45,19 +45,20 @@ var Map = function Map(scope, container) {
     });
   };
 
-  this.setPlayerTurretSpecs = function(idplayer, aimZone) {
-    var turret = new Turret(idplayer, this.container);
-    turret.setAimZone(aimZone.distance, aimZone.arc);
-    console.log("Turret created with "+aimZone);
+  this.setPlayerTurretSpecs = function(idplayer, type, aimZone) {
+    var turret = _.find(this.turrets, {player: idplayer, isPreview: true});
+    if(!turret) {
+      turret = new Turret(idplayer, this.container);
+      console.log("Turret created for preview");
+      this.turrets.push(turret);
+    }
     var marker = _.find(this.scope.markers, {player: idplayer});
     if(marker) {
       console.log("at ("+turret.x+","+turret.y+")");
-      turret.show();
       turret.setPosition(marker.x, marker.y);
       turret.setOrientation(marker.orientation);
     }
-    console.log("for player "+turret.player);
-    this.turrets.push(turret);
+    turret.setAimZone(aimZone.distance, aimZone.arc);
   };
 
   this.removePlacingTurret = function(idplayer) {

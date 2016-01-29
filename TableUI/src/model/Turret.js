@@ -16,6 +16,8 @@ var Turret = function Turret(idplayer, container) {
   this.aimArc = 0;
   this.player = idplayer;
 
+  this.type = null;
+
   this.isPreview = true;
   this.isHidden = true;
 
