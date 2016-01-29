@@ -152,6 +152,7 @@ module.exports = function(socket){
             var tower = new Tower(dataTower.type,Math.round(markerx * this.map.width), Math.round(markery * this.map.height), angle, player, dataTower.radius,dataTower.reloadtime, dataTower.firespeed, dataTower.damage, dataTower.rangelength, dataTower.rangeradius);
             player.addTower(tower);
             this.map.addTower(tower);
+            player.money -= dataTower.price;
             return tower;
         }
         return null;
