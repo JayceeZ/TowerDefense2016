@@ -82,7 +82,7 @@ module.exports = function(){
     };
 
     this.getRandomStartPoint = function(){
-        return {"x":0, "y":Math.floor((Math.random() * 380) + 320)};
+        return {"x":0, "y":Math.floor((Math.random() * 360) + 320)};
     };
 
     this.getPathFromStartPoint = function(start){

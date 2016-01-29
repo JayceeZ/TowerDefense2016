@@ -162,6 +162,13 @@ module.exports = function(pmax,socket){
             this.endPlacement();
     };
 
+    this.getPreview = function(marker){
+        if(marker.playerId !== null){
+            
+        }
+        return null;
+    };
+
     this.endPlacement = function(){
         this.socket.emit("endPlacement");
         var i;
