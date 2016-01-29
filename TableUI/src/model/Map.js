@@ -12,6 +12,9 @@ var Map = function Map(scope, container) {
   this.end = 0;
   this.lastVague = false;
 
+  this.width = 1920;
+  this.height = 1080;
+
   // Scope of Ctrl for textual updates
   this.scope = scope;
 
@@ -19,9 +22,9 @@ var Map = function Map(scope, container) {
   this.graphics = new PIXI.Graphics();
   this.container = container;
 
-  this.validateTurret = function(idmarker, id, x, y, angle) {
+  this.validateTurret = function(idplayer, id, x, y, angle) {
     _.forEach(this.turrets, function(turret) {
-      if(turret.id === idmarker && turret.isPreview) {
+      if(turret.id === idplayer && turret.isPreview) {
         turret.setPosition(x, y);
         turret.setOrientation(angle);
         turret.validate(id);
@@ -29,20 +32,21 @@ var Map = function Map(scope, container) {
     });
   };
 
-  this.previewPlacingTurret = function(idmarker, x, y, angle) {
+  this.previewPlacingTurret = function(idplayer, x, y, angle) {
+    var _this = this;
     _.forEach(this.turrets, function(turret) {
-      if(turret.id === idmarker && turret.isPreview) {
+      if(turret.id === idplayer && turret.isPreview) {
         turret.isHidden = false;
-        turret.setPosition(x, y);
+        turret.setPosition(x * _this.width, y * _this.height);
         turret.setOrientation(angle);
       }
     });
   };
 
-  this.setPlayerTurretSpecs = function(idmarker, aimZone) {
-    var t = new Turret(idmarker, this.container);
+  this.setPlayerTurretSpecs = function(idplayer, aimZone) {
+    var turret = new Turret(idplayer, this.container);
     turret.setAimZone(aimZone.distance, aimZone.arc);
-    this.turrets.push(t);
+    this.turrets.push(turret);
   };
 
   this.removePlacingTurret = function(idmarker) {

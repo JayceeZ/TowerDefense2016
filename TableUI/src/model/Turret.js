@@ -5,15 +5,16 @@
 // create a texture from an image path
 var turretTexture = PIXI.Texture.fromImage('img/turret_100x120.png');
 
-var Turret = function Turret(idmarker, container) {
-  this.id = idmarker;
+var Turret = function Turret(idplayer, container) {
+  this.id = idplayer;
   this.x = 0;
   this.y = 0;
   this.orientation = 0;
 
-  this.color = tagColors[idmarker];
+  this.color = getPlayerColor(idplayer);
   this.aimDistance = 0;
   this.aimArc = 0;
+  this.player = idplayer;
 
   this.isPreview = true;
   this.isHidden = false;
@@ -43,6 +44,16 @@ var Turret = function Turret(idmarker, container) {
     this.isPreview = false;
     this.update();
   };
+
+  function getPlayerColor(idplayer) {
+    var ret = null;
+    _.forEach(window.associations, function(association) {
+      if(association.idplayer === idplayer) {
+        ret = association.color;
+      }
+    });
+    return ret;
+  }
 
   this.__getColorHEX = function() {
     // Circle color of player

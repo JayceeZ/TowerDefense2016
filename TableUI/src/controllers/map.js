@@ -29,11 +29,11 @@ appTable.controller('MapCtrl', function($scope, socket) {
   });
 
   socket.on('updateMarker', function(data) {
-    $scope.map.previewPlacingTurret(data.id, data.x, data.y, data.angle);
+    $scope.map.previewPlacingTurret(data.playerId, data.x, data.y, data.angle);
   });
 
-  socket.on('removeMarker', function(id) {
-    $scope.map.removePlacingTurret(id);
+  socket.on('removeMarker', function(data) {
+    $scope.map.removePlacingTurret(data.playerId);
   });
 
   socket.on('playerSelectTower', function(data) {
