@@ -264,6 +264,7 @@ ioServer.on('connection', function(socket) {
   socket.on('launchGame', function(message){
     console.log("launchGame : "+message.length);
     socket.to("core").emit("launchGame",message);
+    socket.to("stats").emit("launchGame");
   });
 
   /**

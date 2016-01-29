@@ -68,7 +68,7 @@ module.exports = function(pmax,socket){
                 i--;
                 l--;
             }
-        };
+        }
     };
 
     this.readyToLaunch = function(){
@@ -160,6 +160,19 @@ module.exports = function(pmax,socket){
                 check = false;
         if(check === true)
             this.endPlacement();
+    };
+
+    this.getPreviewTower = function(marker){
+        if(this.status === "placement" && marker.playerId !== null){
+            var player = this.getPlayerFromId(marker.playerId);
+            if(player !== null && player.selectedTower !== null){
+                var dataTower = TowerFactory(player.selectedTower);
+                if(dataTower !== null){
+                    return {"distance":dataTower.rangelength,"arc":dataTower.rangeradius};
+                }
+            }
+        }
+        return null;
     };
 
     this.endPlacement = function(){
