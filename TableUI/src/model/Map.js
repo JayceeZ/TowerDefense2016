@@ -56,9 +56,9 @@ var Map = function Map(scope, container) {
     this.turrets.push(turret);
   };
 
-  this.removePlacingTurret = function(idmarker) {
+  this.removePlacingTurret = function(idplayer) {
     _.forEach(this.turrets, function(turret) {
-      if(turret.id === idmarker && turret.isPreview)
+      if(turret.id === idplayer && turret.isPreview)
         turret.hide();
     });
   };
