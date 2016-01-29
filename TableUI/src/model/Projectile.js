@@ -1,6 +1,6 @@
 
 var Projectile = function Projectile(container) {
-  this.length = 20;
+  this.length = 5;
   this.x = 0;
   this.y = 0;
   this.toX = 0;
@@ -38,7 +38,7 @@ var Projectile = function Projectile(container) {
     var y = this.y;
     var elapsed = 0;
     this.interval = setInterval(function() {
-      if(elapsed >= _this.duration)
+      if(elapsed >= _this.duration - 1)
         _this.destroy();
       _this.graphics.clear();
       _this.graphics.lineStyle(5, 0xFFFFFF, 1);
