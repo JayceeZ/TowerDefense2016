@@ -38,7 +38,7 @@ module.exports = function(){
     this.collisionTowers = function(x,y,radius){
         var i;
         for(i = 0; i < this.towers.length;i++)
-            if(this.distance(x,y,this.towers[i].x,this.towers[i].y) < radius + this.towers[i].radius)
+            if(this.distance(x,y,this.towers[i].x,this.towers[i].y) < radius/2 + this.towers[i].radius/2)
                 return true;
         return false;
     };

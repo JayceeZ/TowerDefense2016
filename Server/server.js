@@ -142,7 +142,7 @@ ioServer.on('connection', function(socket) {
     message : id, playerId
    */
   socket.on('removeMarker', function(message){
-    console.log("Remove marker : "+message.playerId+"  , "+message.id);
+    //console.log("Remove marker : "+message.playerId+"  , "+message.id);
     socket.to("table").emit("removeMarker", message);
   });
 
