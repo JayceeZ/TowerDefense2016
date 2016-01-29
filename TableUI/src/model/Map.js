@@ -19,12 +19,37 @@ var Map = function Map(scope, container) {
   this.graphics = new PIXI.Graphics();
   this.container = container;
 
-  this.addTurret = function(idplayer, id, x, y, orientation) {
-    var t = new Turret(id, this.container);
-    t.setPosition(x, y);
-    t.setOrientation(orientation);
-    t.setPlayer(idplayer);
+  this.validateTurret = function(idmarker, id, x, y, angle) {
+    _.forEach(this.turrets, function(turret) {
+      if(turret.id === idmarker && turret.isPreview) {
+        turret.setPosition(x, y);
+        turret.setOrientation(angle);
+        turret.validate(id);
+      }
+    });
+  };
+
+  this.previewPlacingTurret = function(idmarker, x, y, angle) {
+    _.forEach(this.turrets, function(turret) {
+      if(turret.id === idmarker && turret.isPreview) {
+        turret.isHidden = false;
+        turret.setPosition(x, y);
+        turret.setOrientation(angle);
+      }
+    });
+  };
+
+  this.setPlayerTurretSpecs = function(idmarker, aimZone) {
+    var t = new Turret(idmarker, this.container);
+    turret.setAimZone(aimZone.distance, aimZone.arc);
     this.turrets.push(t);
+  };
+
+  this.removePlacingTurret = function(idmarker) {
+    _.forEach(this.turrets, function(turret) {
+      if(turret.id === idmarker && turret.isPreview)
+        turret.hide();
+    });
   };
 
   this.addEnemy = function(id, start, positions, directions, speed) {

@@ -5,17 +5,18 @@
 // create a texture from an image path
 var turretTexture = PIXI.Texture.fromImage('img/turret_100x120.png');
 
-var Turret = function Turret(id, container) {
-  this.id = id;
+var Turret = function Turret(idmarker, container) {
+  this.id = idmarker;
   this.x = 0;
   this.y = 0;
   this.orientation = 0;
 
+  this.color = tagColors[idmarker];
   this.aimDistance = 0;
   this.aimArc = 0;
 
-  this.player = null;
   this.isPreview = true;
+  this.isHidden = false;
 
   this.container = container;
   this.graphics = new PIXI.Graphics();
@@ -31,30 +32,24 @@ var Turret = function Turret(id, container) {
     this.update();
   };
 
-  this.setPlayer = function(player) {
-    this.player = player;
-    this.color = this.__getColor(player);
-    this.update();
-  };
-
   this.setAimZone = function(distance, arc) {
     this.aimDistance = distance;
     this.aimArc = arc;
     this.update();
   };
 
-  this.validate = function() {
+  this.validate = function(id) {
+    this.id = id;
     this.isPreview = false;
     this.update();
   };
 
-  this.__getColor = function(idplayer) {
-    var ret = "grey";
-    var playerTag = _.forEach(window.associations, function(association) {
-      if(association.idplayer === idplayer) {
-        ret = association.color;
-      }
-    });
+  this.__getColorHEX = function() {
+    // Circle color of player
+    var ret = "0xAAAAAA";
+    var color = availableColors[this.color];
+    if(color)
+      ret = "0x"+color[0].toString(16)+color[1].toString(16)+color[2].toString(16);
     return ret;
   };
 
@@ -72,13 +67,12 @@ var Turret = function Turret(id, container) {
 
   this.update = function() {
     this.graphics.clear();
+
+    if(this.isHidden)
+      return;
     this.graphics.lineStyle(0);
 
-    // Circle color of user tag
-    var hexColor = "0xAAAAAA";
-    var color = availableColors[this.color];
-    if(color)
-      hexColor = "0x"+color[0].toString(16)+color[1].toString(16)+color[2].toString(16);
+    var hexColor = this.__getColorHEX();
     this.graphics.beginFill(hexColor, 1);
     this.graphics.drawCircle(this.x, this.y, 8);
     this.graphics.endFill();
@@ -92,6 +86,11 @@ var Turret = function Turret(id, container) {
       this.__drawAimZone(hexColor, this.aimDistance, this.aimArc);
   };
 
+  this.hide = function() {
+    this.isHidden = true;
+    this.update();
+  };
+
   // create a new Sprite using the texture
   this.texture = new PIXI.Sprite(turretTexture);
 
@@ -99,6 +98,6 @@ var Turret = function Turret(id, container) {
   this.texture.anchor.x = 0.5;
   this.texture.anchor.y = 0.58;
 
-  container.addChild(this.texture);
-  container.addChild(this.graphics);
+  this.container.addChild(this.texture);
+  this.container.addChild(this.graphics);
 };
