@@ -22,7 +22,7 @@ module.exports = function(socket){
     this.timer;
     this.updateTimer;
     this.INTERVAL = 33;
-    this.UPDATE_INTERVAL = 500;
+    this.UPDATE_INTERVAL = 1000;
     this.ID = 0;
 
     this.init = function(nbplayers){
