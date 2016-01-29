@@ -83,9 +83,6 @@ var Turret = function Turret(idplayer, container) {
   this.update = function() {
     this.graphics.clear();
 
-    if(this.isHidden)
-      return;
-
     this.graphics.lineStyle(0);
 
     var hexColor = this.__getColorHEX();
@@ -109,14 +106,8 @@ var Turret = function Turret(idplayer, container) {
   };
 
   this.hide = function() {
-    this.isHidden = true;
     this.x = -200;
     this.y = -200;
-    this.update();
-  };
-
-  this.show = function() {
-    this.isHidden = false;
     this.update();
   };
 
