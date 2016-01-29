@@ -96,7 +96,7 @@ socket.on('putTower', function(idplayer){
   if(marker != null && marker.positionOk == true){
     var tower = game.addTower(idplayer,marker.x,marker.y,marker.angle);
     if(tower !== null)
-      socket.emit("validateTower",{"idplayer":idplayer,"id":tower.id,"x":tower.x,"y":tower.y,"angle":tower.angle,"type":tower.type});
+      socket.emit("validateTower",{"playerId":idplayer,"id":tower.id,"x":tower.x,"y":tower.y,"angle":tower.angle,"type":tower.type});
   }
 });
 
