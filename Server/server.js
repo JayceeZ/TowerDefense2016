@@ -190,6 +190,8 @@ ioServer.on('connection', function(socket) {
   socket.on('endVague', function(time){
     console.log('End vague');
     socket.to('table').emit("endVague", time);
+    for(i = 0; i < players.length;i++)
+      players[i].socket.emit("endVague");
   });
 
   /*

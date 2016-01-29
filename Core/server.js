@@ -40,10 +40,13 @@ var handleTUIO = function(msg){
       socket.emit("checkPlacement",{"idplayer":updates[a].playerId,"check":updates[a].positionOk});
   }
   var removes = handler.getRemoves();
-  for(a = 0; a < removes.length; a++)
-    socket.emit("removeMarker", {"id":removes[a],"playerId":game.getPlayerIdFromMarker(removes[a])});
+  for(a = 0; a < removes.length; a++) {
+    var idplayer = game.getPlayerIdFromMarker(removes[a]);
+    socket.emit("removeMarker", {"id": removes[a], "playerId":idplayer });
+    socket.emit("checkPlacement",{"idplayer":idplayer,"check":false});
+  }
 
-}
+};
 
 
 /************************
