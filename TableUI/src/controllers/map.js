@@ -37,7 +37,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
   });
 
   socket.on('playerSelectTower', function(data) {
-    $scope.map.setPlayerTurretSpecs(data.playerId, data.preview);
+    $scope.map.setPlayerTurretSpecs(data.playerId, data.type, data.preview);
   });
 
   socket.on('initEnemy', function(data) {
