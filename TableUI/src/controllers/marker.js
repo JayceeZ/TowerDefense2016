@@ -18,8 +18,8 @@ appTable.controller('markersCtrl',  function($scope, socket) {
     }
   });
 
-  socket.on('removeMarker', function(id) {
-    console.log("Removed "+id);
-    _.remove($scope.markers, {id: id});
+  socket.on('removeMarker', function(data) {
+    console.log("Removed "+data.id);
+    _.remove($scope.markers, {id: data.id});
   });
 });
