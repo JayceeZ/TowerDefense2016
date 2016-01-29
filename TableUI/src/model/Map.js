@@ -37,7 +37,6 @@ var Map = function Map(scope, container) {
     var _this = this;
     _.forEach(this.turrets, function(turret) {
       if(turret.id === idplayer && turret.isPreview) {
-        console.log("Turret visible "+turret.player);
         turret.show();
         turret.setPosition(x * _this.width, y * _this.height);
         turret.setOrientation(angle);
