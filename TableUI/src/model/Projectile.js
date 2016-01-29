@@ -42,10 +42,10 @@ var Projectile = function Projectile(container) {
         _this.destroy();
       _this.graphics.clear();
       _this.graphics.lineStyle(5, 0xFFFFFF, 1);
-      _this.graphics.moveTo(x, y);
       x += dx;
       y += dy;
-      _this.graphics.lineTo(x, y);
+      _this.graphics.moveTo(x, y);
+      _this.graphics.lineTo(x + dx * _this.length, y + dy * _this.length);
       elapsed++;
     }, delta);
   };
