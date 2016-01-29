@@ -29,7 +29,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
   });
 
   socket.on('updateMarker', function(data) {
-    $scope.map.previewPlacingTurret(data.playerId, data.x, data.y, data.angle);
+    $scope.map.previewPlacingTurret(data.playerId, data.x, data.y, data.angle, data.positionOk);
   });
 
   socket.on('removeMarker', function(data) {

@@ -7,8 +7,8 @@ var turretTexture = PIXI.Texture.fromImage('img/turret_100x120.png');
 
 var Turret = function Turret(idplayer, container) {
   this.id = idplayer;
-  this.x = 0;
-  this.y = 0;
+  this.x = -200;
+  this.y = -200;
   this.orientation = 0;
 
   this.color = getPlayerColor(idplayer);
@@ -79,6 +79,9 @@ var Turret = function Turret(idplayer, container) {
   this.update = function() {
     this.graphics.clear();
 
+    if(this.isHidden)
+      return;
+
     this.graphics.lineStyle(0);
 
     var hexColor = this.__getColorHEX();
@@ -86,29 +89,36 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.drawCircle(this.x, this.y, 8);
     this.graphics.endFill();
 
+    if(!this.isValidable) {
+      this.graphics.beginFill(0xFF0000, 0.3);
+      this.graphics.drawCircle(this.x, this.y, 60);
+      this.graphics.endFill();
+    }
+
     this.texture.position.x = this.x;
     this.texture.position.y = this.y;
 
     this.texture.rotation = this.orientation+(Math.PI/2);
 
-    if(this.isPreview)
+    if(this.isPreview && this.isValidable)
       this.__drawAimZone(hexColor, this.aimDistance, this.aimArc);
   };
 
   this.hide = function() {
-    if(!this.isHidden)
-      return;
-    this.container.removeChild(this.texture);
-    this.container.removeChild(this.graphics);
     this.isHidden = true;
+    this.container.removeChild(this.texture);
+    this.update();
   };
 
   this.show = function() {
-    if(this.isHidden)
-      return;
-    this.container.addChild(this.texture);
-    this.container.addChild(this.graphics);
     this.isHidden = false;
+    this.container.addChild(this.texture);
+    this.update();
+  };
+
+  this.setValidable = function(bool) {
+    this.isValidable = bool;
+    this.update();
   };
 
   // create a new Sprite using the texture
@@ -117,4 +127,7 @@ var Turret = function Turret(idplayer, container) {
   // center the sprite's anchor point
   this.texture.anchor.x = 0.5;
   this.texture.anchor.y = 0.58;
+
+  this.container.addChild(this.texture);
+  this.container.addChild(this.graphics);
 };
