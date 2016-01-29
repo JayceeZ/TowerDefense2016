@@ -38,15 +38,15 @@ var Projectile = function Projectile(container) {
     var y = this.y;
     var elapsed = 0;
     this.interval = setInterval(function() {
-      elapsed += _this.speed;
-      x += dx * _this.speed * elapsed;
-      y += dy * _this.speed * elapsed;
-      if(Math.sqrt(Math.pow(x-_this.x,2)+Math.pow(y-_this.y,2)) >= distance)
+      if(elapsed >= this.duration)
         _this.destroy();
       _this.graphics.clear();
       _this.graphics.lineStyle(5, 0xFFFFFF, 1);
       _this.graphics.moveTo(x, y);
-      _this.graphics.lineTo(x + dx * _this.length, y + dy * _this.length);
+      x += dx;
+      y += dy;
+      _this.graphics.lineTo(x, y);
+      elapsed++;
     }, delta);
   };
 
