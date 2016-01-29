@@ -123,6 +123,9 @@ module.exports = function(){
                         this.totalScore += targets[j].gain;
                         this.removeEnemy(targets[j].id);
                     }
+                this.projectiles.splice(i,1);
+                i--;
+                l--;
             }
         }
         if(kill !== 0){
