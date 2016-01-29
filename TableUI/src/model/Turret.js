@@ -100,7 +100,7 @@ var Turret = function Turret(idplayer, container) {
 
     this.texture.rotation = this.orientation+(Math.PI/2);
 
-    if(this.isPreview)
+    if(this.isPreview && this.isValidable)
       this.__drawAimZone(hexColor, this.aimDistance, this.aimArc);
   };
 
