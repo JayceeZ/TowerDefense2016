@@ -25,6 +25,7 @@ var Map = function Map(scope, container) {
   this.validateTurret = function(idplayer, id, x, y, angle) {
     _.forEach(this.turrets, function(turret) {
       if(turret.id === idplayer && turret.isPreview) {
+        console.log("Turret placed at ("+x+","+y+") for player "+idplayer);
         turret.setPosition(x, y);
         turret.setOrientation(angle);
         turret.validate(id);
@@ -46,6 +47,12 @@ var Map = function Map(scope, container) {
   this.setPlayerTurretSpecs = function(idplayer, aimZone) {
     var turret = new Turret(idplayer, this.container);
     turret.setAimZone(aimZone.distance, aimZone.arc);
+    var marker = _.find(this.scope.markers, {player: idplayer});
+    if(marker) {
+      turret.setPosition(marker.x, marker.y);
+      turret.setOrientation(marker.orientation);
+    }
+    console.log("Turret created at ("+turret.x+","+turret.y+") for player "+turret.player);
     this.turrets.push(turret);
   };
 
