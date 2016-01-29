@@ -3,28 +3,41 @@
  */
 var User = require('./User.js'),
     Tower = require('./Tower.js'),
-    TowerFactory = require('./TowerFactory.js');
+    TowerFactory = require('./TowerFactory.js'),
+    Map = require('./Map.js');
 
-module.exports = function(pmax,socket){
+module.exports = function(socket){
     var oThis = this;
     this.creating = true;
     this.status = "";
-    this.maxPlayers = pmax;
-    this.players = [];
-    this.vague = 0;
+    this.maxPlayers;
+    this.players;
+    this.vague;
     this.nbvague = 3;
     this.ennemyVague = [5,10,15];
     this.map;
-    this.radiusTower = 50;
     this.socket = socket;
-    this.clock = 0;
+    this.clock;
     this.stopVague = false;
     this.timer;
     this.updateTimer;
     this.INTERVAL = 33;
     this.UPDATE_INTERVAL = 500;
-    this.escaped = 0;
     this.ID = 0;
+
+    this.init = function(nbplayers){
+        this.creating = true;
+        this.status = "";
+        this.maxPlayers = nbplayers;
+        this.players = [];
+        this.vague = 0;
+        this.escaped = 0;
+        this.clock = 0;
+        this.map = new Map();
+        this.map.setHeight(1080);
+        this.map.setWidth(1920);
+        socket.emit("coreStatus","creating");
+    };
 
 
     this.addPlayer = function(player){
@@ -54,6 +67,7 @@ module.exports = function(pmax,socket){
 
     this.launch = function(){
         this.creating = false;
+        socket.emit("coreStatus","inGame");
         this.launchPlacement();
         this.clearPlayers();
         this.updateTimer = setInterval(function(){ oThis.loopUpdate()},this.UPDATE_INTERVAL);
@@ -82,6 +96,7 @@ module.exports = function(pmax,socket){
     this.endGame = function (){
         socket.emit("endGame");
         clearInterval(this.updateTimer);
+        this.init(4);
     };
 
     this.loopUpdate = function(){
@@ -162,9 +177,9 @@ module.exports = function(pmax,socket){
             this.endPlacement();
     };
 
-    this.getPreviewTower = function(marker){
-        if(this.status === "placement" && marker.playerId !== null){
-            var player = this.getPlayerFromId(marker.playerId);
+    this.getPreviewTower = function(idplayer){
+        if(this.status === "placement" && idplayer !== null){
+            var player = this.getPlayerFromId(idplayer);
             if(player !== null && player.selectedTower !== null){
                 var dataTower = TowerFactory(player.selectedTower);
                 if(dataTower !== null){
@@ -230,9 +245,12 @@ module.exports = function(pmax,socket){
         return null;
     };
 
-    this.updateVague = function(socket){
-        var updates = {};
+    this.getMarkerIdFromPlayer = function(id){
+        var i;
+        for(i = 0; i < this.players.length; i++)
+            if(this.players[i].id == id)
+                return this.players[i].markerid;
+        return null;
     };
-
 
 };

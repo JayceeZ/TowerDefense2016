@@ -21,6 +21,9 @@ var players = [];
 var tableSocket;
 var idevSocket;
 
+var coreIp = null;
+var coreStatus = null;
+
 init();
 
 console.log("Server started");
@@ -58,8 +61,12 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('addCore', function() {
-    console.log('Core authentified');
-    socket.join('core');
+    if(coreIp === null) {
+      console.log('Core authentified');
+      coreIp = socket.request.connection.remoteAddress;
+      socket.join('core');
+    }else
+      console.log('Core already authentified');
   });
 
   socket.on('addStats', function() {
@@ -105,9 +112,20 @@ ioServer.on('connection', function(socket) {
     }
   });
 
+  socket.on('discover', function(){
+    console.log("Discovering");
+    if(coreIp !== null){
+      socket.emit('coreDetected',{"ip":coreIp,"status":coreStatus});
+    }
+  });
+
   /**
    * Updates from core
    */
+
+  socket.on('coreStatus', function(status){
+    coreStatus = status;
+  });
 
   /*
     marker --> idmarker, x, y, angle, playerId, placementok
@@ -118,9 +136,13 @@ ioServer.on('connection', function(socket) {
     socket.to("stats").emit("updateMarker", marker);
   });
 
-  socket.on('removeMarker', function(markerId){
+
+  /*
+    message : id, playerId
+   */
+  socket.on('removeMarker', function(message){
     console.log("Remove marker");
-    socket.to("table").emit("removeMarker", markerId);
+    socket.to("table").emit("removeMarker", message);
   });
 
   socket.on('gameReady', function(){
@@ -175,6 +197,13 @@ ioServer.on('connection', function(socket) {
   socket.on('initEnemy', function(enemy){
     console.log('Init enemy : '+enemy.vitesse);
     socket.to("table").emit("initEnemy",enemy);
+  });
+
+  /*
+    message : idplayer, type, preview
+   */
+  socket.on('playerSelectTower', function(message){
+    socket.to("table").emit("playerSelectTower",message);
   });
 
   /*

@@ -7,7 +7,7 @@ var osc = require('node-osc'),
     TUIOHandler = require('./TUIOHandler.js');
 
 // Socket to common server
-var socket = io.connect("http://localhost:8081");
+var socket = io.connect("http://192.168.1.21:8081");
 
 /***************
  * TUIO Events *
@@ -41,7 +41,7 @@ var handleTUIO = function(msg){
   }
   var removes = handler.getRemoves();
   for(a = 0; a < removes.length; a++)
-    socket.emit("removeMarker", removes[a]);
+    socket.emit("removeMarker", {"id":removes[a],"playerId":game.getPlayerIdFromMarker(removes[a])});
 
 }
 
@@ -87,7 +87,9 @@ socket.on('launchGame', function (message) {
 
 socket.on('selectTower', function(message){
   game.setSelectedTower(message.idplayer,message.type);
+  socket.emit('playerSelectTower',{"idplayer":message.idplayer,"type":message.type,"preview":game.getPreviewTower(message.idplayer)});
 });
+
 
 socket.on('putTower', function(idplayer){
   var marker = handler.getMarkerFromIdPlayer(idplayer);
@@ -115,24 +117,17 @@ socket.on('removePlayer', function(id){
  */
 
 
-var game = new Game(4,socket);
+var game = new Game(socket);
 var handler = new TUIOHandler(game);
-map = new Map();
-map.setHeight(1080);
-map.setWidth(1920);
-game.setMap(map);
-
+game.init(4);
 
 //TESTS
 /*
 var player = new User(1,"test");
 game.addPlayer(player);
 game.addTower(1,0.5,0.5,0);
-game.setPlayerTag(1,"B2","black");
+game.setPlayerTag(1,"B2","red");
 game.launch();
 game.setPlayerReady(1,true);
 */
-/**
- Core
- **/
 
