@@ -44,6 +44,7 @@ var Turret = function Turret(idplayer, container) {
   this.validate = function(id) {
     this.id = id;
     this.isPreview = false;
+    this.isHidden = false;
     this.update();
   };
 
@@ -108,13 +109,13 @@ var Turret = function Turret(idplayer, container) {
 
   this.hide = function() {
     this.isHidden = true;
-    this.container.removeChild(this.texture);
+    this.x = -200;
+    this.y = -200;
     this.update();
   };
 
   this.show = function() {
     this.isHidden = false;
-    this.container.addChild(this.texture);
     this.update();
   };
 
