@@ -46,7 +46,7 @@ var Map = function Map(scope, container) {
   };
 
   this.setPlayerTurretSpecs = function(idplayer, type, aimZone) {
-    var turret = _.find(this.turrets, {player: idplayer});
+    var turret = _.find(this.turrets, {player: idplayer, isPreview: true});
     if(!turret) {
       turret = new Turret(idplayer, this.container);
       console.log("Turret created for preview");
