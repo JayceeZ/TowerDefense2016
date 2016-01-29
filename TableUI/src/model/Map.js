@@ -37,7 +37,8 @@ var Map = function Map(scope, container) {
     var _this = this;
     _.forEach(this.turrets, function(turret) {
       if(turret.id === idplayer && turret.isPreview) {
-        turret.isHidden = false;
+        console.log("Turret visible "+turret.player);
+        turret.show();
         turret.setPosition(x * _this.width, y * _this.height);
         turret.setOrientation(angle);
       }
@@ -47,12 +48,14 @@ var Map = function Map(scope, container) {
   this.setPlayerTurretSpecs = function(idplayer, aimZone) {
     var turret = new Turret(idplayer, this.container);
     turret.setAimZone(aimZone.distance, aimZone.arc);
+    console.log("Turret created with "+aimZone);
     var marker = _.find(this.scope.markers, {player: idplayer});
     if(marker) {
+      console.log("at ("+turret.x+","+turret.y+")");
       turret.setPosition(marker.x, marker.y);
       turret.setOrientation(marker.orientation);
     }
-    console.log("Turret created at ("+turret.x+","+turret.y+") for player "+turret.player);
+    console.log("for player "+turret.player);
     this.turrets.push(turret);
   };
 
@@ -110,7 +113,7 @@ var Map = function Map(scope, container) {
         }
       }
       _this.currentTime++;
-      if(_this.currentTime === _this.end) {
+      if(_this.currentTime >= _this.end) {
         _this.stop();
         _this.clean();
       }
