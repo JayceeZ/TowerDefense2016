@@ -26,7 +26,7 @@ module.exports = function(game){
                     this.markers[i].marker.y = marker.y;
                     this.markers[i].marker.angle = marker.angle;
                     this.markers[i].marker.positionOk = game.checkPlacement(this.markers[i].marker);
-                    this.markers[i].marker.preview = game.getPreview(this.markers[i].marker);
+                    this.markers[i].marker.previewTower = game.getPreviewTower(this.markers[i].marker);
                     this.markers[i].status = "update";
                 }
                 else this.markers[i].status = "nochange";
@@ -38,7 +38,7 @@ module.exports = function(game){
             marker.playerId = game.getPlayerIdFromMarker(marker.id);
             if(game.creating === true || marker.playerId !== null) {
                 marker.positionOk = game.checkPlacement(marker);
-                marker.preview = game.getPreview(marker);
+                marker.previewTower = game.getPreviewTower(marker);
                 this.markers.push({"status": "update", "marker": marker});
             }
         }
