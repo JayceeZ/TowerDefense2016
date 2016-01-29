@@ -100,6 +100,7 @@ var Turret = function Turret(idplayer, container) {
       return;
     this.container.removeChild(this.texture);
     this.container.removeChild(this.graphics);
+    this.isHidden = true;
   };
 
   this.show = function() {
@@ -107,7 +108,7 @@ var Turret = function Turret(idplayer, container) {
       return;
     this.container.addChild(this.texture);
     this.container.addChild(this.graphics);
-    this.update();
+    this.isHidden = false;
   };
 
   // create a new Sprite using the texture
