@@ -320,12 +320,10 @@ ioServer.on('connection', function(socket) {
    *  Updates from stats
    */
   socket.on('updateBonusMalus', function(message) {
+    console.log("Update bonus/malus : "+message.pseudo+" , "+message.multiplicateur);
     socket.to("core").emit("updateBonusMalus", message);
   });
 });
-
-
-
 
 
 var getPlayerSocket = function(id){
