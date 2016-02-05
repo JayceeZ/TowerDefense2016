@@ -45,13 +45,13 @@ var Turret = function Turret(idplayer, container) {
   this.setType = function(value) {
     switch(value) {
       case 1:
-        this.graphics.texture.setTexture(turretTexture);
+        this.sprite.setTexture(turretTexture);
         break;
       case 2:
-        this.graphics.texture.setTexture(turret2Texture);
+        this.sprite.setTexture(turret2Texture);
         break;
       default:
-        this.graphics.texture.setTexture(turretTexture);
+        this.sprite.setTexture(turretTexture);
         break;
     }
   };
@@ -132,12 +132,12 @@ var Turret = function Turret(idplayer, container) {
   };
 
   // create a new Sprite using the texture
-  this.texture = new PIXI.Sprite(turretTexture);
+  this.sprite = new PIXI.Sprite(turretTexture);
 
   // center the sprite's anchor point
   this.texture.anchor.x = 0.5;
   this.texture.anchor.y = 0.58;
 
-  this.container.addChild(this.texture);
+  this.container.addChild(this.sprite);
   this.container.addChild(this.graphics);
 };
