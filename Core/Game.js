@@ -133,7 +133,7 @@ module.exports = function(socket){
     };
 
     this.checkPlacement = function(marker){
-        if(this.status !== "placement")
+        if(this.status !== "placement" || marker === null)
             return false;
         var player = this.getPlayerFromId(marker.playerId);
         var dataTower = TowerFactory(player.selectedTower);
