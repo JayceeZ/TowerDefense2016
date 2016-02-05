@@ -112,10 +112,10 @@ var Enemy = function Enemy(id, container) {
     this.graphics.beginFill(0xFFFF00);
 
     this.graphics.lineStyle(5, 0xAAAAAA);
-    this.graphics.drawRect(this.x - this.texture.width/2, this.y - this.texture.height/2, this.texture.width, 20);
+    this.graphics.drawRect(this.x - this.sprite.texture.width/2, this.y - this.sprite.texture.height/2, this.sprite.texture.width, 20);
 
     this.graphics.lineStyle(5, 0xFF0000);
-    this.graphics.drawRect(this.x - this.texture.width/2, this.y - this.texture.height/2, this.texture.width * this.hp, 20);
+    this.graphics.drawRect(this.x - this.sprite.texture.width/2, this.y - this.sprite.texture.height/2, this.sprite.texture.width * this.hp, 20);
   };
 
   this.sprite = new PIXI.Sprite(textures[0]);
