@@ -25,6 +25,7 @@ module.exports = function(socket){
     this.INTERVAL = 33;
     this.UPDATE_INTERVAL = 1000;
     this.ID = 0;
+    this.globalHp;
 
     this.init = function(nbplayers){
         this.creating = true;
@@ -34,6 +35,7 @@ module.exports = function(socket){
         this.vague = 0;
         this.escaped = 0;
         this.clock = 0;
+        this.globalHp = 100;
         var dataMap = MapFactory(2);
         this.map = new Map(dataMap.id,dataMap.height,dataMap.width,dataMap.enemyZones, dataMap.enemyStarts, dataMap.enemyEnds);
         socket.emit("coreStatus","creating");

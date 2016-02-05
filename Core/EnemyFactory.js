@@ -13,6 +13,6 @@ module.exports = function(type){
 };
 
 var data = [
-    {"type": 1,"hp":100,"gain":25, "damage":1, "vitesse" : 5}
+    {"type": 1,"hp":100,"gain":25, "damage":5, "vitesse" : 5}
 
 ];
