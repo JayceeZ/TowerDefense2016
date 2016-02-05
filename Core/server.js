@@ -126,12 +126,12 @@ var handler = new TUIOHandler(game);
 game.init(4);
 
 //TESTS
-
+/*
 var player = new User(1,"test");
 game.addPlayer(player);
 game.addTower(1,0.5,0.5,0);
 game.setPlayerTag(1,"B2","red");
 game.launch();
 game.setPlayerReady(1,true);
-
+*/
 
