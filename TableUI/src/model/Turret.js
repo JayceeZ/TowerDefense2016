@@ -45,13 +45,13 @@ var Turret = function Turret(idplayer, container) {
   this.setType = function(value) {
     switch(value) {
       case 1:
-        this.sprite.setTexture(turretTexture);
+        this.sprite.texture = turretTexture;
         break;
       case 2:
-        this.sprite.setTexture(turret2Texture);
+        this.sprite.texture = turret2Texture;
         break;
       default:
-        this.sprite.setTexture(turretTexture);
+        this.sprite.texture = turretTexture;
         break;
     }
   };

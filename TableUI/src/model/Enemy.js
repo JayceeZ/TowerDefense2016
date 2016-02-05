@@ -104,8 +104,8 @@ var Enemy = function Enemy(id, container) {
     this.graphics.clear();
 
     this.sprite.texture = textures[++this.currentTexture];
-    this.sprite.position.x = this.x - this.graphics.texture.width/2;
-    this.sprite.position.y = this.y - this.graphics.texture.height/2;
+    this.sprite.position.x = this.x - this.sprite.texture.width/2;
+    this.sprite.position.y = this.y - this.sprite.texture.height/2;
     if(this.currentTexture === textures.length - 1)
       this.currentTexture = 0;
 
