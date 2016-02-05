@@ -78,8 +78,8 @@ var Enemy = function Enemy(id, container) {
     this.graphics.endFill();*/
 
     this.graphics.texture = textures[++this.currentTexture];
-    this.graphics.position.x = this.x;
-    this.graphics.position.y = this.y;
+    this.graphics.position.x = this.x - this.graphics.texture.width/2;
+    this.graphics.position.y = this.y - this.graphics.texture.height/2;
     if(this.currentTexture === textures.length - 1)
       this.currentTexture = 0;
   };

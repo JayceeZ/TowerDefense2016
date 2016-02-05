@@ -4,6 +4,7 @@
 
 // create a texture from an image path
 var turretTexture = PIXI.Texture.fromImage('img/turret_100x120.png');
+var turret2Texture = PIXI.Texture.fromImage('img/turret2_100x120.png');
 
 var Turret = function Turret(idplayer, container) {
   this.id = idplayer;
@@ -40,6 +41,20 @@ var Turret = function Turret(idplayer, container) {
     this.aimDistance = distance;
     this.aimArc = arc;
     this.update();
+  };
+
+  this.setType = function(value) {
+    switch(value) {
+      case 1:
+        this.graphics.texture = turretTexture;
+        break;
+      case 2:
+        this.graphics.texture = turret2Texture;
+        break;
+      default:
+        this.graphics.texture = turretTexture;
+        break;
+    }
   };
 
   this.validate = function(id) {

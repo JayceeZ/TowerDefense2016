@@ -95,8 +95,6 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   function startGame() {
     $location.path("/map");
   }
-
-  socket.emit('performTestsHome');
 });
 
 appTable.directive("slot", function() {
