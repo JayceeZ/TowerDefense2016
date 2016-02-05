@@ -60,9 +60,10 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
       var y = message.y * create[0].clientHeight;
       var slot = getSlot(x, y);
       // Only if a player is connected in the slot
-      if (slot && slot !== null && slot.player !== null) {
-        slot.setTag(message.id);
-        socket.emit('playerColorUpdate', {id: slot.player, pseudo: slot.playerPseudo, color: slot.color});
+      if (slot) {
+        var assoc = slot.setTag(message.id);
+        if (assoc)
+          socket.emit('playerColorUpdate', {id: slot.player, pseudo: slot.playerPseudo, color: slot.color});
       }
     }
   });

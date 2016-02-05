@@ -24,7 +24,11 @@ var Slot = function Slot(id) {
       this.playerPseudo = "";
       this.tag = null;
       this.color = "grey";
+    } else if (tag !== null) {
+      this.setColor(tagColors[tag]);
+      return true;
     }
+    return false;
   };
 
   this.setPlayerPseudo = function(pseudo){
@@ -33,7 +37,11 @@ var Slot = function Slot(id) {
 
   this.setTag = function(tag) {
     this.tag = tag;
-    this.setColor(tagColors[tag]);
+    if(player !== null) {
+      this.setColor(tagColors[tag]);
+      return true;
+    }
+    return false;
   };
 
   this.setBoundaries = function(left, top, right, bottom) {
