@@ -49,7 +49,7 @@ module.exports = function(id,pseudo){
     this.updateKills = function(gain){
         this.kills ++;
         this.killsVague++;
-        this.score += gain*this.mult;
+        this.score += gain*this.mult*2;
         this.money += gain;
     };
 

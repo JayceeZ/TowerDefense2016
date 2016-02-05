@@ -8,6 +8,7 @@ module.exports = function(id,x,y,hp,gain,damage,vitesse,points,directions){
     this.x = x;
     this.y = y;
     this.hp = hp;
+    this.hpmax = hp;
     this.gain = gain;
     this.damage = damage;
     this.pathPoints = points;
@@ -32,9 +33,16 @@ module.exports = function(id,x,y,hp,gain,damage,vitesse,points,directions){
     };
 
     this.shot = function(projectile,socket, clock,vague){
-        socket.emit("killEnemy",{"id":this.id,"t":clock,"idplayer":projectile.tower.player.id,"vague":vague});
-        this.dead = true;
-        return true;
+        this.hp -= projectile.damage;
+        if(this.hp > 0){
+            socket.emit("updateEnemyHp",{"id":this.id,"t":clock,"hp":Math.floor(this.hp/this.hpmax)});
+            return false;
+        }
+        else {
+            socket.emit("killEnemy",{"id":this.id,"t":clock,"idplayer":projectile.tower.player.id,"vague":vague});
+            this.dead = true;
+            return true;
+        }
     };
 
     this.getPrediction = function(n){

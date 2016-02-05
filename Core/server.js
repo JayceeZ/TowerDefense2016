@@ -89,18 +89,27 @@ socket.on('launchGame', function (message) {
 });
 
 socket.on('selectTower', function(message){
-  game.setSelectedTower(message.idplayer,message.type);
-  socket.emit('playerSelectTower',{"playerId":message.idplayer,"type":message.type,"preview":game.getPreviewTower(message.idplayer)});
-  socket.emit("checkPlacement",{"idplayer":message.idplayer,"check":game.checkPlacement(handler.getMarkerFromIdPlayer(message.idplayer))});
+  if(game.setSelectedTower(message.idplayer,message.type) === true) {
+    socket.emit('playerSelectTower',{"playerId":message.idplayer,"type":message.type,"preview":game.getPreviewTower(message.idplayer)});
+    var marker = handler.getMarkerFromIdPlayer(message.idplayer);
+    if(marker !== null) {
+      socket.emit("updateMarker",marker);
+      socket.emit("checkPlacement",{"idplayer":message.idplayer,"check":game.checkPlacement(marker)});
+    }
+  }
 });
 
 
 socket.on('putTower', function(idplayer){
   var marker = handler.getMarkerFromIdPlayer(idplayer);
-  if(marker != null && marker.positionOk == true){
+  if(marker != null && marker.positionOk === true){
     var tower = game.addTower(idplayer,marker.x,marker.y,marker.angle);
-    if(tower !== null)
+    if(tower !== null) {
       socket.emit("validateTower",{"playerId":idplayer,"id":tower.id,"x":tower.x,"y":tower.y,"angle":tower.angle,"type":tower.type});
+      marker.positionOk = false;
+      socket.emit("updateMarker",marker);
+      socket.emit("checkPlacement",{"idplayer":idplayer,"check":false});
+    }
   }
 });
 
@@ -115,6 +124,10 @@ socket.on('removePlayer', function(id){
 
 socket.on('updateBonusMalus', function(message){
   game.updateBonusMalus(message.pseudo, message.multiplicateur);
+});
+
+socket.on('requestViewData', function(){
+
 });
 
 

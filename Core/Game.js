@@ -129,8 +129,11 @@ module.exports = function(socket){
 
     this.setSelectedTower = function(idplayer, type){
         var player = this.getPlayerFromId(idplayer);
-        if(player !== null)
+        if(player !== null) {
             player.selectedTower = type;
+            return true;
+        }
+        return false;
     };
 
     this.checkPlacement = function(marker){

@@ -24,6 +24,8 @@ var idevSocket;
 var coreIp = null;
 var coreStatus = null;
 
+var tablePullSocket = null;
+
 init();
 
 console.log("Server started");
@@ -63,7 +65,7 @@ ioServer.on('connection', function(socket) {
   socket.on('addCore', function() {
     if(coreIp === null) {
       console.log('Core authentified');
-      coreIp = socket.handshake.address.address;
+      coreIp = socket.request.connection._peername.address;
       socket.join('core');
     }else
       console.log('Core already authentified');
@@ -235,6 +237,14 @@ ioServer.on('connection', function(socket) {
     socket.to('stats').emit("killEnemy",message.idplayer);
   });
 
+  /*
+   message --> id, t, hp
+   */
+  socket.on('updateEnemyHp', function(message){
+    console.log("update Enemy hp : id = "+message.id+" , t = "+message.t);
+    socket.to('table').emit("updateEnemyHp",{"id":message.id,"t":message.t,"hp":message.hp});
+  });
+
   socket.on('endGame', function(){
     console.log('End Game');
     socket.to('table').emit("endGame");
@@ -257,6 +267,11 @@ ioServer.on('connection', function(socket) {
       if(playerSocket !== null)
         playerSocket.emit("globalUpdate",{"infoGame":message.infoGame,"infoPlayer":message.infoPlayers[i]});
     }
+  });
+
+  socket.on('viewData', function(message){
+    console.log("View Data");
+    tablePullSocket.emit("viewData",message);
   });
 
 
@@ -304,6 +319,12 @@ ioServer.on('connection', function(socket) {
     console.log("launchGame : "+message.length);
     socket.to("core").emit("launchGame",message);
     socket.to("stats").emit("launchGame");
+  });
+
+  socket.on('requestViewData', function(){
+    console.log("Request view data");
+    tablePullSocket = socket;
+    socket.to("core").emit("requestViewData");
   });
 
   /**

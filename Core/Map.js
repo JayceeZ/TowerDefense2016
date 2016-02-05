@@ -67,10 +67,6 @@ module.exports = function(id,height,width,zones,starts,ends){
             var start = this.getRandomStartPoint();
             var path = this.getPathFromStartPoint(start,enemyData.vitesse);
             var j;
-            console.log("test path : "+path.points.length);
-            for(j = 0; j < path.points.length; j++)
-                console.log("point : "+path.points[j].x+" "+path.points[j].y+" , direction : "+path.directions[j].vx+" "+path.directions[j].vy);
-
             if(enemyData !== null) {
                 var enemy = new Enemy(this.ID_ENEMY, start.x, start.y, enemyData.hp, enemyData.gain, enemyData.damage, enemyData.vitesse, path.points, path.directions);
                 this.enemies.push(enemy);
@@ -104,7 +100,6 @@ module.exports = function(id,height,width,zones,starts,ends){
         var path = {"points":[],"directions":[]};
         var currentPos = {"x":start.x,"y":start.y};
         for(i = 0; i < currentpath.length - 1; i++){
-            console.log("Current pos : "+currentPos.x+" "+currentPos.y);
             var dx = 0,dy = 0,ix = 0,iy = 0,sx = 0,sy = 0;
             ix = currentpath[i+1].x2 -currentpath[i+1].x1;
             iy = currentpath[i+1].y2 -currentpath[i+1].y1;
@@ -125,7 +120,6 @@ module.exports = function(id,height,width,zones,starts,ends){
             if(directions.length === 2 && (testx < currentpath[i].x1 || testx > currentpath[i].x2))
                 directions.reverse();
             var a, mx, my;
-            console.log("test : "+dx+" "+dy+" "+ix+" "+iy+" "+sx+" "+sy);
             for(a = 0; a < directions.length; a++) {
                 path.directions.push(directions[a]);
                 if((i === currentpath.length - 2 || i === currentpath.length - 3) && a === directions.length - 1) {
@@ -148,12 +142,10 @@ module.exports = function(id,height,width,zones,starts,ends){
                 }
                 currentPos.x += mx;
                 currentPos.y += my;
-                console.log("test : "+mx+" "+my);
                 path.points.push({"x":currentPos.x,"y":currentPos.y});
             }
         }
         return path;
-        //return {"points":[{"x":this.width,"y":start.y}],"directions":[{"vx":1,"vy":0}]};
     };
 
     this.actuEnemyPosition = function(socket,clock){
