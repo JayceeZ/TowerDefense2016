@@ -21,11 +21,10 @@ var Slot = function Slot(id) {
   this.setPlayer = function(player) {
     this.player = player;
     if(player === null) {
-      this.playerPseudo = "";
-      this.tag = null;
-      this.color = "grey";
-    } else if (tag !== null) {
-      this.setColor(tagColors[tag]);
+      this.setPlayerPseudo("");
+      this.setColor("grey");
+    } else if (this.tag !== null) {
+      this.setColor(tagColors[this.tag]);
       return true;
     }
     return false;
