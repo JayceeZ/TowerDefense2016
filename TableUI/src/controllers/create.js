@@ -23,12 +23,10 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   };
 
   $scope.allPlayersAssociated = function() {
-    var ret = true;
+    var ret = false;
     _.forEach($scope.slots, function(slot) {
       if (slot.player !== null) {
-        if(slot.tag === null) {
-          ret = false;
-        }
+        ret = slot.tag !== null;
       }
     });
     return ret;
