@@ -315,7 +315,18 @@ ioServer.on('connection', function(socket) {
     playerSocket = getPlayerSocket(message.id);
     playerSocket.emit("playerColorUpdate",message.color);
   });
+
+  /**
+   *  Updates from stats
+   */
+  socket.on('updateBonusMalus', function(message) {
+    socket.to("core").emit("updateBonusMalus", message);
+  });
 });
+
+
+
+
 
 var getPlayerSocket = function(id){
   for(i = 0; i < players.length; i++){

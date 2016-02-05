@@ -18,6 +18,7 @@ module.exports = function(id,pseudo){
     this.selectedTower = 1;
     this.towerCount = 0;
     this.color = null;
+    this.mult = 1;
 
 
     this.setPseudo = function(p){
@@ -48,7 +49,7 @@ module.exports = function(id,pseudo){
     this.updateKills = function(gain){
         this.kills ++;
         this.killsVague++;
-        this.score += gain;
+        this.score += gain*this.mult;
         this.money += gain;
     };
 

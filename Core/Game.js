@@ -105,7 +105,7 @@ module.exports = function(socket){
         for(i = 0; i < this.players.length; i++){
             var player = this.players[i];
             var infoPlayer = {"id":player.id,"pseudo":player.pseudo,"color":player.color,"money":player.money,"score":player.score,
-                "nbtowers":player.towerCount,"kills":player.kills,"shots":player.shots,"killsvague":player.killsVague,"shotsvague":player.shotsVague};
+                "nbtowers":player.towerCount,"kills":player.kills,"shots":player.shots,"killsvague":player.killsVague,"shotsvague":player.shotsVague,"mult":player.mult};
             infoPlayers.push(infoPlayer);
         }
         var infoGame = {"id":this.ID,"vague":this.vague,"totalScore":this.map.totalScore,"totalKills":this.map.kills,"totalEscapes":this.map.escaped};
@@ -117,6 +117,7 @@ module.exports = function(socket){
      */
 
     this.launchPlacement = function(){
+        this.vague++;
         this.status = "placement";
         var i;
         for(i = 0; i < this.players.length; i++) {
@@ -204,7 +205,6 @@ module.exports = function(socket){
      */
 
     this.launchNextVague = function(){
-        this.vague++;
         this.status = "vague";
         this.map.initNewVague();
         this.map.initEnemy(this.ennemyVague[this.vague-1],this.socket);
@@ -241,6 +241,13 @@ module.exports = function(socket){
         return null;
     };
 
+    this.getPlayerFromPseudo = function(pseudo){
+        for(i = 0; i < this.players.length; i++)
+            if(this.players[i].pseudo == pseudo)
+                return this.players[i];
+        return null;
+    };
+
     this.getPlayerIdFromMarker = function(id){
         var i;
         for(i = 0; i < this.players.length; i++)
@@ -256,5 +263,11 @@ module.exports = function(socket){
                 return this.players[i].markerid;
         return null;
     };
+
+    this.updateBonusMalus = function(pseudo,mult){
+        var player = this.getPlayerFromPseudo(pseudo);
+        if(player !== null)
+            player.mult = mult;
+    }
 
 };

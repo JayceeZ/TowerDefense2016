@@ -113,6 +113,10 @@ socket.on('removePlayer', function(id){
     game.removePlayer(id);
 });
 
+socket.on('updateBonusMalus', function(message){
+  game.updateBonusMalus(message.pseudo, message.multiplicateur);
+});
+
 
 
 
