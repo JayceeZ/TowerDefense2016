@@ -75,6 +75,8 @@ module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, da
     this.isAbove = function(droite,point){
         if(point.y > droite.c * point.x + droite.h)
             return true;
+        else
+            return false;
     };
 
     this.getBestTarget = function(enemies){
