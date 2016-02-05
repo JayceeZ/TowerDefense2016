@@ -54,10 +54,10 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
 
   socket.on('updateMarker', function(message) {
     // x,y inside spot
-    var home = angular.element('#home');
-    if(home[0]) {
-      var x = message.x * home[0].clientWidth;
-      var y = message.y * home[0].clientHeight;
+    var create = angular.element('#create');
+    if(create[0]) {
+      var x = message.x * create[0].clientWidth;
+      var y = message.y * create[0].clientHeight;
       var slot = getSlot(x, y);
       // Only if a player is connected in the slot
       if (slot && slot !== null && slot.player !== null) {
