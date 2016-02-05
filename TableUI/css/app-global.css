@@ -33,6 +33,35 @@ html, body, .ng-scope {
     text-align: center;
 }
 
+.home {
+    overflow: hidden;
+}
+
+.home .buttons {
+    padding-top: 5%;
+    margin-top: 5%;
+}
+
+.home .buttons div.btn {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 30%;
+}
+
+.home .buttons div.text {
+    text-align: center;
+    height: 10%;
+}
+
+.home .buttons div.icon {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.home .buttons div.btn .glyphicon {
+    font-size: 16vw;
+}
+
 .message-top {
     position: absolute;
     width: 100%;

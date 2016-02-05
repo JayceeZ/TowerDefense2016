@@ -39,6 +39,9 @@ appTable.config(['$routeProvider',
     $routeProvider.when('/home', {
       templateUrl: 'src/partials/home.html',
       controller: 'HomeCtrl'
+    }).when('/create', {
+      templateUrl: 'src/partials/create.html',
+      controller: 'CreateCtrl'
     }).when('/map', {
       templateUrl: 'src/partials/map.html',
       controller: 'MapCtrl'
