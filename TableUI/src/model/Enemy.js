@@ -62,10 +62,6 @@ var Enemy = function Enemy(id, container) {
         console.log("Objectif atteint pour " + this.id);
         console.log("position: (" + pos.x + ", " + pos.y + ")" + " direction: (" + direction.vx + ", " + direction.vy + ")");
         this.index += 1;
-        console.log("Nouvel objectif");
-        var pos2 = this.points[this.index];
-        var direction2 = this.directions[this.index];
-        console.log("position: (" + pos2.x + ", " + pos2.y + ")" + " direction: (" + direction2.vx + ", " + direction2.vy + ")");
       }
     }
     return this.index;
