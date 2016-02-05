@@ -34,9 +34,9 @@ module.exports = function(game){
             }
         }
         if(found === false){
-            marker.playerId = game.getPlayerIdFromMarker(marker.id);
-            if(game.creating === true || marker.playerId !== null) {
-                marker.positionOk = game.checkPlacement(marker);
+            marker.playerId = this.game.getPlayerIdFromMarker(marker.id);
+            if(this.game.creating === true || marker.playerId !== null) {
+                marker.positionOk = this.game.checkPlacement(marker);
                 this.markers.push({"status": "update", "marker": marker});
             }
         }
