@@ -25,7 +25,7 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   $scope.allPlayersAssociated = function() {
     var ret = true;
     _.forEach($scope.slots, function(slot) {
-      if (slot.player === null || slot.tag === null) {
+      if (slot.player !== null && slot.tag !== null) {
           ret = false;
       }
     });
