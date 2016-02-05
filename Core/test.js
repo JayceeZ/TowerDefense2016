@@ -25,9 +25,9 @@ var socket = io.connect("http://192.168.1.21:8081");
 
 //socket.emit("addPlayer",{"pseudo":"test"});
 
-socket.emit("selectTowerTest",1);
+//socket.emit("selectTowerTest",1);
 
 //socket.emit("putTowerTest",0);
 
-//socket.emit("isReadyTest",true);
+socket.emit("isReadyTest",true);
 

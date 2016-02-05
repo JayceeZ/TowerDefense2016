@@ -23,9 +23,12 @@ module.exports = function(id,x,y,hp,gain,damage,vitesse,points,directions){
     };
 
     this.checkEnd = function(){
-        if(this.x >= this.pathPoints[0].x)
+        if(this.x === this.pathPoints[this.indexPath].x && this.y === this.pathPoints[this.indexPath].y)
+            this.indexPath++;
+        if(this.indexPath === this.pathPoints.length)
             return true;
-        return false;
+        else
+            return false;
     };
 
     this.shot = function(projectile,socket, clock,vague){
