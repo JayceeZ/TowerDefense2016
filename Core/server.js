@@ -89,9 +89,14 @@ socket.on('launchGame', function (message) {
 });
 
 socket.on('selectTower', function(message){
-  game.setSelectedTower(message.idplayer,message.type);
-  socket.emit('playerSelectTower',{"playerId":message.idplayer,"type":message.type,"preview":game.getPreviewTower(message.idplayer)});
-  socket.emit("checkPlacement",{"idplayer":message.idplayer,"check":game.checkPlacement(handler.getMarkerFromIdPlayer(message.idplayer))});
+  if(game.setSelectedTower(message.idplayer,message.type) === true) {
+    socket.emit('playerSelectTower',{"playerId":message.idplayer,"type":message.type,"preview":game.getPreviewTower(message.idplayer)});
+    var marker = handler.getMarkerFromIdPlayer(message.idplayer);
+    if(marker !== null) {
+      socket.emit("updateMarker",marker);
+      socket.emit("checkPlacement",{"idplayer":message.idplayer,"check":game.checkPlacement(marker)});
+    }
+  }
 });
 
 
@@ -115,6 +120,10 @@ socket.on('removePlayer', function(id){
 
 socket.on('updateBonusMalus', function(message){
   game.updateBonusMalus(message.pseudo, message.multiplicateur);
+});
+
+socket.on('requestViewData', function(){
+
 });
 
 

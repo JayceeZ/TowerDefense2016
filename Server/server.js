@@ -24,6 +24,8 @@ var idevSocket;
 var coreIp = null;
 var coreStatus = null;
 
+var tablePullSocket = null;
+
 init();
 
 console.log("Server started");
@@ -63,7 +65,7 @@ ioServer.on('connection', function(socket) {
   socket.on('addCore', function() {
     if(coreIp === null) {
       console.log('Core authentified');
-      coreIp = socket.handshake.address.address;
+      coreIp = socket.request.connection._peername.address;
       socket.join('core');
     }else
       console.log('Core already authentified');
@@ -259,6 +261,11 @@ ioServer.on('connection', function(socket) {
     }
   });
 
+  socket.on('viewData', function(message){
+    console.log("View Data");
+    tablePullSocket.emit("viewData",message);
+  });
+
 
     /**
      * Updates from players
@@ -304,6 +311,12 @@ ioServer.on('connection', function(socket) {
     console.log("launchGame : "+message.length);
     socket.to("core").emit("launchGame",message);
     socket.to("stats").emit("launchGame");
+  });
+
+  socket.on('requestViewData', function(){
+    console.log("Request view data");
+    tablePullSocket = socket;
+    socket.to("core").emit("requestViewData");
   });
 
   /**

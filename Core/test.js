@@ -18,10 +18,10 @@ var timer = setInterval(function(){
     socket.on('coreDetected', function(message){
         console.log("Core detected : "+message.ip+" , status : "+message.status);
     });
-}, 50);*/
+}, 50);
+*/
 
-
-var socket = io.connect("http://192.168.1.21:8081");
+//var socket = io.connect("http://192.168.1.18:8081");
 
 //socket.emit("addPlayer",{"pseudo":"test"});
 
@@ -29,5 +29,5 @@ var socket = io.connect("http://192.168.1.21:8081");
 
 //socket.emit("putTowerTest",0);
 
-socket.emit("isReadyTest",true);
+//socket.emit("isReadyTest",true);
 
