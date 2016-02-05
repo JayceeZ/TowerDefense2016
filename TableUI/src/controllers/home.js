@@ -10,9 +10,10 @@ appTable.controller('HomeCtrl', function($scope, $location, socket) {
 
   $scope.goToWatch = function($event) {
     $event.preventDefault();
-    // fetch all infos of current game
-    socket.emit('fetchGame');
 
     $location.path('/map');
+
+    // fetch all infos of current game
+    socket.emit('fetchGame');
   };
 });

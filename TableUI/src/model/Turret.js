@@ -20,8 +20,7 @@ var Turret = function Turret(idplayer, container) {
   this.type = null;
 
   this.isPreview = true;
-  this.isHidden = true;
-  this.isValidable = true;
+  this.isValidable = false;
 
   this.container = container;
   this.graphics = new PIXI.Graphics();
@@ -46,13 +45,13 @@ var Turret = function Turret(idplayer, container) {
   this.setType = function(value) {
     switch(value) {
       case 1:
-        this.graphics.texture = turretTexture;
+        this.graphics.texture.setTexture(turretTexture);
         break;
       case 2:
-        this.graphics.texture = turret2Texture;
+        this.graphics.texture.setTexture(turret2Texture);
         break;
       default:
-        this.graphics.texture = turretTexture;
+        this.graphics.texture.setTexture(turretTexture);
         break;
     }
   };
@@ -60,7 +59,6 @@ var Turret = function Turret(idplayer, container) {
   this.validate = function(id) {
     this.id = id;
     this.isPreview = false;
-    this.isHidden = false;
     this.update();
   };
 
@@ -106,6 +104,7 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.endFill();
 
     if(!this.isValidable) {
+      // Red circles for user
       this.graphics.beginFill(0xFF0000, 0.3);
       this.graphics.drawCircle(this.x, this.y, 60);
       this.graphics.endFill();

@@ -8,7 +8,7 @@ var Map = function Map(scope, container) {
   this.events = [];
   this.message = "Phase de placement";
 
-  this.currentTime = 0;
+  this.currentTime = 0; // number of cycles of delta passed
   this.end = null;
   this.lastVague = false;
 
@@ -119,6 +119,10 @@ var Map = function Map(scope, container) {
       }
     }, delta);
     this.message = "Vague en cours";
+  };
+
+  this.jumpTo = function(time) {
+    this.currentTime = time;
   };
 
   this.clean = function() {
