@@ -64,6 +64,35 @@ appTable.controller('MapCtrl', function($scope, socket) {
     $scope.map.lastVague = true;
   });
 
+  /**********************
+   * Fetch for observer *
+   **********************/
+
+  socket.on('gameData', function(data) {
+    var map = $scope.map;
+
+    // Players association
+    var associations = [];
+    _.forEach(data.players, function(player) {
+      associations.push({idplayer: slot.player, idtag: slot.tag, color: slot.color});
+    });
+    window.associations = associations;
+
+    // Build turrets
+    _.forEach(data.turrets, function(turret) {
+      map.setPlayerTurretSpecs(idplayer, type, aimZone);
+      map.validateTurret(idplayer, id, x, y, angle);
+    }, this);
+
+    // Enemies
+    _.forEach(data.enemies, function(turret) {
+      map.addEnemy(id,start,positions,directions,speed);
+    }, this);
+
+    map.run(data.delta);
+    map.jumpTo(time);
+  });
+
   socket.emit('performTestsMap');
 });
 

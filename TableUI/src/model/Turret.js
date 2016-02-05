@@ -20,8 +20,7 @@ var Turret = function Turret(idplayer, container) {
   this.type = null;
 
   this.isPreview = true;
-  this.isHidden = true;
-  this.isValidable = true;
+  this.isValidable = false;
 
   this.container = container;
   this.graphics = new PIXI.Graphics();
@@ -46,13 +45,13 @@ var Turret = function Turret(idplayer, container) {
   this.setType = function(value) {
     switch(value) {
       case 1:
-        this.graphics.texture = turretTexture;
+        this.sprite.setTexture(turretTexture);
         break;
       case 2:
-        this.graphics.texture = turret2Texture;
+        this.sprite.setTexture(turret2Texture);
         break;
       default:
-        this.graphics.texture = turretTexture;
+        this.sprite.setTexture(turretTexture);
         break;
     }
   };
@@ -60,7 +59,6 @@ var Turret = function Turret(idplayer, container) {
   this.validate = function(id) {
     this.id = id;
     this.isPreview = false;
-    this.isHidden = false;
     this.update();
   };
 
@@ -106,15 +104,16 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.endFill();
 
     if(!this.isValidable) {
+      // Red circles for user
       this.graphics.beginFill(0xFF0000, 0.3);
       this.graphics.drawCircle(this.x, this.y, 60);
       this.graphics.endFill();
     }
 
-    this.texture.position.x = this.x;
-    this.texture.position.y = this.y;
+    this.sprite.position.x = this.x;
+    this.sprite.position.y = this.y;
 
-    this.texture.rotation = this.orientation+(Math.PI/2);
+    this.sprite.rotation = this.orientation+(Math.PI/2);
 
     if(this.isPreview && this.isValidable)
       this.__drawAimZone(hexColor, this.aimDistance, this.aimArc);
@@ -133,12 +132,12 @@ var Turret = function Turret(idplayer, container) {
   };
 
   // create a new Sprite using the texture
-  this.texture = new PIXI.Sprite(turretTexture);
+  this.sprite = new PIXI.Sprite(turretTexture);
 
   // center the sprite's anchor point
-  this.texture.anchor.x = 0.5;
-  this.texture.anchor.y = 0.58;
+  this.sprite.anchor.x = 0.5;
+  this.sprite.anchor.y = 0.58;
 
-  this.container.addChild(this.texture);
+  this.container.addChild(this.sprite);
   this.container.addChild(this.graphics);
 };
