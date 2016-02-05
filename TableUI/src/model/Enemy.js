@@ -101,10 +101,7 @@ var Enemy = function Enemy(id, container) {
   };
 
   this.update = function() {
-    /*this.graphics.lineStyle(0);
-    this.graphics.beginFill(0xFF0000, 1);
-    this.graphics.drawCircle(this.x, this.y, 20);
-    this.graphics.endFill();*/
+    this.graphics.clear();
 
     this.sprite.texture = textures[++this.currentTexture];
     this.sprite.position.x = this.x - this.graphics.texture.width/2;
