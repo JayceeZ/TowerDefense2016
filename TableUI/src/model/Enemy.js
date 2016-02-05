@@ -46,9 +46,7 @@ var Enemy = function Enemy(id, container) {
   };
 
   this.addEvent = function(name, time, value) {
-    if(_.contains(this.eventNames, name)) {
-      this.events[time] = {name: name, value: value};
-    }
+    this.events[time] = {name: name, value: value};
   };
 
   this.kill = function(t) {
