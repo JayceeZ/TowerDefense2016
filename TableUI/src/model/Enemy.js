@@ -96,6 +96,7 @@ var Enemy = function Enemy(id, container) {
 
   this.destroy = function() {
     this.container.removeChild(this.graphics);
+    this.container.removeChild(this.sprite);
   };
 
   this.update = function() {
