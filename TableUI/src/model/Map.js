@@ -58,6 +58,7 @@ var Map = function Map(scope, container) {
       turret.setOrientation(marker.orientation);
     }
     turret.setAimZone(aimZone.distance, aimZone.arc);
+    turret.setType(type);
   };
 
   this.removePlacingTurret = function(idplayer) {
