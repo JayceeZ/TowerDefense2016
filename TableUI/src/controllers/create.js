@@ -38,7 +38,9 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   socket.on('addPlayer', function(message) {
     console.log("addPlayer : "+message.id+" "+message.pseudo);
     var freeSlot = getFirstFreeSlot();
-    freeSlot.setPlayer(message.id);
+    var assoc = freeSlot.setPlayer(message.id);
+    if (assoc)
+      socket.emit('playerColorUpdate', {id: freeSlot.player, pseudo: freeSlot.playerPseudo, color: freeSlot.color});
     freeSlot.setPlayerPseudo(message.pseudo);
   });
 

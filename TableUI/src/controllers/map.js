@@ -44,6 +44,10 @@ appTable.controller('MapCtrl', function($scope, socket) {
     $scope.map.addEnemy(data.id, data.start, data.pathPoints, data.pathDirections, data.vitesse);
   });
 
+  socket.on('updateEnemyHp', function(data) {
+    $scope.map.updateEnemyHp(data.id, data.t, data.hp);
+  });
+
   socket.on('killEnemy', function(data) {
     $scope.map.killEnemy(data.id, data.t);
   });

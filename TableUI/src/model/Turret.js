@@ -89,7 +89,7 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.lineTo(this.x+Math.cos(this.orientation+r)*size, this.y+Math.sin(this.orientation+r)*size);
     this.graphics.moveTo(this.x, this.y); // center turret
     this.graphics.lineTo(this.x+Math.cos(this.orientation-r)*size, this.y+Math.sin(this.orientation-r)*size);
-    this.graphics.arc(this.x, this.y, size*2, this.orientation-r, this.orientation+r, false);
+    this.graphics.arc(this.x, this.y, size, this.orientation-r, this.orientation+r, false);
     this.graphics.endFill();
   };
 
