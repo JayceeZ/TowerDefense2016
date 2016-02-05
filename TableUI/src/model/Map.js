@@ -79,6 +79,12 @@ var Map = function Map(scope, container) {
     this.enemies.push(e);
   };
 
+  this.updateEnemyHp = function(id, time, hp) {
+    var enemy = _.find(this.enemies, {id: id});
+    if(enemy)
+      enemy.addEvent("hp", time, hp);
+  };
+
   this.killEnemy = function(id, t) {
     var e = _.find(this.enemies, {id: id});
     e.kill(t);

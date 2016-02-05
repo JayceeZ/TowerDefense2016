@@ -45,13 +45,13 @@ var Turret = function Turret(idplayer, container) {
   this.setType = function(value) {
     switch(value) {
       case 1:
-        this.sprite.setTexture(turretTexture);
+        this.sprite.texture = turretTexture;
         break;
       case 2:
-        this.sprite.setTexture(turret2Texture);
+        this.sprite.texture = turret2Texture;
         break;
       default:
-        this.sprite.setTexture(turretTexture);
+        this.sprite.texture = turretTexture;
         break;
     }
   };
@@ -89,7 +89,7 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.lineTo(this.x+Math.cos(this.orientation+r)*size, this.y+Math.sin(this.orientation+r)*size);
     this.graphics.moveTo(this.x, this.y); // center turret
     this.graphics.lineTo(this.x+Math.cos(this.orientation-r)*size, this.y+Math.sin(this.orientation-r)*size);
-    this.graphics.arc(this.x, this.y, size*2, this.orientation-r, this.orientation+r, false);
+    this.graphics.arc(this.x, this.y, size, this.orientation-r, this.orientation+r, false);
     this.graphics.endFill();
   };
 

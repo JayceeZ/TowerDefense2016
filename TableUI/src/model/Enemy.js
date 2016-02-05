@@ -7,6 +7,8 @@ var textures = [
   PIXI.Texture.fromImage('img/enemy3.png')
 ];
 
+var eventNames = ["hp"];
+
 var Enemy = function Enemy(id, container) {
   this.id = id;
   this.x = 0;
@@ -16,7 +18,10 @@ var Enemy = function Enemy(id, container) {
   this.dead = undefined;
   this.speed = 2;
 
+  this.hp = 1;
+
   this.index = 0;
+  this.events = [];
 
   this.currentTexture = 0;
   this.container = container;
@@ -40,15 +45,39 @@ var Enemy = function Enemy(id, container) {
     this.speed = speed;
   };
 
+  this.addEvent = function(name, time, value) {
+    if(_.contains(this.eventNames, name)) {
+      this.events[time] = {name: name, value: value};
+    }
+  };
+
   this.kill = function(t) {
-    console.log("Enemy "+this.id + " will die at "+t);
+    console.log("Enemy " + this.id + " will die at " + t);
     this.dead = t;
+  };
+
+  this.setHp = function(value) {
+    this.hp = value;
+    this.update();
   };
 
   this.updateModel = function(t) {
     if(this.dead === t) {
       console.log("Enemy destroyed at "+t);
       this.destroy();
+    }
+
+    var eventT = this.events[t];
+    if(eventT) {
+      switch (eventT.name) {
+        case "hp":
+          console.log("Enemy "+ this.id + " have HP change "+ eventT.value);
+          this.setHp(eventT.value);
+          break;
+        default:
+          console.log("Name of event is incorrect");
+          break;
+      }
     }
 
     if(this.index < this.points.length) {
@@ -72,19 +101,26 @@ var Enemy = function Enemy(id, container) {
   };
 
   this.update = function() {
-    /*this.graphics.lineStyle(0);
-    this.graphics.beginFill(0xFF0000, 1);
-    this.graphics.drawCircle(this.x, this.y, 20);
-    this.graphics.endFill();*/
+    this.graphics.clear();
 
-    this.graphics.texture = textures[++this.currentTexture];
-    this.graphics.position.x = this.x - this.graphics.texture.width/2;
-    this.graphics.position.y = this.y - this.graphics.texture.height/2;
+    this.sprite.texture = textures[++this.currentTexture];
+    this.sprite.position.x = this.x - this.sprite.texture.width/2;
+    this.sprite.position.y = this.y - this.sprite.texture.height/2;
     if(this.currentTexture === textures.length - 1)
       this.currentTexture = 0;
+
+    this.graphics.beginFill(0xFFFF00);
+
+    this.graphics.lineStyle(5, 0xAAAAAA);
+    this.graphics.drawRect(this.x - this.sprite.texture.width/2, this.y - this.sprite.texture.height/2, this.sprite.texture.width, 20);
+
+    this.graphics.lineStyle(5, 0xFF0000);
+    this.graphics.drawRect(this.x - this.sprite.texture.width/2, this.y - this.sprite.texture.height/2, this.sprite.texture.width * this.hp, 20);
   };
 
-  this.graphics = new PIXI.Sprite(textures[0]);
+  this.sprite = new PIXI.Sprite(textures[0]);
+
+  this.container.addChild(this.sprite);
   this.container.addChild(this.graphics);
 };
 
