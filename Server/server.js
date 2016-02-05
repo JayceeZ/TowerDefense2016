@@ -189,6 +189,7 @@ ioServer.on('connection', function(socket) {
 
   socket.on('endVague', function(time){
     console.log('End vague');
+    socket.to('stats').emit("endVague");
     socket.to('table').emit("endVague", time);
     for(i = 0; i < players.length;i++)
       players[i].socket.emit("endVague");
@@ -238,6 +239,8 @@ ioServer.on('connection', function(socket) {
     console.log('End Game');
     socket.to('table').emit("endGame");
     socket.to('stats').emit("endGame");
+    for(i = 0; i < players.length;i++)
+      players[i].socket.emit("endGame");
   });
 
   /*

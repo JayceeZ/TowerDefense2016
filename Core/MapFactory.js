@@ -13,6 +13,7 @@ module.exports = function(id){
 };
 
 var data = [
-    {"id": 1,"name":"Simple","height":1080,"width":1920,"validZones":[{"x1":0,"y1":0,"x2":1920,"y2":300},{"x1":0,"y1":700,"x2":1920,"y2":1080}]}
+    {"id": 1,"name":"Simple","height":1080,"width":1920,"enemyZones":[{"x1":0,"y1":300,"x2":1920,"y2":700}],"enemyStarts":[{"x1":0,"y1":300,"x2":20,"y2":700}],"enemyEnds":[{"x1":1900,"y1":300,"x2":1920,"y2":700}]},
+    {"id": 2,"name":"Simple","height":1080,"width":1920,"enemyZones":[{"x1":0,"y1":200,"x2":800,"y2":400},{"x1":800,"y1":200,"x2":1000,"y2":800},{"x1":1000,"y1":600,"x2":1920,"y2":800}],"enemyStarts":[{"x1":0,"y1":200,"x2":20,"y2":400}],"enemyEnds":[{"x1":1900,"y1":600,"x2":1920,"y2":800}]}
 
 ];

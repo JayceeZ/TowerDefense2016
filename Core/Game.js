@@ -4,6 +4,7 @@
 var User = require('./User.js'),
     Tower = require('./Tower.js'),
     TowerFactory = require('./TowerFactory.js'),
+    MapFactory = require('./MapFactory.js'),
     Map = require('./Map.js');
 
 module.exports = function(socket){
@@ -33,9 +34,8 @@ module.exports = function(socket){
         this.vague = 0;
         this.escaped = 0;
         this.clock = 0;
-        this.map = new Map();
-        this.map.setHeight(1080);
-        this.map.setWidth(1920);
+        var dataMap = MapFactory(2);
+        this.map = new Map(dataMap.id,dataMap.height,dataMap.width,dataMap.enemyZones, dataMap.enemyStarts, dataMap.enemyEnds);
         socket.emit("coreStatus","creating");
     };
 
@@ -210,6 +210,9 @@ module.exports = function(socket){
         this.map.initEnemy(this.ennemyVague[this.vague-1],this.socket);
         this.socket.emit("launchVague",this.vague);
         this.clock = 0;
+        var i;
+        for(i = 0; i < this.players.length;i++)
+            this.players[i].resetVague();
         this.timer = setInterval(function(){ oThis.loopVague()},this.INTERVAL);
     };
 

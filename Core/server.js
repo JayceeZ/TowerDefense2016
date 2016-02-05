@@ -7,7 +7,7 @@ var osc = require('node-osc'),
     TUIOHandler = require('./TUIOHandler.js');
 
 // Socket to common server
-var socket = io.connect("http://192.168.1.21:8081");
+var socket = io.connect("http://localhost:8081");
 
 /***************
  * TUIO Events *
@@ -91,6 +91,7 @@ socket.on('launchGame', function (message) {
 socket.on('selectTower', function(message){
   game.setSelectedTower(message.idplayer,message.type);
   socket.emit('playerSelectTower',{"playerId":message.idplayer,"type":message.type,"preview":game.getPreviewTower(message.idplayer)});
+  //socket.emit("checkPlacement",{"idplayer":message.idplayer,"check":game.checkPlacement(handler.getMarkerFromIdPlayer(message.idplayer))});
 });
 
 
