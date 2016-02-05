@@ -25,8 +25,7 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   $scope.allPlayersAssociated = function() {
     var ret = true;
     _.forEach($scope.slots, function(slot) {
-      if (slot.player !== null) {
-        if (slot.tag === null)
+      if (slot.player === null || slot.tag === null) {
           ret = false;
       }
     });
@@ -86,7 +85,7 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   function computeAssociations() {
     var associations = [];
     _.forEach($scope.slots, function(slot) {
-      if(slot.player !== null && slot.color !== null)
+      if(slot.player !== null && slot.tag !== null)
         associations.push({idplayer: slot.player, idtag: slot.tag, color: slot.color});
     });
     window.associations = associations;
