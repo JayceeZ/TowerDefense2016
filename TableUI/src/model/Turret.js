@@ -110,10 +110,10 @@ var Turret = function Turret(idplayer, container) {
       this.graphics.endFill();
     }
 
-    this.texture.position.x = this.x;
-    this.texture.position.y = this.y;
+    this.sprite.position.x = this.x;
+    this.sprite.position.y = this.y;
 
-    this.texture.rotation = this.orientation+(Math.PI/2);
+    this.sprite.rotation = this.orientation+(Math.PI/2);
 
     if(this.isPreview && this.isValidable)
       this.__drawAimZone(hexColor, this.aimDistance, this.aimArc);
@@ -135,8 +135,8 @@ var Turret = function Turret(idplayer, container) {
   this.sprite = new PIXI.Sprite(turretTexture);
 
   // center the sprite's anchor point
-  this.texture.anchor.x = 0.5;
-  this.texture.anchor.y = 0.58;
+  this.sprite.anchor.x = 0.5;
+  this.sprite.anchor.y = 0.58;
 
   this.container.addChild(this.sprite);
   this.container.addChild(this.graphics);
