@@ -12,7 +12,7 @@ Math.degrees = function(radians) {
   return radians * 180 / Math.PI;
 };
 
-var tagColors = {A6: "red", 1: "blue", 20: "green", C4: "purple"};
+var tagColors = {A6: "red", 1: "blue", 20: "green", C4: "purple", B5: "yellow"};
 var availableColors = {
   grey: [0, 0, 0, 0.2],
   orange: [255, 120, 50, 1],
