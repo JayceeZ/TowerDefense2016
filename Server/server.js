@@ -237,6 +237,14 @@ ioServer.on('connection', function(socket) {
     socket.to('stats').emit("killEnemy",message.idplayer);
   });
 
+  /*
+   message --> id, t, hp
+   */
+  socket.on('updateEnemyHp', function(message){
+    console.log("update Enemy hp : id = "+message.id+" , t = "+message.t);
+    socket.to('table').emit("updateEnemyHp",{"id":message.id,"t":message.t,"hp":message.hp});
+  });
+
   socket.on('endGame', function(){
     console.log('End Game');
     socket.to('table').emit("endGame");

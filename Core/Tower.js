@@ -36,7 +36,7 @@ module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, da
             if(target !== null){
                 this.reloading = true;
                 this.reloadcount = 0;
-                var projectile = new Projectile(target.x,target.y,this.firespeed,this);
+                var projectile = new Projectile(target.x,target.y,this.firespeed,this,this.damage);
                 projectile.setSingleTarget(enemies[0]);
                 socket.emit("projectile",{"t1":clock,"launcher":{"x":this.x,"y":this.y},"t2":clock+this.firespeed,"target":target});
                 return projectile;
