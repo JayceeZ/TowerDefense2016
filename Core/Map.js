@@ -26,7 +26,7 @@ module.exports = function(id,height,width,zones,starts,ends){
 
     this.checkPlacement = function(x,y,radius){
         var i;
-        for(i = 0; i < this.enemyZones.length(); i++){
+        for(i = 0; i < this.enemyZones.length; i++){
             var zone =  this.enemyZones[i];
             if((x + radius <= zone.x1 || x - radius >= zone.x2 || y + radius <= zone.y1 || y - radius >= zone.y2) === false)
                 return false;
