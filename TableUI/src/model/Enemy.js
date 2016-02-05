@@ -55,14 +55,15 @@ var Enemy = function Enemy(id, container) {
       var pos = this.points[this.index];
       var direction = this.directions[this.index];
 
+      if (pos && direction)
+        this.setPosition(this.x + this.speed * direction.vx, this.y + this.speed * direction.vy);
+
       if (this.x === pos.x && this.y === pos.y) {
         console.log("Objectif atteint pour " + this.id);
         console.log("position: (" + pos.x + ", " + pos.y + ")" + " direction: (" + direction.vx + ", " + direction.vy + ")");
         this.index += 1;
+        console.log("Nouvel objectif (" + this.points[this.index].x + ", " + this.points[this.index].y + ")");
       }
-
-      if (pos && direction)
-        this.setPosition(this.x + this.speed * direction.vx, this.y + this.speed * direction.vy);
     }
     return this.index;
   };
