@@ -172,11 +172,11 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('launchVague', function(vague){
-    console.log('Launch vague : '+vague);
-    socket.to("table").emit("launchVague",vague);
+    console.log('Launch vague : ' + vague);
+    socket.to("table").emit("launchVague", vague);
     for(i = 0; i < players.length;i++)
-      players[i].socket.emit("launchVague",vague);
-    socket.to("stats").emit("launchVague",vague);
+      players[i].socket.emit("launchVague", vague);
+    socket.to("stats").emit("launchVague", vague);
   });
 
   /*
@@ -199,8 +199,8 @@ ioServer.on('connection', function(socket) {
     enemy : id, vitesse, start, pathPoints, pathDirections
    */
   socket.on('initEnemy', function(enemy){
-    console.log('Init enemy : '+enemy.vitesse);
-    socket.to("table").emit("initEnemy",enemy);
+    console.log('Init enemy : ' + enemy.vitesse);
+    socket.to("table").emit("initEnemy", enemy);
   });
 
   /*

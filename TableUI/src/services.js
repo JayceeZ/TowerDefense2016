@@ -4,6 +4,8 @@
 
 appTable.factory('socket', function ($rootScope) {
   var socket = io.connect("http://192.168.1.21:8081");
+  // Tells server to add a view
+  socket.emit('addTable');
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {

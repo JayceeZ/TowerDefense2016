@@ -12,7 +12,7 @@ Math.degrees = function(radians) {
   return radians * 180 / Math.PI;
 };
 
-var tagColors = {A6: "red", 1: "blue", 20: "green", C4: "purple"};
+var tagColors = {A6: "red", 1: "blue", 20: "green", C4: "purple", B5: "yellow"};
 var availableColors = {
   grey: [0, 0, 0, 0.2],
   orange: [255, 120, 50, 1],
@@ -39,6 +39,9 @@ appTable.config(['$routeProvider',
     $routeProvider.when('/home', {
       templateUrl: 'src/partials/home.html',
       controller: 'HomeCtrl'
+    }).when('/create', {
+      templateUrl: 'src/partials/create.html',
+      controller: 'CreateCtrl'
     }).when('/map', {
       templateUrl: 'src/partials/map.html',
       controller: 'MapCtrl'
