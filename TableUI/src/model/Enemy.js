@@ -108,13 +108,19 @@ var Enemy = function Enemy(id, container) {
     if(this.currentTexture === textures.length - 1)
       this.currentTexture = 0;
 
-    this.graphics.beginFill(0xFFFF00);
+    var HP_HEIGTH = 10;
 
-    this.graphics.lineStyle(5, 0xAAAAAA);
-    this.graphics.drawRect(this.x - this.sprite.texture.width/2, this.y - this.sprite.texture.height/2, this.sprite.texture.width, 20);
+    if(this.hp <= 1) {
+      this.graphics.beginFill(0xAAAAAA);
+      this.graphics.lineStyle(0);
+      this.graphics.drawRect(this.x - this.sprite.texture.width / 2, this.y - this.sprite.texture.height / 2 - HP_HEIGTH, this.sprite.texture.width, HP_HEIGTH);
+      this.graphics.endFill();
 
-    this.graphics.lineStyle(5, 0xFF0000);
-    this.graphics.drawRect(this.x - this.sprite.texture.width/2, this.y - this.sprite.texture.height/2, this.sprite.texture.width * this.hp, 20);
+      this.graphics.beginFill(0xFF0000);
+      this.graphics.lineStyle(0);
+      this.graphics.drawRect(this.x - this.sprite.texture.width / 2, this.y - this.sprite.texture.height / 2 - HP_HEIGTH, this.sprite.texture.width * this.hp, HP_HEIGTH);
+      this.graphics.endFill();
+    }
   };
 
   this.sprite = new PIXI.Sprite(textures[0]);
