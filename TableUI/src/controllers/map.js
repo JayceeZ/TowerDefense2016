@@ -2,7 +2,7 @@
  * @author Jean-Christophe Isoard
  */
 
-appTable.controller('MapCtrl', function($scope, socket) {
+appTable.controller('MapCtrl', function($scope, $location, socket) {
   /*******************
    * Animation setup *
    *******************/
