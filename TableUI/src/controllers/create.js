@@ -38,8 +38,7 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   socket.on('addPlayer', function(message) {
     console.log("addPlayer : "+message.id+" "+message.pseudo);
     var freeSlot = getFirstFreeSlot();
-    var assoc = freeSlot.setPlayer(message.id);
-    if (assoc) {
+    if (freeSlot.setPlayer(message.id)) {
       socket.emit('playerColorUpdate', {id: freeSlot.player, pseudo: freeSlot.playerPseudo, color: freeSlot.color});
       freeSlot.setPlayerPseudo(message.pseudo);
     }
@@ -62,9 +61,8 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
       var y = message.y * create[0].clientHeight;
       var slot = getSlot(x, y);
       // Only if a player is connected in the slot
-      if (slot && slot !== null) {
-        var assoc = slot.setTag(message.id);
-        if (assoc)
+      if (slot) {
+        if (slot.setTag(message.id))
           socket.emit('playerColorUpdate', {id: slot.player, pseudo: slot.playerPseudo, color: slot.color});
       }
     }
