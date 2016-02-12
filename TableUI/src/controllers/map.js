@@ -97,6 +97,14 @@ appTable.controller('MapCtrl', function($scope, socket) {
     map.jumpTo(time);
   });
 
+  /**
+   * Route back to create
+   */
+  $scope.goToCreate = function($event) {
+    $event.preventDefault();
+    $location.path('/create');
+  };
+
   socket.emit('performTestsMap');
 });
 
