@@ -94,7 +94,9 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   }
 
   function startGame() {
-    socket.removeAllListeners();
+    /*socket.removeAllListeners('addPlayer');
+    socket.removeAllListeners('removePlayer');
+    socket.removeAllListeners('updateMarker');*/
     $location.path("/map");
   }
 });

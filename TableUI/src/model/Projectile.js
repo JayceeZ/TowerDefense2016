@@ -44,8 +44,8 @@ var Projectile = function Projectile(container) {
       _this.graphics.lineStyle(5, 0xFFFFFF, 1);
       x += dx;
       y += dy;
-      _this.graphics.moveTo(x, y);
-      _this.graphics.lineTo(x + dx * _this.length, y + dy * _this.length);
+      _this.graphics.moveTo(x + dx * _this.length, y + dy * _this.length);
+      _this.graphics.lineTo(x, y);
       elapsed++;
     }, delta);
   };
