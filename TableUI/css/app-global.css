@@ -26,6 +26,11 @@ html, body, .ng-scope {
 .app-title {
     font-size: 5em;
     text-align: center;
+    margin: auto;
+    width: 692px;
+    height: 141px;
+    background-size: 692px 141px;
+    background-image: url('../img/app_title.jpg');
 }
 
 .screen-title {
