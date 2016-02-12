@@ -30,12 +30,19 @@ function addTarget(ip,status,players){
             found = true;
             targets[i].status = status;
             targets[i].players = players;
-            $('.gameTable tr')[i].text("<td>"+ip+"</td><td>"+players+"</td>");
+            $('.gameTable .game')[i].text("<div class='game' id="+targets.length+">Adresse : "+ip+"    |  Joueurs : "+players+"/4</div>");
             break;
         }
     if(found === false) {
         targets.push({"ip": ip, "status": status, "players": players});
-        $('.gameTable').append("<tr><td>"+ip+"</td><td>"+players+"</td></tr>");
+        //$('.gameTable').append("<tr id="+targets.length+"><td>"+ip+"</td><td>"+players+"</td></tr>");
+        $('.gameTable').append("<div class='game' id="+targets.length+">Adresse : "+ip+"    |  Joueurs : "+players+"/4</div>");
+        var target = document.getElementById(targets.length);
+        console.log("test target : "+target.tagName+" "+target.id);
+        target.addEventListener('touchstart', function(ev) {
+            console.log("test : "+ev.touches[0].target.id);
+
+        });
     }
 };
 
@@ -47,3 +54,7 @@ var discovery = function(target){
         addTarget(target,message.status, message.players);
     });
 };
+
+function selectGame(ip){
+
+}
