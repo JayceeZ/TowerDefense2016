@@ -21,8 +21,8 @@ var players = [];
 var tableSocket;
 var idevSocket;
 
-var coreIp = null;
-var coreStatus = null;
+var gameStatus = "creating";
+var nbplayers = 0;
 
 var tablePullSocket = null;
 
@@ -63,12 +63,8 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('addCore', function() {
-    if(coreIp === null) {
-      console.log('Core authentified');
-      coreIp = socket.request.connection._peername.address;
-      socket.join('core');
-    }else
-      console.log('Core already authentified');
+    console.log('Core authentified');
+    socket.join('core');
   });
 
   socket.on('addStats', function() {
@@ -101,6 +97,7 @@ ioServer.on('connection', function(socket) {
     if(status.status == true) {
       socket.to('table').emit("addPlayer", {"id": status.id, "pseudo": status.pseudo});
       socket.to('stats').emit("connection",{"id":status.id, "pseudo":status.pseudo});
+      nbplayers++;
     }
   });
 
@@ -115,11 +112,9 @@ ioServer.on('connection', function(socket) {
     }*/
   });
 
-  socket.on('discover', function(){
+  socket.on('discoverGame', function(){
     console.log("Discovering");
-    if(coreIp !== null){
-      socket.emit('coreDetected',{"ip":coreIp,"status":coreStatus});
-    }
+    socket.emit('discoveringGame',{"status":gameStatus,"players":nbplayers});
   });
 
   /**
@@ -317,6 +312,7 @@ ioServer.on('connection', function(socket) {
 
   socket.on('launchGame', function(message){
     console.log("launchGame : "+message.length);
+    gameStatus = "launched";
     socket.to("core").emit("launchGame",message);
     socket.to("stats").emit("launchGame");
   });

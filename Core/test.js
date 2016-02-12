@@ -9,7 +9,7 @@ var socket;
 var i = 0;
 
 var timer = setInterval(function(){
-    socket = io.connect("http://192.168.1."+i+":8081");
+    socket = io.connect("http://192.168.0."+i+":8081");
     socket.emit("discover");
     i++;
     if( i > 254)
@@ -18,8 +18,8 @@ var timer = setInterval(function(){
     socket.on('coreDetected', function(message){
         console.log("Core detected : "+message.ip+" , status : "+message.status);
     });
-}, 50);
-*/
+}, 50);*/
+
 
 //var socket = io.connect("http://192.168.1.18:8081");
 
