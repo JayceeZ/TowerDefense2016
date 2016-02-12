@@ -35,7 +35,7 @@ module.exports = function(id,x,y,hp,gain,damage,vitesse,points,directions){
     this.shot = function(projectile,socket, clock,vague){
         this.hp -= projectile.damage;
         if(this.hp > 0){
-            socket.emit("updateEnemyHp",{"id":this.id,"t":clock,"hp":Math.floor(this.hp/this.hpmax)});
+            socket.emit("updateEnemyHp",{"id":this.id,"t":clock,"hp":this.hp/this.hpmax});
             return false;
         }
         else {
