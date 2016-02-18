@@ -1,59 +1,72 @@
 <ion-view view-title="Placer mes defenses">
-    <ion-content ng-class="{expanded:isExpanded}" ng-controller="PlacementCtrl" >
+  <ion-content ng-class="{expanded:isExpanded}" ng-controller="PlacementCtrl" style="background-color: #F0F3F8;">
 
-      <div class="list list-inset">
-        <label class="item item-input">
-          <i class="icon ion-search placeholder-icon"></i>
-          <input type="text" placeholder="Recherche par nom" id="query" ng-model="query">
-        </label>
+
+    <div class="row">
+      <ion-toggle ng-model="onlyMine" ng-change="changeSettings()" toggle-class="toggle-calm">
+        Afficher uniquement mes defenses
+      </ion-toggle>
+    </div>
+
+    <table class="table table-hover table-striped nohover" id="myTab">
+      <tr>
+        <th><a href ng-click="predicate = 'name'; reverse=!reverse">Nom</a></th>
+        <th><a href ng-click="predicate = 'caracteristics.cadence'; reverse=!reverse">Cadence</a></th>
+        <th><a href ng-click="predicate = 'caracteristics.portee'; reverse=!reverse">Portée</a></th>
+        <th><a href ng-click="predicate = 'cout'; reverse=!reverse">Prix/Coût</a></th>
+      </tr>
+      <tbody>
+      <tr ng-disabled="true" ng-repeat="d in defenses | filter:query | orderBy : predicate:reverse"
+          ng-class="{selectedR: d.id === selectedItem && d.mine, notmine : !d.mine}" ng-click="selectItem(d.id, d.cout)" style="height : 15vh;">
+
+        <td class="ma">
+          <img class="img-rounded" height="80" ng-src="{{d.image}}">
+          <span style="display: block; color : #364761; font-weight: 600">{{d.name}}</span>
+        </td>
+
+        <td class="ma">
+          <h4 class="displayMobile" style="font-weight: bold; color :black">{{d.caracteristics.cadence}}</h4>
+          <div class="displayTablet">
+            <img ng-repeat="i in d.caracteristics.cadenceL track by $index" ng-src="img/{{i}}.png">
+          </div>
+          <span class="miniLegend">tir / sec</span>
+        </td>
+
+        <td class="ma">
+          <h4 class="displayMobile" style="font-weight: bold; color :black">{{d.caracteristics.portee}}</h4>
+          <h2 class="displayTablet" style="font-weight: bold; color :black">{{d.caracteristics.portee}}</h2>
+          <span class="miniLegend">mètres</span>
+        </td>
+
+        <td class="ma">
+          <div ng-show="d.mine" >
+            <button ng-disabled="!canValid(d.id)" ng-click="validIt()" class="button button-balanced">Placer</button>
+            <p class="miniLegend">Coût : <b>{{d.cout}}</b></p>
+          </div>
+          <div ng-show="!d.mine">
+            <button ng-click="buy(d.name, d.prix)" class="button button-assertive">BUY</button>
+            <p class="miniLegend">Prix : <b>{{d.prix}}</b></p>
+          </div>
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+
+  </ion-content>
+
+  <!-- Footer boutton -->
+  <div class="fixed-outside" style="margin-top: 100px">
+    <div class="row">
+      <div class="col">
+        <button class="button icon-right ion-ios-cart button-energized" ng-click="goShop()">Magasin</button>
       </div>
+      <div class="col">
+        <button ng-show="!isReady" class="button icon-right ion-checkmark-circled button-balanced" ng-click="confirmReady()">Prêt</button>
+        <button ng-show="isReady" class="button icon-right ion-checkmark-circled button-balanced heart" ng-click="confirmReady()">Prêt</button>
 
-
-      <ion-scroll direction="x" scrollbar-x="true" scrollbar-y="false" class="wide-as-needed">
-        <montruc  ng-repeat="d in defenses | filter:query | orderBy:'name'" ng-last-repeat="mylist">
-
-          <mabalise ng-show="d.id == selectedItem" class="card" style="width: 25%; display: inline-table; border: solid; border-color:green" ng-click="disableSelection()" on-double-tap="onDoubleTap({{d.id}})">
-            <img ng-src="{{defenses[$index].image}}" width="100%" />
-            <p class="itemTitle">{{defenses[$index].name}}</p>
-          </mabalise>
-
-          <mabalise ng-show="d.id != selectedItem" class="card" style="width: 25%; display: inline-table;" on-double-tap="onDoubleTap({{d.id}})">
-            <img ng-src="{{defenses[$index].image}}" width="100%" />
-            <p class="itemTitle">{{defenses[$index].name}}</p>
-          </mabalise>
-
-        </montruc>
-      </ion-scroll>
-
-
-      <div class="list" ng-show="selectedItem != -1">
-        <div class="item item-divider">Caractéristiques</div>
-        <al class="item item-icon-left" ng-repeat="(key, value) in defenses[selectedItem].caracteristics" ng-last-repeat="mylist">
-          <i class="icon ion-email"></i>{{key}}
-          <span class="item-note">{{value}}</span>
-        </al>
       </div>
-
-
-      <div ng-show="selectedItem == -1" style="height : 30%;display: flex; justify-content: center;">
-        <div style="text-align : center; align-self: center;">
-          <h3>Aucune pièce selectionnée !</h3>
-          <p>Double cliquez pour selectionner une pièce, puis placez là sur la table en appuyant sur le bouton <i>Placer sur la table</i> lorsqu'il n'est pas grisé.</p>
-        </div>
-      </div>
-
-
-      <div class="row">
-        <div class="col col-50"  style="text-align: center">
-            <button ng-show="!canValid()" class="button button-balanced" disabled>Placer sur la table</button>
-            <button ng-show="canValid()" class="button button-balanced" ng-click="validIt()">Placer sur la table</button>
-        </div>
-
-        <div class="col col-50" style="text-align: center">
-            <button class="button button-positive"  ng-click="ready()">Prêt</button>
-        </div>
-      </div>
-
-
-    </ion-content>
+    </div>
+  </div>
 </ion-view>
+

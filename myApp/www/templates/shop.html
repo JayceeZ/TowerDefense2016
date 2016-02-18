@@ -1,6 +1,7 @@
 <ion-view view-title="Mes achats">
   <ion-content ng-class="{expanded:isExpanded}" ng-controller="ShopCtrl">
 
+    <!-- Search bar -->
     <div class="list list-inset">
       <label class="item item-input">
         <i class="icon ion-search placeholder-icon"></i>
@@ -8,48 +9,46 @@
       </label>
     </div>
 
-    <div class="row" ng-repeat="item in defenses | filter:query | orderBy:'name'" ng-if="$index % 2 === 0" ng-last-repeat="mylist">
 
-      <!-- item 1 -->
-      <div class="col col-50">
-        <div class="card" ng-if="$index < defenses.length">
-          <img ng-src="{{defenses[$index].image}}" width="100%"/>
-          <p class="itemTitle">{{defenses[$index].name}}</p>
+    <!-- Defenses -->
+    <div class="row responsive-sm" ng-repeat="item in defenses track by $index" ng-if="$index % 2 === 0">
+      <div class="col col-50" ng-repeat="i in [$index,$index+1]" ng-if="defenses[i]!=null && !defenses[i].mine">
+        <div class="card">
 
+          <!-- Image & name -->
+          <div class="module">
+            <img ng-src="{{defenses[i].image}}"/>
+            <header>
+              <h1>
+                {{defenses[i].name}}
+              </h1>
+            </header>
+          </div>
+
+
+          <!-- Buttons -->
           <div class="row">
-            <div class="col col-50 col-center">
-                <button class="button button-small button-balanced icon-right ion-social-bitcoin" ng-click="showConfirm(defenses[$index].name)" style="border-radius: 25px;">{{defenses[$index].caracteristics.Prix}}</button>
+
+            <!-- Price -->
+            <div class="col col-50">
+              <button class="button button-small button-balanced icon-right ion-social-bitcoin img-legend-center ar"
+                      ng-disabled="!canPay(defenses[i].prix)"
+                      ng-click="showConfirm(defenses[i].id, defenses[i].name, defenses[i].prix)">
+                {{defenses[i].prix}}
+              </button>
             </div>
 
-            <div class="col col-50 col-center">
-                <button class="button button-small button-assertive icon-right ion-chevron-right" ng-click="details(defenses[$index].id)" style="border-radius: 25px;">Details</button>
+            <!-- Details -->
+            <div class="col col-50">
+              <button class="button button-small button-assertive icon-right ion-chevron-right img-legend-center ar"
+                      ng-click="details(defenses[i].id)">
+                Details
+              </button>
             </div>
           </div>
+
         </div>
       </div>
-
-      <!-- item 2 -->
-      <div class="col col-50">
-        <div class="card"  ng-if="$index + 1 < defenses.length">
-          <img ng-src="{{defenses[$index + 1].image}}" width="100%" />
-          <p class="itemTitle">{{defenses[$index + 1].name}}</p>
-
-          <div class="row">
-            <div class="col col-50" >
-              <div style="text-align: center">
-                <button class="button button-small button-balanced icon-right ion-social-bitcoin" ng-click="showConfirm(defenses[$index + 1].name)" style="border-radius: 25px;">{{defenses[$index + 1].caracteristics.Prix}}</button>
-              </div>
-            </div>
-
-
-            <div class="col col-50 col-center">
-                <button class="button button-small button-assertive icon-right ion-chevron-right" ng-click="details(defenses[$index + 1].id)" style="border-radius: 25px;">Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
     </div>
 
 

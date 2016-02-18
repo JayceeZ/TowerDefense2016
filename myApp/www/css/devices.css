@@ -1,0 +1,76 @@
+/* smartphones, iPhone, portrait 480x320 phones */
+@media (min-width:320px) {
+
+  .displayTablet {
+    display : none;
+  }
+
+  .displayMobile {
+    display : block;
+  }
+
+}
+
+/* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+@media (min-width:481px) {
+
+  .displayTablet {
+    display : block;
+  }
+
+  .displayMobile {
+    display : none;
+  }
+}
+
+/* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+@media (min-width:641px) {
+
+  .displayTablet {
+    display : block;
+  }
+
+  .displayMobile {
+    display : none;
+  }
+
+}
+
+/* tablet, landscape iPad, lo-res laptops ands desktops */
+@media (min-width:961px) {
+
+  .displayTablet {
+    display : block;
+  }
+
+  .displayMobile {
+    display : none;
+  }
+
+}
+
+/* big landscape tablets, laptops, and desktops */
+@media (min-width:1025px) {
+
+  .displayTablet {
+    display : block;
+  }
+
+  .displayMobile {
+    display : none;
+  }
+
+}
+
+/* hi-res laptops and desktops */
+@media (min-width:1281px) {
+
+  .displayTablet {
+    display : block;
+  }
+
+  .displayMobile {
+    display : none;
+  }
+
+}

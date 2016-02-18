@@ -13,22 +13,19 @@ angular.module('starter',
     'ngCordova',
     'chart.js',
     'timer',
+
     // controllers
     'starter.controllers',
     'st.controllers',
     'login.controllers',
     'placement.controllers',
     'details.controllers',
-    'timer.controllers',
-    'stats.controllers',
-
-    // directives
-    'mydir'
+    'stats.controllers'
   ])
 
 
-  .run(function($ionicPlatform) {
-    $ionicPlatform.ready(function() {
+  .run(function ($ionicPlatform) {
+    $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       }
@@ -38,14 +35,10 @@ angular.module('starter',
     });
   })
 
-  .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
     $ionicConfigProvider.views.maxCache(0);
 
-    /*
-     // Turn off back button text
-     $ionicConfigProvider.backButton.previousTitleText(false);
-     */
 
     $stateProvider.state('app', {
       url: '/app',
@@ -63,17 +56,6 @@ angular.module('starter',
           }
         }
       })
-
-      .state('app.timer', {
-        url: '/timer',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/timer.html',
-            controller: 'TimerCtrl'
-          }
-        }
-      })
-
 
       .state('app.stats', {
         url: '/stats',
@@ -116,6 +98,5 @@ angular.module('starter',
       })
     ;
 
-    // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/login');
   });
