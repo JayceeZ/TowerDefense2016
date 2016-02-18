@@ -3,32 +3,33 @@
   <head>
     <title>Table</title>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/app-global.css">
   </head>
-  <script src="node_modules/socket.io-client/socket.io.js"></script>
-  <script src="node_modules/lodash/lodash.js"></script>
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="node_modules/angular/angular.min.js"></script>
-  <script src="node_modules/angular-route/angular-route.min.js"></script>
-  <script src="node_modules/angular-touch/angular-touch.min.js"></script>
-  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="lib/socket.io.js"></script>
+  <script src="lib/lodash.js"></script>
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/angular.min.js"></script>
+  <script src="lib/angular-route.min.js"></script>
+  <script src="lib/angular-touch.min.js"></script>
+  <script src="lib/bootstrap.min.js"></script>
   <script src="lib/pixi.min.js"></script>
   <body oncontextmenu="return false;">
     <div id="viewport" ng-controller="markersCtrl">
       <div ng-view></div>
       <canvas class="marker" ng-repeat="m in markers" marker>{{ m.version }}</canvas>
     </div>
-    <script src="src/app.js"></script>
-    <script src="src/services.js"></script>
-    <script src="src/model/Slot.js"></script>
-    <script src="src/model/Marker.js"></script>
-    <script src="src/model/Map.js"></script>
-    <script src="src/model/Enemy.js"></script>
-    <script src="src/model/Turret.js"></script>
-    <script src="src/model/Projectile.js"></script>
-    <script src="src/controllers/marker.js"></script>
-    <script src="src/controllers/home.js"></script>
-    <script src="src/controllers/map.js"></script>
+    <script src="app.js"></script>
+    <script src="services.js"></script>
+    <script src="model/Slot.js"></script>
+    <script src="model/Marker.js"></script>
+    <script src="model/Map.js"></script>
+    <script src="model/Enemy.js"></script>
+    <script src="model/Turret.js"></script>
+    <script src="model/Projectile.js"></script>
+    <script src="controllers/marker.js"></script>
+    <script src="controllers/home.js"></script>
+    <script src="controllers/create.js"></script>
+    <script src="controllers/map.js"></script>
   </body>
 </html>

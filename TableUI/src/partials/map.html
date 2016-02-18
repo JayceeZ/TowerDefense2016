@@ -1,4 +1,7 @@
 <div class="message-top" message>{{ map.message }}</div>
 <div class="message-top flip-mirror" message>{{ map.message }}</div>
 <div id="map" class="map">
+  <div id="replay-button" class="btn btn-default replay" ng-click="goToCreate($event)" ng-touch="goToCreate($event)">
+    <div class="glyphicon glyphicon-refresh"></div>
+  </div>
 </div>

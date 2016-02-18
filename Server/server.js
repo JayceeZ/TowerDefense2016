@@ -21,8 +21,10 @@ var players = [];
 var tableSocket;
 var idevSocket;
 
-var coreIp = null;
-var coreStatus = null;
+var gameStatus = "creating";
+var nbplayers = 0;
+
+var tablePullSocket = null;
 
 init();
 
@@ -61,12 +63,8 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('addCore', function() {
-    if(coreIp === null) {
-      console.log('Core authentified');
-      coreIp = socket.handshake.address.address;
-      socket.join('core');
-    }else
-      console.log('Core already authentified');
+    console.log('Core authentified');
+    socket.join('core');
   });
 
   socket.on('addStats', function() {
@@ -99,6 +97,7 @@ ioServer.on('connection', function(socket) {
     if(status.status == true) {
       socket.to('table').emit("addPlayer", {"id": status.id, "pseudo": status.pseudo});
       socket.to('stats').emit("connection",{"id":status.id, "pseudo":status.pseudo});
+      nbplayers++;
     }
   });
 
@@ -113,11 +112,9 @@ ioServer.on('connection', function(socket) {
     }*/
   });
 
-  socket.on('discover', function(){
+  socket.on('discoverGame', function(){
     console.log("Discovering");
-    if(coreIp !== null){
-      socket.emit('coreDetected',{"ip":coreIp,"status":coreStatus});
-    }
+    socket.emit('discoveringGame',{"status":gameStatus,"players":nbplayers});
   });
 
   /**
@@ -172,11 +169,11 @@ ioServer.on('connection', function(socket) {
   });
 
   socket.on('launchVague', function(vague){
-    console.log('Launch vague : '+vague);
-    socket.to("table").emit("launchVague",vague);
+    console.log('Launch vague : ' + vague);
+    socket.to("table").emit("launchVague", vague);
     for(i = 0; i < players.length;i++)
-      players[i].socket.emit("launchVague",vague);
-    socket.to("stats").emit("launchVague",vague);
+      players[i].socket.emit("launchVague", vague);
+    socket.to("stats").emit("launchVague", vague);
   });
 
   /*
@@ -189,15 +186,18 @@ ioServer.on('connection', function(socket) {
 
   socket.on('endVague', function(time){
     console.log('End vague');
+    socket.to('stats').emit("endVague");
     socket.to('table').emit("endVague", time);
+    for(i = 0; i < players.length;i++)
+      players[i].socket.emit("endVague");
   });
 
   /*
     enemy : id, vitesse, start, pathPoints, pathDirections
    */
   socket.on('initEnemy', function(enemy){
-    console.log('Init enemy : '+enemy.vitesse);
-    socket.to("table").emit("initEnemy",enemy);
+    console.log('Init enemy : ' + enemy.vitesse);
+    socket.to("table").emit("initEnemy", enemy);
   });
 
   /*
@@ -232,10 +232,20 @@ ioServer.on('connection', function(socket) {
     socket.to('stats').emit("killEnemy",message.idplayer);
   });
 
+  /*
+   message --> id, t, hp
+   */
+  socket.on('updateEnemyHp', function(message){
+    console.log("update Enemy hp : id = "+message.id+" , t = "+message.t);
+    socket.to('table').emit("updateEnemyHp",{"id":message.id,"t":message.t,"hp":message.hp});
+  });
+
   socket.on('endGame', function(){
     console.log('End Game');
     socket.to('table').emit("endGame");
     socket.to('stats').emit("endGame");
+    for(i = 0; i < players.length;i++)
+      players[i].socket.emit("endGame");
   });
 
   /*
@@ -252,6 +262,11 @@ ioServer.on('connection', function(socket) {
       if(playerSocket !== null)
         playerSocket.emit("globalUpdate",{"infoGame":message.infoGame,"infoPlayer":message.infoPlayers[i]});
     }
+  });
+
+  socket.on('viewData', function(message){
+    console.log("View Data");
+    tablePullSocket.emit("viewData",message);
   });
 
 
@@ -297,8 +312,15 @@ ioServer.on('connection', function(socket) {
 
   socket.on('launchGame', function(message){
     console.log("launchGame : "+message.length);
+    gameStatus = "launched";
     socket.to("core").emit("launchGame",message);
     socket.to("stats").emit("launchGame");
+  });
+
+  socket.on('requestViewData', function(){
+    console.log("Request view data");
+    tablePullSocket = socket;
+    socket.to("core").emit("requestViewData");
   });
 
   /**
@@ -307,8 +329,19 @@ ioServer.on('connection', function(socket) {
   socket.on('playerColorUpdate', function(message) {
     console.log("player "+ message.pseudo +" color update "+message.color);
     socket.to("stats").emit("playerColorUpdate", message);
+    playerSocket = getPlayerSocket(message.id);
+    playerSocket.emit("playerColorUpdate",message.color);
+  });
+
+  /**
+   *  Updates from stats
+   */
+  socket.on('updateBonusMalus', function(message) {
+    console.log("Update bonus/malus : "+message.pseudo+" , "+message.multiplicateur);
+    socket.to("core").emit("updateBonusMalus", message);
   });
 });
+
 
 var getPlayerSocket = function(id){
   for(i = 0; i < players.length; i++){

@@ -13,6 +13,6 @@ module.exports = function(type){
 };
 
 var data = [
-    {"type": 1,"name":"basique","price":50, "radius":50, "reloadtime" : 200, "firespeed": 33, "damage":50,"rangelength": 300,"rangeradius" : 0.5, "damagetype":"singleTarget", "damageradius":0 }
-
+    {"type": 1,"name":"Basique","price":50, "radius":50, "reloadtime" : 33, "firespeed": 15, "damage":50,"rangelength": 400,"rangeradius" : 0.3, "damagetype":"singleTarget", "damageradius":0 },
+    {"type": 2,"name":"Améliorée","price":100, "radius":50, "reloadtime" : 15, "firespeed": 15, "damage":75,"rangelength": 600,"rangeradius" : 0.3, "damagetype":"singleTarget", "damageradius":0 }
 ];

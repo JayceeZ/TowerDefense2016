@@ -4,6 +4,7 @@
 var User = require('./User.js'),
     Tower = require('./Tower.js'),
     TowerFactory = require('./TowerFactory.js'),
+    MapFactory = require('./MapFactory.js'),
     Map = require('./Map.js');
 
 module.exports = function(socket){
@@ -24,6 +25,7 @@ module.exports = function(socket){
     this.INTERVAL = 33;
     this.UPDATE_INTERVAL = 1000;
     this.ID = 0;
+    this.globalHp;
 
     this.init = function(nbplayers){
         this.creating = true;
@@ -33,9 +35,9 @@ module.exports = function(socket){
         this.vague = 0;
         this.escaped = 0;
         this.clock = 0;
-        this.map = new Map();
-        this.map.setHeight(1080);
-        this.map.setWidth(1920);
+        this.globalHp = 100;
+        var dataMap = MapFactory(2);
+        this.map = new Map(dataMap.id,dataMap.height,dataMap.width,dataMap.enemyZones, dataMap.enemyStarts, dataMap.enemyEnds);
         socket.emit("coreStatus","creating");
     };
 
@@ -105,7 +107,7 @@ module.exports = function(socket){
         for(i = 0; i < this.players.length; i++){
             var player = this.players[i];
             var infoPlayer = {"id":player.id,"pseudo":player.pseudo,"color":player.color,"money":player.money,"score":player.score,
-                "nbtowers":player.towerCount,"kills":player.kills,"shots":player.shots,"killsvague":player.killsVague,"shotsvague":player.shotsVague};
+                "nbtowers":player.towerCount,"kills":player.kills,"shots":player.shots,"killsvague":player.killsVague,"shotsvague":player.shotsVague,"mult":player.mult};
             infoPlayers.push(infoPlayer);
         }
         var infoGame = {"id":this.ID,"vague":this.vague,"totalScore":this.map.totalScore,"totalKills":this.map.kills,"totalEscapes":this.map.escaped};
@@ -117,6 +119,7 @@ module.exports = function(socket){
      */
 
     this.launchPlacement = function(){
+        this.vague++;
         this.status = "placement";
         var i;
         for(i = 0; i < this.players.length; i++) {
@@ -128,12 +131,15 @@ module.exports = function(socket){
 
     this.setSelectedTower = function(idplayer, type){
         var player = this.getPlayerFromId(idplayer);
-        if(player !== null)
+        if(player !== null) {
             player.selectedTower = type;
+            return true;
+        }
+        return false;
     };
 
     this.checkPlacement = function(marker){
-        if(this.status !== "placement")
+        if(this.status !== "placement" || marker === null)
             return false;
         var player = this.getPlayerFromId(marker.playerId);
         var dataTower = TowerFactory(player.selectedTower);
@@ -152,6 +158,7 @@ module.exports = function(socket){
             var tower = new Tower(dataTower.type,Math.round(markerx * this.map.width), Math.round(markery * this.map.height), angle, player, dataTower.radius,dataTower.reloadtime, dataTower.firespeed, dataTower.damage, dataTower.rangelength, dataTower.rangeradius);
             player.addTower(tower);
             this.map.addTower(tower);
+            player.money -= dataTower.price;
             return tower;
         }
         return null;
@@ -203,12 +210,14 @@ module.exports = function(socket){
      */
 
     this.launchNextVague = function(){
-        this.vague++;
         this.status = "vague";
         this.map.initNewVague();
         this.map.initEnemy(this.ennemyVague[this.vague-1],this.socket);
         this.socket.emit("launchVague",this.vague);
         this.clock = 0;
+        var i;
+        for(i = 0; i < this.players.length;i++)
+            this.players[i].resetVague();
         this.timer = setInterval(function(){ oThis.loopVague()},this.INTERVAL);
     };
 
@@ -237,6 +246,13 @@ module.exports = function(socket){
         return null;
     };
 
+    this.getPlayerFromPseudo = function(pseudo){
+        for(i = 0; i < this.players.length; i++)
+            if(this.players[i].pseudo == pseudo)
+                return this.players[i];
+        return null;
+    };
+
     this.getPlayerIdFromMarker = function(id){
         var i;
         for(i = 0; i < this.players.length; i++)
@@ -252,5 +268,11 @@ module.exports = function(socket){
                 return this.players[i].markerid;
         return null;
     };
+
+    this.updateBonusMalus = function(pseudo,mult){
+        var player = this.getPlayerFromPseudo(pseudo);
+        if(player !== null)
+            player.mult = mult;
+    }
 
 };

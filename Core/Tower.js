@@ -36,7 +36,7 @@ module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, da
             if(target !== null){
                 this.reloading = true;
                 this.reloadcount = 0;
-                var projectile = new Projectile(target.x,target.y,this.firespeed,this);
+                var projectile = new Projectile(target.x,target.y,this.firespeed,this,this.damage);
                 projectile.setSingleTarget(enemies[0]);
                 socket.emit("projectile",{"t1":clock,"launcher":{"x":this.x,"y":this.y},"t2":clock+this.firespeed,"target":target});
                 return projectile;
@@ -64,7 +64,7 @@ module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, da
                 return false;
             var p2 = {"x":this.x+this.radius*Math.cos(this.angle+this.rangeradius),"y":this.y+this.radius*Math.sin(this.angle+this.rangeradius)};
             var d2 = {"c":(p2.y-this.y)/(p2.x-this.x),"h":0};
-            d2.h = this.y - d1.c * this.x;
+            d2.h = this.y - d2.c * this.x;
             if(this.isAbove(d2,{"x":enemy.x,"y":enemy.y}) === false)
                 return false;
             return true;
@@ -75,6 +75,8 @@ module.exports = function(type,x,y,angle,player,radius,reloadtime, firespeed, da
     this.isAbove = function(droite,point){
         if(point.y > droite.c * point.x + droite.h)
             return true;
+        else
+            return false;
     };
 
     this.getBestTarget = function(enemies){

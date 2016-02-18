@@ -1,6 +1,6 @@
 
 var Projectile = function Projectile(container) {
-  this.length = 20;
+  this.length = 5;
   this.x = 0;
   this.y = 0;
   this.toX = 0;
@@ -28,26 +28,26 @@ var Projectile = function Projectile(container) {
 
   this.fire = function(delta) {
     var _this = this;
-    console.log("Projectile fired");
+    console.log("Projectile fired : delta = "+delta+" , duration = "+this.duration);
 
-    var distance = Math.sqrt(Math.pow(this.toX-this.x,2)+Math.pow(this.toY-this.y,2));
-    this.speed = distance / (this.duration * delta);
-    var dx = (this.toX-this.x) / distance;
-    var dy = (this.toY-this.y) / distance;
+    var dx = (this.toX-this.x) / this.duration;
+    var dy = (this.toY-this.y) / this.duration;
+
+    console.log("dx = "+dx+" , dy = "+dy);
     var x = this.x;
     var y = this.y;
     var elapsed = 0;
     this.interval = setInterval(function() {
-      elapsed += _this.speed;
-      x += dx * _this.speed * elapsed;
-      y += dy * _this.speed * elapsed;
-      if(Math.sqrt(Math.pow(x-_this.x,2)+Math.pow(y-_this.y,2)) >= distance)
+      if(elapsed >= _this.duration - 2)
         _this.destroy();
       _this.graphics.clear();
       _this.graphics.lineStyle(5, 0xFFFFFF, 1);
-      _this.graphics.moveTo(x, y);
-      _this.graphics.lineTo(x + dx * _this.length, y + dy * _this.length);
-    }, this.speed);
+      x += dx;
+      y += dy;
+      _this.graphics.moveTo(x + dx * _this.length, y + dy * _this.length);
+      _this.graphics.lineTo(x, y);
+      elapsed++;
+    }, delta);
   };
 
   this.destroy = function() {

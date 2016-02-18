@@ -1,0 +1,26 @@
+<div id="create" class="create">
+  <div class="alert alert-danger fade in" ng-show="connectionError">
+    <strong>Échec de connexion au serveur</strong>: Essayez de <span style="text-decoration: underline; cursor: pointer;" ng-click="refresh($event)" ng-touch="refresh($event)">rafraîchir la page</span> ou de relancer l'application.
+  </div>
+  <div class="close-button btn btn-danger" ng-click="close($event)" ng-touch="close($event)">
+    Fermer l'application
+  </div>
+  <div class="col-md-12">
+    <h1 class="app-title"></h1>
+    <h2 class="screen-title">Création d'une partie</h2>
+  </div>
+  <div id="slots" class="slots col-md-12">
+    <div class="row">
+      <div class="slot player-hand-device" ng-repeat="s in slots">
+        {{ s.playerPseudo }}
+      </div>
+    </div>
+    <div class="row">
+      <div id="slot-{{ s.id }}" class="slot marker-space" style="background-color: {{ s.getColorCSS() }}" ng-repeat="s in slots" slot>
+      </div>
+    </div>
+    <div class="col-md-offset-4 col-md-4 btn btn-lg {{ allPlayersAssociated() ? 'btn-success' : 'btn-danger' }} {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame($event)" ng-touch="createGame($event)">
+      Lancer la partie
+    </div>
+  </div>
+</div>

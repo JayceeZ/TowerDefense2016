@@ -2,7 +2,7 @@
  * @author Jean-Christophe Isoard
  */
 
-appTable.controller('MapCtrl', function($scope, socket) {
+appTable.controller('MapCtrl', function($scope, $location, socket) {
   /*******************
    * Animation setup *
    *******************/
@@ -29,7 +29,7 @@ appTable.controller('MapCtrl', function($scope, socket) {
   });
 
   socket.on('updateMarker', function(data) {
-    $scope.map.previewPlacingTurret(data.playerId, data.x, data.y, data.angle);
+    $scope.map.previewPlacingTurret(data.playerId, data.x, data.y, data.angle, data.positionOk);
   });
 
   socket.on('removeMarker', function(data) {
@@ -37,11 +37,15 @@ appTable.controller('MapCtrl', function($scope, socket) {
   });
 
   socket.on('playerSelectTower', function(data) {
-    $scope.map.setPlayerTurretSpecs(data.playerId, data.preview);
+    $scope.map.setPlayerTurretSpecs(data.playerId, data.type, data.preview);
   });
 
   socket.on('initEnemy', function(data) {
     $scope.map.addEnemy(data.id, data.start, data.pathPoints, data.pathDirections, data.vitesse);
+  });
+
+  socket.on('updateEnemyHp', function(data) {
+    $scope.map.updateEnemyHp(data.id, data.t, data.hp);
   });
 
   socket.on('killEnemy', function(data) {
@@ -63,6 +67,43 @@ appTable.controller('MapCtrl', function($scope, socket) {
   socket.on('endGame', function() {
     $scope.map.lastVague = true;
   });
+
+  /**********************
+   * Fetch for observer *
+   **********************/
+
+  socket.on('gameData', function(data) {
+    var map = $scope.map;
+
+    // Players association
+    var associations = [];
+    _.forEach(data.players, function(player) {
+      associations.push({idplayer: slot.player, idtag: slot.tag, color: slot.color});
+    });
+    window.associations = associations;
+
+    // Build turrets
+    _.forEach(data.turrets, function(turret) {
+      map.setPlayerTurretSpecs(idplayer, type, aimZone);
+      map.validateTurret(idplayer, id, x, y, angle);
+    }, this);
+
+    // Enemies
+    _.forEach(data.enemies, function(turret) {
+      map.addEnemy(id,start,positions,directions,speed);
+    }, this);
+
+    map.run(data.delta);
+    map.jumpTo(time);
+  });
+
+  /**
+   * Route back to create
+   */
+  $scope.goToCreate = function($event) {
+    $event.preventDefault();
+    $location.path('/create');
+  };
 
   socket.emit('performTestsMap');
 });

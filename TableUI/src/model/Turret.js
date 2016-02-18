@@ -4,11 +4,12 @@
 
 // create a texture from an image path
 var turretTexture = PIXI.Texture.fromImage('img/turret_100x120.png');
+var turret2Texture = PIXI.Texture.fromImage('img/turret2_100x120.png');
 
 var Turret = function Turret(idplayer, container) {
   this.id = idplayer;
-  this.x = 0;
-  this.y = 0;
+  this.x = -200;
+  this.y = -200;
   this.orientation = 0;
 
   this.color = getPlayerColor(idplayer);
@@ -16,8 +17,10 @@ var Turret = function Turret(idplayer, container) {
   this.aimArc = 0;
   this.player = idplayer;
 
+  this.type = null;
+
   this.isPreview = true;
-  this.isHidden = true;
+  this.isValidable = false;
 
   this.container = container;
   this.graphics = new PIXI.Graphics();
@@ -37,6 +40,20 @@ var Turret = function Turret(idplayer, container) {
     this.aimDistance = distance;
     this.aimArc = arc;
     this.update();
+  };
+
+  this.setType = function(value) {
+    switch(value) {
+      case 1:
+        this.sprite.texture = turretTexture;
+        break;
+      case 2:
+        this.sprite.texture = turret2Texture;
+        break;
+      default:
+        this.sprite.texture = turretTexture;
+        break;
+    }
   };
 
   this.validate = function(id) {
@@ -72,15 +89,13 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.lineTo(this.x+Math.cos(this.orientation+r)*size, this.y+Math.sin(this.orientation+r)*size);
     this.graphics.moveTo(this.x, this.y); // center turret
     this.graphics.lineTo(this.x+Math.cos(this.orientation-r)*size, this.y+Math.sin(this.orientation-r)*size);
-    this.graphics.arc(this.x, this.y, size*2, this.orientation-r, this.orientation+r, false);
+    this.graphics.arc(this.x, this.y, size, this.orientation-r, this.orientation+r, false);
     this.graphics.endFill();
   };
 
   this.update = function() {
     this.graphics.clear();
 
-    if(this.isHidden)
-      return;
     this.graphics.lineStyle(0);
 
     var hexColor = this.__getColorHEX();
@@ -88,27 +103,41 @@ var Turret = function Turret(idplayer, container) {
     this.graphics.drawCircle(this.x, this.y, 8);
     this.graphics.endFill();
 
-    this.texture.position.x = this.x;
-    this.texture.position.y = this.y;
+    if(!this.isValidable) {
+      // Red circles for user
+      this.graphics.beginFill(0xFF0000, 0.3);
+      this.graphics.drawCircle(this.x, this.y, 60);
+      this.graphics.endFill();
+    }
 
-    this.texture.rotation = this.orientation+(Math.PI/2);
+    this.sprite.position.x = this.x;
+    this.sprite.position.y = this.y;
 
-    if(this.isPreview)
+    this.sprite.rotation = this.orientation+(Math.PI/2);
+
+    if(this.isPreview && this.isValidable)
       this.__drawAimZone(hexColor, this.aimDistance, this.aimArc);
   };
 
   this.hide = function() {
-    this.isHidden = true;
+    this.x = -200;
+    this.y = -200;
+    this.isValidable = false;
+    this.update();
+  };
+
+  this.setValidable = function(bool) {
+    this.isValidable = bool;
     this.update();
   };
 
   // create a new Sprite using the texture
-  this.texture = new PIXI.Sprite(turretTexture);
+  this.sprite = new PIXI.Sprite(turretTexture);
 
   // center the sprite's anchor point
-  this.texture.anchor.x = 0.5;
-  this.texture.anchor.y = 0.58;
+  this.sprite.anchor.x = 0.5;
+  this.sprite.anchor.y = 0.58;
 
-  this.container.addChild(this.texture);
+  this.container.addChild(this.sprite);
   this.container.addChild(this.graphics);
 };

@@ -1,20 +1,19 @@
 <div id="home" class="home">
-  <div class="col-md-12">
-    <h1 class="app-title">PolyDefense</h1>
-    <h2 class="screen-title">Création d'une partie</h2>
+  <div class="row col-md-12">
+    <h1 class="app-title"></h1>
   </div>
-  <div id="slots" class="slots col-md-12">
-    <div class="row">
-      <div class="slot player-hand-device" ng-repeat="s in slots">
-        {{ s.playerPseudo }}
-      </div>
+  <div class="row col-md-12 buttons fill-height text-center">
+    <div class="btn btn-default" ng-click="goToCreate($event)" ng-touch="goToCreate($event)">
+      <div class="text top">Créer une partie</div>
+      <div class="glyphicon glyphicon-play"></div>
+      <div class="text bottom">Vous utilisez la table</div>
     </div>
-    <div class="row">
-      <div id="slot-{{ s.id }}" class="slot marker-space" style="background-color: {{ s.getColorCSS() }}" ng-repeat="s in slots" slot>
+    <div class="btn btn-default" ng-click="goToWatch($event)" ng-touch="goToWatch($event)">
+      <div class="text top">Observer la partie</div>
+      <div class="icon">
+        <span class="glyphicon glyphicon-eye-open"></span>
       </div>
-    </div>
-    <div class="col-md-offset-4 col-md-4 btn {{ allPlayersAssociated() ? 'btn-success' : 'btn-danger' }} {{ slots[0].tag ? '' : 'disabled' }}" ng-click="createGame($event)" ng-touch="createGame($event)">
-      Lancer la partie
+      <div class="text bottom">Vous utilisez un ordinateur</div>
     </div>
   </div>
 </div>

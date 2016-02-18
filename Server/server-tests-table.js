@@ -86,6 +86,10 @@ ioServer.on('connection', function (socket) {
     socket.emit('launchVague', {delta: 30});
     socket.emit('killEnemy', {id: 0, t: 10*30});
 
+    socket.emit('updateEnemyHp', {id: 0, t:2*30, hp: 0.75});
+    socket.emit('updateEnemyHp', {id: 0, t:5*30, hp: 0.5});
+    socket.emit('updateEnemyHp', {id: 0, t:9*30, hp: 0.1});
+
     socket.emit('projectile', {start: 120, from: {x: 200, y: 200}, end: 30, to: {x: 300, y: 100}});
 
 

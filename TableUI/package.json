@@ -1,22 +1,30 @@
 {
-  "name": "table",
+  "name": "TableUI",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "The common to all players interface on the table",
+  "node-main": "server.js",
+  "main": "http://localhost:8000/",
+  "window": {
+    "fullscreen": true,
+    "frame": true,
+    "toolbar": false
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Jean-Christophe Isoard",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.13.4"
+  },
+  "devDependencies": {
+    "jquery": "^2.2.0",
+    "lodash": "^4.0.0",
+    "socket.io-client": "^1.4.2",
     "angular": "^1.4.8",
     "angular-route": "^1.4.8",
     "angular-touch": "^1.4.9",
-    "bootstrap": "^3.3.6",
-    "express": "^4.13.4",
-    "jquery": "^2.2.0",
-    "lodash": "^4.0.0",
-    "socket.io-client": "^1.4.2"
+    "bootstrap": "^3.3.6"
   }
 }

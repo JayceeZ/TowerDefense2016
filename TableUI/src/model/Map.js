@@ -8,8 +8,8 @@ var Map = function Map(scope, container) {
   this.events = [];
   this.message = "Phase de placement";
 
-  this.currentTime = 0;
-  this.end = 0;
+  this.currentTime = 0; // number of cycles of delta passed
+  this.end = null;
   this.lastVague = false;
 
   this.width = 1920;
@@ -33,33 +33,40 @@ var Map = function Map(scope, container) {
     });
   };
 
-  this.previewPlacingTurret = function(idplayer, x, y, angle) {
+  this.previewPlacingTurret = function(idplayer, x, y, angle, placementOk) {
     var _this = this;
     _.forEach(this.turrets, function(turret) {
       if(turret.id === idplayer && turret.isPreview) {
-        turret.isHidden = false;
         turret.setPosition(x * _this.width, y * _this.height);
         turret.setOrientation(angle);
+        turret.setValidable(placementOk);
       }
     });
   };
 
-  this.setPlayerTurretSpecs = function(idplayer, aimZone) {
-    var turret = new Turret(idplayer, this.container);
-    turret.setAimZone(aimZone.distance, aimZone.arc);
+  this.setPlayerTurretSpecs = function(idplayer, type, aimZone) {
+    var turret = _.find(this.turrets, {player: idplayer, isPreview: true});
+    if(!turret) {
+      turret = new Turret(idplayer, this.container);
+      console.log("Turret created for preview");
+      this.turrets.push(turret);
+    }
     var marker = _.find(this.scope.markers, {player: idplayer});
     if(marker) {
+      console.log("at ("+turret.x+","+turret.y+")");
       turret.setPosition(marker.x, marker.y);
       turret.setOrientation(marker.orientation);
     }
-    console.log("Turret created at ("+turret.x+","+turret.y+") for player "+turret.player);
-    this.turrets.push(turret);
+    turret.setAimZone(aimZone.distance, aimZone.arc);
+    turret.setType(type);
   };
 
   this.removePlacingTurret = function(idplayer) {
     _.forEach(this.turrets, function(turret) {
-      if(turret.id === idplayer && turret.isPreview)
+      if(turret.id === idplayer && turret.isPreview) {
         turret.hide();
+        console.log("Hiding turret");
+      }
     });
   };
 
@@ -72,8 +79,10 @@ var Map = function Map(scope, container) {
     this.enemies.push(e);
   };
 
-  this.getTurret = function(id) {
-    _.find(this.turrets, {id: id});
+  this.updateEnemyHp = function(id, time, hp) {
+    var enemy = _.find(this.enemies, {id: id});
+    if(enemy)
+      enemy.addEvent("hp", time, hp);
   };
 
   this.killEnemy = function(id, t) {
@@ -110,12 +119,16 @@ var Map = function Map(scope, container) {
         }
       }
       _this.currentTime++;
-      if(_this.currentTime === _this.end) {
+      if(_this.end != null && _this.currentTime >= _this.end) {
         _this.stop();
         _this.clean();
       }
     }, delta);
     this.message = "Vague en cours";
+  };
+
+  this.jumpTo = function(time) {
+    this.currentTime = time;
   };
 
   this.clean = function() {
@@ -142,6 +155,9 @@ var Map = function Map(scope, container) {
       var _this = this;
       this.scope.$apply(function() {
         _this.message = "Fin de partie";
+        var replay = document.getElementById("replay-button");
+        if(replay)
+          replay.style = "display: block;";
       });
       return true;
     }

@@ -1,0 +1,16 @@
+
+.discoveryBody {
+    width: 80%;
+    padding-left: 10%;
+}
+
+.gameTable .game {
+    border: 3px solid black;
+    font-size: 20pt;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+input {
+
+}
