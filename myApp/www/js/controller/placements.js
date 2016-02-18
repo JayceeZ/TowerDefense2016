@@ -35,7 +35,6 @@ angular.module('placement.controllers', ['socket.service', 'config.service'])
     $scope.selectedItem = -1;
     $scope.valid = false;
     $scope.onlyMine = false;
-    $scope.isReady = false;
 
 
     $scope.changeSettings = function () {
@@ -74,7 +73,7 @@ angular.module('placement.controllers', ['socket.service', 'config.service'])
           }
         }else{
           if($scope.defenses[id].mine) {
-            $scope.showAl(cout);
+            $scope.showAlert(cout);
           }
         }
       }
@@ -85,9 +84,6 @@ angular.module('placement.controllers', ['socket.service', 'config.service'])
     $scope.validIt = function () {
       socket.emit("putTower");
       debitUser($scope.selectedItem);
-      if($rootScope.coins < 50) {
-        $scope.isReady = true;
-      }
       $scope.valid = false;
     };
 
@@ -162,22 +158,28 @@ angular.module('placement.controllers', ['socket.service', 'config.service'])
         });
     };
 
-
     $scope.confirmReady = function () {
-      var confirmPopup = $ionicPopup.confirm({
-        title: 'Placez des défenses',
-        template: 'Vous pouvez encore poser des défenses.<br>Êtes-vous sûr de vouloir lancer la vague ?',
-        cancelText: 'Non',
-        okText: "Oui"
-      });
+      if($rootScope.coins >= 50) {
 
-      confirmPopup.then(function (res) {
-        if (res) {
-          socket.emit("isReady", true);
-          showLoading();
-        }
-      });
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Placez des défenses',
+          template: 'Vous pouvez encore poser des défenses.<br>Êtes-vous sûr de vouloir lancer la vague ?',
+          cancelText: 'Non',
+          okText: "Oui"
+        });
+
+        confirmPopup.then(function (res) {
+          if (res) {
+            socket.emit("isReady", true);
+            showLoading();
+          }
+        });
+      }else{
+        socket.emit("isReady", true);
+        showLoading();
+      }
     };
+
 
 
 

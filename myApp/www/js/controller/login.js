@@ -23,8 +23,8 @@ angular.module('login.controllers', ['socket.service', 'config.service'])
     /** Lance detection du serveur **/
     function initDiscovery(){
       discoveries = [];
-      for(j = 0; j < 2; j++){
-        for(i = 0; i < 255; i++){
+      for(var j = 0; j < 2; j++){
+        for(var i = 0; i < 255; i++){
           discoveries.push(new discovery("http://192.168."+j+"."+i+":8081"));
         }
       }
@@ -60,9 +60,9 @@ angular.module('login.controllers', ['socket.service', 'config.service'])
     //** Connect to table
     /**=========================**/
     $scope.connect = function() {
-
+      socket.connect(RESOURCES.server);
       showLoading(true);
-      initDiscovery();
+      //initDiscovery();
 
       $timeout(function () {
         if(!socket.get().connected){
