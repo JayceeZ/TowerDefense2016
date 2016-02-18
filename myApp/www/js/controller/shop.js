@@ -4,26 +4,30 @@
 angular.module('st.controllers', ['socket.service', 'config.service'])
 
 
-  .controller('ShopCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion, $state, RESOURCES, $ionicPopup) {
+  .controller('ShopCtrl', function($scope,$rootScope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion, $state, RESOURCES, $ionicPopup,$ionicHistory) {
+
+    //** Nav bar color
+    /**=========================**/
+    $scope.$on('$ionicView.beforeEnter', function() {
+      $rootScope.viewColor = $rootScope.myColor;
+    });
+
 
     //** HEADER
     /**=========================**/
     $scope.$parent.showHeader();
-    $scope.$parent.clearFabs();
     $scope.isExpanded = true;
     $scope.$parent.setExpanded(true);
-    $scope.$parent.setHeaderFab(false);
-
 
 
     //** Scope
     /**=========================**/
-    $scope.defenses = RESOURCES.defenses;
+    $scope.defenses = $rootScope.myDefenses;
 
 
     //** Popup
     /**=========================**/
-    $scope.showConfirm = function (name) {
+    $scope.showConfirm = function (id, name, price) {
       var confirmPopup = $ionicPopup.confirm({
         title: 'Acheter : ' +name,
         template: 'Êtes-vous sûr de vouloir faire cet achat ?',
@@ -32,8 +36,23 @@ angular.module('st.controllers', ['socket.service', 'config.service'])
       });
 
       confirmPopup.then(function (res) {
-        if (res) {}
+        if (res) {
+          $rootScope.coins -= price;
+
+          for(var i = 0; i < $rootScope.myDefenses.length; i++){
+            if($rootScope.myDefenses[i].id == id){
+              $rootScope.myDefenses[i].mine = true;
+            }
+          }
+
+        }
       });
+    };
+
+    //** Pay a defense
+    /**=========================**/
+    $scope.canPay = function(price) {
+        return ($rootScope.coins >= price);
     };
 
 
@@ -43,12 +62,12 @@ angular.module('st.controllers', ['socket.service', 'config.service'])
       $state.go('app.details', {'idDefense': id});
     };
 
-    $scope.$on('ngLastRepeat.mylist',function(e) {
-      ionicMaterialInk.displayEffect();
-    });
 
-    ionicMaterialMotion.pushDown({
-      selector: '.push-down'
+    //** Disable back button
+    /**=========================**/
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      disableBack: false
     });
 
   });

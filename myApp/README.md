@@ -1,25 +1,64 @@
-Ionic App Base
+Partie mobile
 =====================
 
-A starting project for Ionic that optionally supports using custom SCSS.
 
-## Using this project
+## Description
 
-We recommend using the [Ionic CLI](https://github.com/driftyco/ionic-cli) to create new Ionic projects that are based on this project but use a ready-made starter template.
+Ce projet correspond à la partie mobile (tablette/smartphone) du Poly'Defense. A partir de vos appareils mobile vous pouvez intéragir avec les différents dispositifs du jeu (table et partie web).
 
-For example, to start a new Ionic project with the default tabs interface, make sure the `ionic` utility is installed:
 
-```bash
-$ npm install -g ionic
-```
+## Installation
 
-Then run:
+Pour pouvoir éxécuter le projet vous devez disposer des outils suivants :
+ 
 
-```bash
-$ ionic start myProject tabs
-```
+* ** NodeJS & son gestionnaire de paquets ** : [https://nodejs.org/en/](https://nodejs.org/en/)
 
-More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/getting-started) page and the [Ionic CLI](https://github.com/driftyco/ionic-cli) repo.
+* ** Cordova **  : *npm install -g cordova*
 
-## Issues
-Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/submit-issue/) to the main Ionic repository.
+* ** Ionic **  : *npm install -g ionic*
+		
+* ** Bower **  : *npm install -g bower*
+	
+
+
+
+## Exécution
+
+Tout d'abord placez-vous à la racine du projet :
+	
+		$ cd myApp
+
+Ensuite téléchargez les dépendances :
+
+		$ bower install
+		
+Puis ajoutez la plate-forme pour lequel vous souhaitez exécuter l'application :
+	
+		$ ionic platform add android (pour android)
+		
+		$ ionic platform add ios (pour IOS)
+		
+Enfin, compilez puis déployer votre application sur votre appareil connecté par USB :
+
+		$ ionic run android (pour android)
+		
+		$ ionic run ios (pour IOS)
+		
+
+PS : vous pouvez aussi lancer l'application sur vore navigateur - pour d'éventuels tests par exemple - à partir de la ligne de commande suivante :
+
+		$ ionic serve
+
+
+
+## Contact
+
+
+Pour toutes informations complémentaires n'hésitez pas à me contacter.
+
+* [Salah Bennour](mailto:bennour@polytech.unice.fr)
+
+---
+
+![Polytech Nice Sophia](http://users.polytech.unice.fr/~bennour/logos.png)

@@ -7,6 +7,8 @@ var targets = [];
 var timer;
 var discoveries = [];
 
+var mode = "creating";
+
 function initDiscovery(){
     discoveries = [];
     console.log("init discovery");
@@ -30,18 +32,15 @@ function addTarget(ip,status,players){
             found = true;
             targets[i].status = status;
             targets[i].players = players;
-            $('.gameTable .game')[i].text("<div class='game' id="+targets.length+">Adresse : "+ip+"    |  Joueurs : "+players+"/4</div>");
+            $('.gameTable .game')[i].text("<div class='game' id="+targets.length+">Adresse : "+ip+"<br/>Joueurs : "+players+"/4</div>");
             break;
         }
     if(found === false) {
         targets.push({"ip": ip, "status": status, "players": players});
-        //$('.gameTable').append("<tr id="+targets.length+"><td>"+ip+"</td><td>"+players+"</td></tr>");
-        $('.gameTable').append("<div class='game' id="+targets.length+">Adresse : "+ip+"    |  Joueurs : "+players+"/4</div>");
+        $('.gameTable').append("<div class='game' id="+targets.length+">Adresse : "+ip+"<br/>Joueurs : "+players+"/4</div>");
         var target = document.getElementById(targets.length);
-        console.log("test target : "+target.tagName+" "+target.id);
         target.addEventListener('touchstart', function(ev) {
-            console.log("test : "+ev.touches[0].target.id);
-
+            selectGame(targets[ev.touches[0].target.id-1].ip);
         });
     }
 };
@@ -49,7 +48,6 @@ function addTarget(ip,status,players){
 var discovery = function(target){
     this.socket = io.connect(target);
     this.socket.emit("discoverGame");
-
     this.socket.on('discoveringGame', function(message){
         addTarget(target,message.status, message.players);
     });

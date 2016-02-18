@@ -3,7 +3,7 @@
 
 angular.module('starter.controllers', ['socket.service'])
 
-  .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
+  .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout, $ionicHistory) {
 
     //** HEADER
     /**=========================**/
@@ -19,9 +19,6 @@ angular.module('starter.controllers', ['socket.service'])
       });
     }
 
-    ////////////////////////////////////////
-    // Layout Methods
-    ////////////////////////////////////////
 
     $scope.hideNavBar = function() {
       document.getElementsByTagName('ion-nav-bar')[0].style.display = 'none';
@@ -87,4 +84,12 @@ angular.module('starter.controllers', ['socket.service'])
         fabs[0].remove();
       }
     };
+
+    //** Disable back
+    /**=========================**/
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      disableBack: true
+    });
+
   });

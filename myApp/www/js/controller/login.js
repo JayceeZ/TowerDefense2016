@@ -6,38 +6,71 @@
 
 angular.module('login.controllers', ['socket.service', 'config.service'])
 
-  .controller('LoginCtrl', function($scope, $timeout, $stateParams, $state, ionicMaterialInk, $ionicLoading, socket, $cordovaCamera, $cordovaActionSheet, RESOURCES  ) {
-
-    //** HEADER
-    /**=========================**/
-    $scope.$parent.clearFabs();
-    $timeout(function() {
-      $scope.$parent.hideHeader();
-    }, 0);
+  .controller('LoginCtrl', function($scope,$rootScope, $timeout, $stateParams, $state, ionicMaterialInk, $ionicLoading, socket, $ionicPopup, $cordovaActionSheet, RESOURCES, $ionicHistory) {
 
 
     //** Scopes
     /**=========================**/
     $scope.username = '';
-    $scope.isConnect = false;
-    $scope.image = '';
+    $scope.isConnected = false;
+    $rootScope.coins = 100;
+    $rootScope.points = 0;
+    $rootScope.myDefenses = RESOURCES.defenses;
 
+    var discoveries = [];
+    var mode = "creating";
+
+    /** Lance detection du serveur **/
+    function initDiscovery(){
+      discoveries = [];
+      for(var j = 0; j < 2; j++){
+        for(var i = 0; i < 255; i++){
+          discoveries.push(new discovery("http://192.168."+j+"."+i+":8081"));
+        }
+      }
+      setTimeout(function(){
+        disconnectAll();
+      },1200);
+    };
+
+    var discovery = function(target){
+      this.socket = io.connect(target);
+      this.socket.emit("discoverGame");
+      this.socket.on('discoveringGame', function(message){
+        if(message.status === mode)
+          selectGame(target);
+      });
+    };
+
+    /** Retourne l'adresse ip du serveur du jeu**/
+    function selectGame(ip){
+      disconnectAll();
+      console.log("MON IP : "+ip);
+      socket.connect(ip);
+    }
+
+    /** Lance detection du serveur **/
+    function disconnectAll(){
+      var a;
+      for(a = 0; a < discoveries.length; a++)
+        discoveries[a].socket.close();
+    }
 
 
     //** Connect to table
     /**=========================**/
     $scope.connect = function() {
-
       socket.connect(RESOURCES.server);
       showLoading(true);
+      //initDiscovery();
 
       $timeout(function () {
         if(!socket.get().connected){
           $ionicLoading.hide();
-          alert("pas co");
+          $scope.showAlert();
         }else{
           $ionicLoading.hide();
-          $scope.isConnect = true;
+          $scope.isConnected = true;
         }
       }, 2000);
 
@@ -49,8 +82,7 @@ angular.module('login.controllers', ['socket.service', 'config.service'])
     $scope.play = function() {
       showLoading(false);
       socketEvents();
-      var message = {"pseudo" : $scope.username};
-      socket.emit("addPlayer", message);
+      socket.emit("addPlayer", {"pseudo" : $scope.username});
     };
 
 
@@ -58,25 +90,39 @@ angular.module('login.controllers', ['socket.service', 'config.service'])
     /**=========================**/
     function socketEvents() {
       socket.on('connectionStatus', function (data) {
-        console.log(data.status + " -- " +data.message);
         $scope.status = data.status;
         $scope.message = data.message;
       });
 
+      socket.on('playerColorUpdate', function (data) {
+        $rootScope.myColor = data;
+      });
+
       socket.on('gameReady', function (data) {
-        console.log("Game ready");
         $ionicLoading.hide();
         $state.go('app.placements');
       });
     };
 
 
+    //** Alert
+    /**=========================**/
+    $scope.showAlert = function () {
+      var alertPopup = $ionicPopup.alert({
+        title: ' Echec de connexion' +name,
+        template: 'Echec de connexion à la table. Réessayez.'
+      });
+
+      alertPopup.then(function (res) {
+      });
+    };
+
     //** ShowLoading
     /**=========================**/
     function showLoading(val) {
       if(val) {
         $ionicLoading.show({
-          template: '<h4>Connection to table</h4></div><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner>',
+          template: '<h4>Connexion à la table ...</h4></div><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner>',
           content: 'Loading',
           animation: 'fade-in',
           showBackdrop: false,
@@ -85,7 +131,7 @@ angular.module('login.controllers', ['socket.service', 'config.service'])
         });
       }else{
         $ionicLoading.show({
-          template: '<h4>Ready ! Wait others players</h4></div><ion-spinner icon="bubbles" class="spinner-assertive"></ion-spinner>',
+          template: '<h4>Prêt. En attente des autres joueurs ...</h4></div><ion-spinner icon="bubbles" class="spinner-assertive"></ion-spinner>',
           content: 'Loading',
           animation: 'fade-in',
           showBackdrop: false,
@@ -95,114 +141,19 @@ angular.module('login.controllers', ['socket.service', 'config.service'])
       }
     }
 
-
-    //** Photo - Image
+    //** Disable back
     /**=========================**/
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      disableBack: true
+    });
 
-    var dial = {
-      title: 'Inserez une photo',
-      buttonLabels: ['Prendre une photo', 'Selectionner une photo existante'],
-      addCancelButtonWithLabel: 'Annuler',
-      androidEnableCancelButton: true,
-      winphoneEnableCancelButton: true
-    };
+    //** HEADER
+    /**=========================**/
+    $scope.$parent.clearFabs();
+    $timeout(function() {
+      $scope.$parent.hideHeader();
+    }, 0);
 
-    $scope.urlForImage = function (imageName) {
-      var name = imageName.substr(imageName.lastIndexOf('/') + 1);
-      var trueOrigin = cordova.file.dataDirectory + name;
-      return trueOrigin;
-    };
-
-
-    $scope.howTakePhoto = function () {
-      $cordovaActionSheet.show(dial).then(function(btnIndex) {
-        console.log(btnIndex);
-
-        if(btnIndex == 1)       { addImage(true);}
-        else if(btnIndex == 2)  { addImage(true);}
-        else                    { }
-      });
-
-    };
-
-
-    function addImage(val) {
-
-      var options;
-
-      if (val) {
-
-        options = {
-          destinationType: Camera.DestinationType.FILE_URI,
-          sourceType: Camera.PictureSourceType.CAMERA,
-          allowEdit: false,
-          saveToPhotoAlbum: true,
-          encodingType: Camera.EncodingType.JPEG,
-          popoverOptions: CameraPopoverOptions
-        };
-
-      } else {
-
-        options = {
-          destinationType: Camera.DestinationType.FILE_URI,
-          sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-          allowEdit: false,
-          encodingType: Camera.EncodingType.JPEG,
-          popoverOptions: CameraPopoverOptions
-        };
-
-      }
-
-      $cordovaCamera.getPicture(options).then(function (imageData) {
-
-        onImageSuccess(imageData);
-
-        function onImageSuccess(fileURI) {
-          createFileEntry(fileURI);
-        }
-
-        function createFileEntry(fileURI) {
-          window.resolveLocalFileSystemURL(fileURI, copyFile, fail);
-        }
-
-        function copyFile(fileEntry) {
-          var name = fileEntry.fullPath.substr(fileEntry.fullPath.lastIndexOf('/') + 1);
-          var newName = makeid() + name;
-
-          window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (fileSystem2) {
-              fileEntry.copyTo(
-                fileSystem2,
-                newName,
-                onCopySuccess,
-                fail
-              );
-            },
-            fail);
-        }
-
-        function onCopySuccess(entry) {
-          $scope.$apply(function () {
-            $scope.image = entry.nativeURL;
-          });
-        }
-
-        function fail(error) {
-          console.log("fail: " + error.code);
-        }
-
-        function makeid() {
-          var text = "";
-          var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-          for (var i = 0; i < 5; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-          }
-          return text;
-        }
-
-      }, function (err) {
-        console.log(err);
-      });
-    }
 
   });
