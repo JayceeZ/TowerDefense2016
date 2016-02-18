@@ -46,6 +46,6 @@ appTable.config(['$routeProvider',
       templateUrl: 'src/partials/map.html',
       controller: 'MapCtrl'
     }).otherwise({
-      redirectTo: '/home'
+      redirectTo: '/create'
     });
   }]);

@@ -2,12 +2,18 @@
   "name": "table",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.html",
+  "window": {
+    "fullscreen": true,
+    "frame": false,
+    "toolbar": false
+  },
+  "bg-script": "launch_backgrounds.cmd",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Jean-Christophe Isoard",
   "license": "ISC",
   "dependencies": {
     "angular": "^1.4.8",
