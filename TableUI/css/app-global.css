@@ -23,6 +23,13 @@ html, body, .ng-scope {
     position: absolute;
 }
 
+.close-button {
+    z-index: 1000;
+    position: absolute;
+    right: 1em;
+    top: 1em;
+}
+
 .app-title {
     font-size: 5em;
     text-align: center;

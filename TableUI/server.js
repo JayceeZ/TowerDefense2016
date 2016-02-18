@@ -30,7 +30,10 @@ require('child_process').exec('cmd /c launch_backgrounds.bat', function(){
   console.log('Background processes launched.');
 });
 
-_this.backgrounds = true;
+// in case of background launch didn't respond after 2 seconds
+setTimeout(function() {
+  _this.backgrounds = true;
+}, 2000);
 
 // launch the TableUI http server on given port
 app.listen(8000);
