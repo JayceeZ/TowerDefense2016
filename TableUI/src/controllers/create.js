@@ -6,6 +6,8 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   // Template model
   $scope.slots = [];
 
+  $scope.connectionError = false;
+
   for (var n = 0; n < 4; n++) {
     $scope.slots.push(new Slot(n));
   }
@@ -32,6 +34,14 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
     return ret;
   };
 
+  $scope.close = function(event) {
+    window.close();
+  };
+
+  $scope.refresh = function(event) {
+    window.location.reload();
+  };
+
   /**
    * Socket updates
    */
@@ -42,6 +52,18 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
       freeSlot.setPlayerPseudo(message.pseudo);
       socket.emit('playerColorUpdate', {id: freeSlot.player, pseudo: freeSlot.playerPseudo, color: freeSlot.color});
     }
+  });
+
+  socket.on('connect', function() {
+    $scope.connectionError = false;
+  });
+
+  socket.on('reconnect', function() {
+    $scope.connectionError = false;
+  });
+
+  socket.on('connect_error', function() {
+    $scope.connectionError = true;
   });
 
   socket.on('removePlayer', function(id) {
@@ -94,9 +116,9 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
   }
 
   function startGame() {
-    /*socket.removeAllListeners('addPlayer');
+    socket.removeAllListeners('addPlayer');
     socket.removeAllListeners('removePlayer');
-    socket.removeAllListeners('updateMarker');*/
+    socket.removeAllListeners('updateMarker');
     $location.path("/map");
   }
 });

@@ -111,12 +111,12 @@ var Enemy = function Enemy(id, container) {
     var HP_HEIGHT = 8;
 
     if(this.hp < 1) {
-      this.graphics.beginFill(0xAAAAAA);
+      this.graphics.beginFill(0xCC0000);
       this.graphics.lineStyle(0);
       this.graphics.drawRect(this.x - this.sprite.texture.width / 2, this.y - this.sprite.texture.height / 2 - HP_HEIGHT, this.sprite.texture.width, HP_HEIGHT);
       this.graphics.endFill();
 
-      this.graphics.beginFill(0xFF0000);
+      this.graphics.beginFill(0x00CC00);
       this.graphics.lineStyle(0);
       this.graphics.drawRect(this.x - this.sprite.texture.width / 2, this.y - this.sprite.texture.height / 2 - HP_HEIGHT, this.sprite.texture.width * this.hp, HP_HEIGHT);
       this.graphics.endFill();

@@ -23,6 +23,13 @@ html, body, .ng-scope {
     position: absolute;
 }
 
+.close-button {
+    z-index: 1000;
+    position: absolute;
+    right: 1em;
+    top: 1em;
+}
+
 .app-title {
     font-size: 5em;
     text-align: center;
@@ -84,6 +91,18 @@ html, body, .ng-scope {
     overflow: hidden;
     background-image: url('../img/map2.jpg');
     background-size: 1920px 1080px;
+}
+
+.map div.btn.replay {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10000000;
+    font-size: 3em;
+    padding-top: 25px;
+    display: none;
 }
 
 .marker {

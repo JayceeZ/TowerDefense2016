@@ -155,6 +155,9 @@ var Map = function Map(scope, container) {
       var _this = this;
       this.scope.$apply(function() {
         _this.message = "Fin de partie";
+        var replay = document.getElementById("replay-button");
+        if(replay)
+          replay.style = "display: block;";
       });
       return true;
     }
