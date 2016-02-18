@@ -17,12 +17,52 @@ angular.module('login.controllers', ['socket.service', 'config.service'])
     $rootScope.points = 0;
     $rootScope.myDefenses = RESOURCES.defenses;
 
+    var discoveries = [];
+    var mode = "creating";
+
+    /** Lance detection du serveur **/
+    function initDiscovery(){
+      discoveries = [];
+      for(j = 0; j < 2; j++){
+        for(i = 0; i < 255; i++){
+          discoveries.push(new discovery("http://192.168."+j+"."+i+":8081"));
+        }
+      }
+      setTimeout(function(){
+        disconnectAll();
+      },1200);
+    };
+
+    var discovery = function(target){
+      this.socket = io.connect(target);
+      this.socket.emit("discoverGame");
+      this.socket.on('discoveringGame', function(message){
+        if(message.status === mode)
+          selectGame(target);
+      });
+    };
+
+    /** Retourne l'adresse ip du serveur du jeu**/
+    function selectGame(ip){
+      disconnectAll();
+      console.log("MON IP : "+ip);
+      socket.connect(ip);
+    }
+
+    /** Lance detection du serveur **/
+    function disconnectAll(){
+      var a;
+      for(a = 0; a < discoveries.length; a++)
+        discoveries[a].socket.close();
+    }
+
+
     //** Connect to table
     /**=========================**/
     $scope.connect = function() {
 
-      socket.connect(RESOURCES.server);
       showLoading(true);
+      initDiscovery();
 
       $timeout(function () {
         if(!socket.get().connected){
