@@ -52,8 +52,10 @@ var handleTUIO = function(msg){
 /************************
  * Server communication *
  ************************/
+socket.on('connect', function(){
+  socket.emit('addCore');
+});
 
-socket.emit('addCore');
 
 socket.on('toTable', function(message) {
   console.log(message);
