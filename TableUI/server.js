@@ -1,8 +1,7 @@
-var express = require('express');
+var express = require('express'),
+  path = require('path');
 
 var app = express();
-
-app.use(express.static(__dirname));
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -11,9 +10,32 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use('/', express.static(__dirname + '/src'));
+app.use('/img', express.static(__dirname + '/img'));
+app.use('/css',express.static(__dirname + '/css'));
+app.use('/lib',express.static(__dirname + '/lib'));
+app.use('/fonts',express.static(__dirname + '/fonts'));
+
+var _this = this;
+this.backgrounds = false;
 app.get('/', function(req, res, next) {
-  res.render('index.html');
+  if(_this.backgrounds)
+    res.sendFile(path.join(__dirname+'/index.html'));
+  else
+    res.sendFile(path.join(__dirname+'/loading.html'));
+});
+require('child_process').exec('cmd /c launch_backgrounds.bat', function(){
+  // when both backgrounds have been started
+  _this.backgrounds = true;
+  console.log('Background processes launched.');
 });
 
-// launch the http server on given port
+_this.backgrounds = true;
+
+// launch the TableUI http server on given port
 app.listen(8000);
+
+console.log('Waiting for background processes.');
+
+
+

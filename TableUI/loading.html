@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <title>Applications en cours de démarrage</title>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/bootstrap.min.js"></script>
+  <script src="lib/socket.io.js"></script>
+  <style>
+    .glyphicon-refresh-animate {
+      -webkit-animation-name: rotateThis;
+      -webkit-animation-duration: 2s;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-timing-function: linear;
+    }
+
+    @-webkit-keyframes "rotateThis" {
+      from {
+        -webkit-transform: rotate( 0deg );
+      }
+      to  {
+        -webkit-transform: rotate( 360deg );
+      }
+    }
+  </style>
+</head>
+<body class="container" style="height: 100%;">
+  <div class="container text-center" style="margin-top: 40%;">
+    <button class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
+    <br />Veuillez patienter pendant le démarrage des applications ...
+  </div>
+  <script type="text/javascript">
+    var socket = io.connect('http://localhost:8081/');
+    socket.on('connect', function() {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

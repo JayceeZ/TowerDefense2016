@@ -1,4 +1,10 @@
 <div id="create" class="create">
+  <div class="alert alert-danger fade in" ng-show="connectionError">
+    <strong>Échec de connexion au serveur</strong>: Essayez de <span style="text-decoration: underline; cursor: pointer;" ng-click="refresh($event)" ng-touch="refresh($event)">rafraîchir la page</span> ou de relancer l'application.
+  </div>
+  <div class="col-md-offset-11 col-md-1 btn btn-danger" ng-click="close($event)" ng-touch="close($event)">
+    Fermer l'application
+  </div>
   <div class="col-md-12">
     <h1 class="app-title"></h1>
     <h2 class="screen-title">Création d'une partie</h2>

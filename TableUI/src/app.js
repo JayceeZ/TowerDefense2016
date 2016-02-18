@@ -37,13 +37,13 @@ var appTable = angular.module('appTable', ['ngRoute', 'ngTouch']);
 appTable.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/home', {
-      templateUrl: 'src/partials/home.html',
+      templateUrl: 'partials/home.html',
       controller: 'HomeCtrl'
     }).when('/create', {
-      templateUrl: 'src/partials/create.html',
+      templateUrl: 'partials/create.html',
       controller: 'CreateCtrl'
     }).when('/map', {
-      templateUrl: 'src/partials/map.html',
+      templateUrl: 'partials/map.html',
       controller: 'MapCtrl'
     }).otherwise({
       redirectTo: '/create'
