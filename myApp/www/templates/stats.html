@@ -1,22 +1,138 @@
 <ion-view view-title="Stats">
   <ion-content ng-class="{expanded:isExpanded}" ng-controller="StatsCtrl">
 
-    <div class="row" style="height: 50%; border-bottom: 1px solid;">
-      <div class="col col-50 col-center" style="border-right: 1px solid; text-align: center">
-        <h1 class="assertive"><timer>{{minutes}} minutes, {{seconds}} seconds.</timer></h1>
-        <h4>Statut : <b>{{statut}}</b></h4>
+    <div style="background-color: #F0F3F8;">
+      <div class="row">
+
+        <div class="col col-33 centre">
+          <div class="ion-refresh"> Itération</div>
+          <div class="assertive">Vague n° {{idVague}} ({{idGame}})</div>
+        </div>
+
+        <div class="col col-33 centre">
+          <div class="ion-flag"> Statut</div>
+          <div class="assertive"><b>{{statut}}</b></div>
+        </div>
+
+        <div class="col col-33 centre">
+          <div class="ion-clock"> Temps</div>
+          <div class="assertive">
+            <timer>{{minutes}} minutes, {{seconds}} seconds.</timer>
+          </div>
+        </div>
+
       </div>
 
-      <div class="col col-50" >
-        <canvas id="pie" class="chart chart-pie"
-                chart-data="data" chart-labels="labels" chart-legend="true">
-        </canvas>
+
+      <!-- Pie chart -->
+      <div class="row">
+        <div class="col text-center"  >
+
+          <canvas id="pie" class="chart chart-pie" style="height : 25vh"
+                  chart-data="pieChart.data" chart-labels="pieChart.labels"
+                  chart-options="pieChart.options"
+                  chart-legend="true">
+          </canvas>
+
+        </div>
       </div>
     </div>
 
-    <div class="row" style="height: 50%;">
 
+    <!-- Stats -->
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <div class="col col-33 myCornerL">
+            <img src="img/coin.png" class="imgLeft">
+          </div>
+          <div class="col col-67 myCornerR">
+            <h2 class="col col-center">{{infoPlayer.money}}</h2>
+            <p>Pièces gagnés durant la vague</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="row">
+          <div class="col col-33 myCornerL">
+            <img src="img/mutl.png" class="imgLeft">
+          </div>
+          <div class="col col-67 myCornerR">
+            <h2 class="col col-center">{{infoPlayer.mult}}</h2>
+            <p>Multiplicateur de gains</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row ">
+      <div class="col">
+        <div class="row">
+          <div class="col col-33 myCornerL">
+            <img src="img/PolyDefense/killsvague.png" class="imgLeft">
+          </div>
+          <div class="col col-67 myCornerR">
+            <h2 class="col col-center">{{infoPlayer.killsvague}}</h2>
+
+            <p>Ennemis tués durant la vague</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col col-33 myCornerL">
+            <img src="img/PolyDefense/zombie_all.png" class="imgLeft">
+          </div>
+          <div class="col col-67 myCornerR">
+            <h2 class="col col-center">{{infoPlayer.kills}}</h2>
+
+            <p>Total ennemis tués</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <div class="col col-33 myCornerL">
+            <img src="img/shots.png" class="imgLeft">
+          </div>
+          <div class="col col-67 myCornerR">
+            <h2 class="col col-center">{{infoPlayer.shotsvague}}</h2>
+
+            <p>Tirs lancés durant la vagues</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col col-33 myCornerL">
+            <img src="img/shotsall.png" class="imgLeft">
+          </div>
+          <div class="col col-67 myCornerR">
+            <h2 class="col col-center">{{infoPlayer.shots}}</h2>
+
+            <p>Total tirs lancés</p>
+          </div>
+        </div>
+      </div>
     </div>
 
   </ion-content>
+
+  <!-- Footer boutton -->
+  <div ng-show="nextVague" class="fixed-outside" style="margin-top: 110px">
+    <div class="row">
+      <div class="col">
+        <button class="button  icon-right ion-chevron-right button-balanced" ng-click="goNextVague()">Vague suivante</button>
+      </div>
+    </div>
+  </div>
+
+
 </ion-view>
+
+
