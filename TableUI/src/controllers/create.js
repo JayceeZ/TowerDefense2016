@@ -17,10 +17,6 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
     if($scope.allPlayersAssociated()) {
       console.log("Create game button pressed");
       socket.emit('launchGame', computeAssociations());
-      socket.on('gameReady', function() {
-        console.log("launching game");
-        startGame();
-      });
     }
   };
 
@@ -88,6 +84,11 @@ appTable.controller('CreateCtrl', function($scope, $location, socket) {
           socket.emit('playerColorUpdate', {id: slot.player, pseudo: slot.playerPseudo, color: slot.color});
       }
     }
+  });
+
+  socket.on('gameReady', function() {
+    console.log("launching game");
+    startGame();
   });
 
   /**
