@@ -4,8 +4,13 @@ Poly'Defense
 
 ## Description
 
-Ce projet correspond à la partie mobile (tablette/smartphone) du Poly'Defense. A partir de vos appareils mobile vous pouvez intéragir avec les différents dispositifs du jeu (table et partie web).
-
+Poly'Defense est un jeu coopératif de type Tower Defense pour table tangible. 
+Le but du jeu est de placer des défenses sur la carte pour empêcher les ennemis d'atteindre leur objectif.
+Les joueurs ont à disposition une interface personnelle (tablette ou mobile) pour sélectionner/valider leurs défenses et disposer
+de ses statistiques personnelles et un pion pour intéragir avec la table sur laquelle il positionne et oriente ses défenses.
+Une interface web affichant l'évolution en live des statistiques de tous les joueurs est à disposition pour être affiché
+sur une ou plusieurs interfaces tiers.
+ 
 ## Répartition du travail
 
 #### Alexandre TISSIERE
@@ -50,6 +55,16 @@ Essayez de passer en mode surface et de revenir sur le compte en mode Windows.
 
 Si vous rencontrez d'autres problèmes, contactez Jean-Christophe Isoard aux adresses : 
 isoard@polytech.unice.fr ou jeanchristophe.isoard@gmail.com
+
+### Utilisation des tags
+
+Des tags précis sont actuellement associés à leur couleur dans l'application :
+A6 (rouge), 1 (bleu), 20 (vert), C4 (violet), B5 (jaune)
+
+Vous devez jouer avec ces tags ou modifier l'association tags/couleurs.
+
+Pour changer les tags associés, il faut modifier la variable tagColors qui contient l'association tags/couleurs
+dans le fichier TableUI/src/app.js
 
 ## Partie mobile
 
