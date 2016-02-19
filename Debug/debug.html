@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug</title>
+    <link href="debug.css" rel="stylesheet">
+    <script src="node_modules/socket.io-client/socket.io.js"></script>
+    <script src="debug.js"></script>
+</head>
+<body>
+    <div class="left_col">
+        <div>
+            <h3>Update Marker</h3>
+            <br/>
+            id :
+            <input type="text" name="updateMarkerId" id="updateMarkerId">
+            <br/>
+            x (entre 0 et 1) :
+            <input type="number" name="updateMarkerX" id="updateMarkerX" min="0" max="1" step="0.01" value="0">
+            <br/>
+            y (entre 0 et 1) :
+            <input type="number" name="updateMarkerY" id="updateMarkerY" min="0" max="1" step="0.01" value="0">
+            <br/>
+            angle (entre 0 et 360) :
+            <input type="number" name="updateMarkerAngle" id="updateMarkerAngle" min="0" max="360" step="1" value="0">
+            <br/>
+            translation x :
+            <input type="number" name="updateMarkerTx" id="updateMarkerTx" min="0" max="1" step="0.01" value="0">
+            <br/>
+            translation y :
+            <input type="number" name="updateMarkerTy" id="updateMarkerTy" min="0" max="1" step="0.01" value="0">
+            <br/>
+            rotation :
+            <input type="number" name="updateMarkerRot" id="updateMarkerRot" min="0" max="360" step="1" value="0">
+            <br/>
+            <input type="button" onclick="updateMarker()" value="Update">
+            <input type="button" onclick="translationX()" value="Translation x">
+            <input type="button" onclick="translationY()" value="Translation y">
+            <input type="button" onclick="rotation()" value="Rotation">
+        </div>
+        <div>
+            <h3>Remove Marker</h3>
+            <br/>
+            id :
+            <input type="text" name="removeMarkerId" id="removeMarkerId">
+            <br/>
+            <input type="button" onclick="removeMarker()" value="Send">
+        </div>
+    </div>
+    <div class="right_col">
+
+    </div>
+</body>
+</html>

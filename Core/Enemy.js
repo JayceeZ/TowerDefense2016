@@ -48,10 +48,13 @@ module.exports = function(id,x,y,hp,gain,damage,vitesse,points,directions){
     this.getPrediction = function(n){
         var x = this.x;
         var y = this.y;
+        var index = this.indexPath;
         var i;
         for(i = 0; i < n; i++){
-            x += this.vitesse * this.pathDirections[this.indexPath].vx;
-            y += this.vitesse * this.pathDirections[this.indexPath].vy;
+            x += this.vitesse * this.pathDirections[index].vx;
+            y += this.vitesse * this.pathDirections[index].vy;
+            if(x === this.pathPoints[index] && y === this.pathPoints[index])
+                index++;
         }
         return {"x":x,"y":y};
     };

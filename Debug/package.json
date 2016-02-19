@@ -1,0 +1,11 @@
+{
+  "name": "Debug",
+  "version": "1.0.0",
+  "description": "Debug",
+  "main": "debug.js",
+  "author": "Alex",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io-client": "^1.4.2"
+  }
+}

@@ -56,6 +56,23 @@ socket.on('connect', function(){
   socket.emit('addCore');
 });
 
+socket.on('debugUpdateMarker', function(marker){
+  handler.handleMarker(marker);
+  var updatemarker = handler.getMarkerFromId(marker.id);
+  socket.emit("updateMarker",updatemarker);
+  var playerid = updatemarker.playerId;
+  if(playerid !== null)
+    socket.emit("checkPlacement",{"idplayer":playerid,"check":updatemarker.positionOk});
+});
+
+socket.on('debugRemoveMarker', function(id){
+  handler.removeMarker(id);
+  var playerid = handler.getMarkerFromId(id).playerId;
+  socket.emit("removeMarker", {"id": id, "playerId": playerid});
+  if(playerid !== null)
+    socket.emit("checkPlacement",{"idplayer":playerid,"check":false});
+});
+
 
 socket.on('toTable', function(message) {
   console.log(message);

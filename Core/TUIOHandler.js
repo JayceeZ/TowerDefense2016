@@ -14,7 +14,7 @@ module.exports = function(game){
 
     this.clear = function(){
         this.markers = [];
-    }
+    };
 
     this.handleMarker = function(marker){
         var found = false;
@@ -40,6 +40,15 @@ module.exports = function(game){
                 this.markers.push({"status": "update", "marker": marker});
             }
         }
+    };
+
+    this.removeMarker= function(id){
+        var i;
+        for(i = 0; i < this.markers.length; i++)
+            if(this.markers[i].marker.id === id){
+                this.markers.splice(i,1);
+                break;
+            }
     };
 
     this.getUpdates = function(){
@@ -69,6 +78,14 @@ module.exports = function(game){
         var i;
         for(i = 0; i < this.markers.length; i++)
             if(this.markers[i].marker.playerId === id)
+                return this.markers[i].marker;
+        return null;
+    };
+
+    this.getMarkerFromId = function(id){
+        var i;
+        for(i = 0; i < this.markers.length; i++)
+            if(this.markers[i].marker.id === id)
                 return this.markers[i].marker;
         return null;
     };

@@ -340,6 +340,21 @@ ioServer.on('connection', function(socket) {
     console.log("Update bonus/malus : "+message.pseudo+" , "+message.multiplicateur);
     socket.to("core").emit("updateBonusMalus", message);
   });
+
+
+    /**
+     * Debug
+     */
+
+    socket.on('debugUpdateMarker', function(marker) {
+      console.log("debug update marker");
+      socket.to("core").emit("debugUpdateMarker", marker);
+    });
+
+    socket.on('debugRemoveMarker', function(id) {
+      console.log("debug remove marker");
+      socket.to("core").emit("debugRemoveMarker", id);
+    });
 });
 
 
