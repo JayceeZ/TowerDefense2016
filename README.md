@@ -111,16 +111,13 @@ PS : vous pouvez aussi lancer l'application sur vore navigateur - pour d'éventu
 
 
 
-## Contact
+## Auteurs
 
-
-Pour toutes informations complémentaires n'hésitez pas à nous contacter.
-
-* [Alexandre Tissière](mailto:tissiere@polytech.unice.fr)
-* [Jean-Christophe Isoard](mailto:isoard@polytech.unice.fr)
-* [Kevin Justal](mailto:bennour@polytech.unice.fr)
-* [Salah Bennour](mailto:bennour@polytech.unice.fr)
+* Alexandre Tissière
+* Jean-Christophe Isoard
+* Kevin Justal
+* Salah Bennour
 
 ---
 
-![Polytech Nice Sophia](http://users.polytech.unice.fr/~bennour/logos.png)
+Polytech Nice Sophia
